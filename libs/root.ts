@@ -14,3 +14,7 @@ export * from "./promise";
  * Core Module
  */
 export * from "./core";
+/**
+ * Vector Module
+ */
+export * from "./vec";
