@@ -26,9 +26,7 @@ export class ResultBase<T, E> {
    * @returns
    */
   match<U>(pattern: { ok: (value: T) => U; err: (error: E) => U }): U {
-    return this.isOk()
-      ? pattern.ok(this.value)
-      : pattern.err(this.error);
+    return this.isOk() ? pattern.ok(this.value) : pattern.err(this.error);
   }
 
   /**
@@ -41,12 +39,27 @@ export class ResultBase<T, E> {
       : { _tag: "failure", error: this.error };
   }
 
-  toString(options?: ToStringOptions): string { 
-    const stringifiedValue = options?.pretty === true ? JSON.stringify(this.value, null, 2) : JSON.stringify(this.value);
-    if(this.isOk()) {
+  toString(options?: ToStringOptions): string {
+    
+    if (this.isOk()) {
+      const stringifiedValue =
+        options?.pretty === true
+          ? JSON.stringify(this.unwrap(), null, 2)
+          : JSON.stringify(this.unwrap());
       return `Ok(${stringifiedValue})`;
-    } 
-    return `Err(${stringifiedValue})`;
+    }
+    if (this.isErr()) {
+      const value = this.unwrap();
+      let stringifiedValue =
+        options?.pretty === true
+          ? JSON.stringify(value, null, 2)
+          : JSON.stringify(value);
+      if(value instanceof Error) {
+        stringifiedValue = `${value.stack}`;
+      }
+      return `Err(${stringifiedValue})`;
+    }
+    return "Unknown";
   }
 
   static getTag(): {
@@ -85,7 +98,6 @@ export class _Err<E> extends ResultBase<never, E> {
     return { _tag: "failure" };
   }
 }
-
 
 // -------- Helper functions --------
 export function ok<T>(value: T): _Ok<T> {
