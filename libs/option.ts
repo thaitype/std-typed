@@ -1,42 +1,48 @@
-// /**
-//  * Rust inspired Option type for TypeScript
-//  * @ref https://dev.to/alexanderop/robust-error-handling-in-typescript-a-journey-from-naive-to-rust-inspired-solutions-1mdh
-//  */
+/**
+ * Rust inspired Option type for TypeScript
+ */
 
-export type Option<T> = Some<T> | None<T>;
+export type Option<T> = _Some<T> | _None<T>;
+export type _OptionTag = "some" | "none";
 
-export class OptionBase<T> {
-  protected readonly _tag: "some" | "none" = "some";
+export abstract class OptionBase<T> {
+  protected readonly _tag: _OptionTag = "some";
 
-  isSome(): this is Some<T> {
+  isSome(): this is _Some<T> {
     return this._tag === "some";
   }
 
-  isNone(): this is None {
+  isNone(): this is _None {
     return this._tag === "none";
   }
 
   /**
    * @deprecated Using `ts-pattern` instead
-   * @param pattern 
-   * @returns 
+   * @param pattern
+   * @returns
    */
   match<U>(pattern: { some: (value: T) => U; none: () => U }): U {
     return this.isSome() ? pattern.some(this.unwrap()) : pattern.none();
   }
 
+  /**
+   * Converts the Option to an object for type-safe pattern matching
+   * @returns
+   */
   toObject(): { _tag: "some"; value: T } | { _tag: "none" } {
     return this.isSome()
       ? { _tag: "some", value: this.unwrap() }
       : { _tag: "none" };
   }
+
+  static getTag(): {
+    _tag: _OptionTag;
+  } {
+    throw new Error("Method not implemented.");
+  }
 }
 
-export function some<T>(value: T): Some<T> {
-  return new Some(value);
-}
-
-export class Some<T> extends OptionBase<T> {
+export class _Some<T> extends OptionBase<T> {
   protected readonly _tag = "some";
   constructor(public value: T) {
     super();
@@ -45,10 +51,25 @@ export class Some<T> extends OptionBase<T> {
   unwrap(): T {
     return this.value;
   }
+
+  static getTag(): { _tag: "some" } {
+    return { _tag: "some" };
+  }
 }
 
-export class None<T = never> extends OptionBase<T> {
+export class _None<T = never> extends OptionBase<T> {
   protected readonly _tag = "none";
+
+  static getTag(): { _tag: "none" } {
+    return { _tag: "none" };
+  }
 }
 
-export const none: None = new None();
+// ------------ Helper functions ------------
+
+export function some<T>(value: T): _Some<T> {
+  return new _Some(value);
+}
+export const none: _None = new _None();
+export const Some = _Some.getTag();
+export const None = _None.getTag();
