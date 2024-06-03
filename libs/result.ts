@@ -1,3 +1,5 @@
+import type { ToStringOptions } from "./core";
+
 /**
  * Rust inspired Result type for TypeScript
  * @ref https://dev.to/alexanderop/robust-error-handling-in-typescript-a-journey-from-naive-to-rust-inspired-solutions-1mdh
@@ -37,6 +39,14 @@ export class ResultBase<T, E> {
     return this.isOk()
       ? { _tag: "success", value: this.value }
       : { _tag: "failure", error: this.error };
+  }
+
+  toString(options?: ToStringOptions): string { 
+    const stringifiedValue = options?.pretty === true ? JSON.stringify(this.value, null, 2) : JSON.stringify(this.value);
+    if(this.isOk()) {
+      return `Ok(${stringifiedValue})`;
+    } 
+    return `Err(${stringifiedValue})`;
   }
 
   static getTag(): {

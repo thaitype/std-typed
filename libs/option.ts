@@ -1,3 +1,5 @@
+import toString from "true-myth/result";
+import type { ToStringOptions } from "./core";
 /**
  * Rust inspired Option type for TypeScript
  */
@@ -33,6 +35,17 @@ export abstract class OptionBase<T> {
     return this.isSome()
       ? { _tag: "some", value: this.unwrap() }
       : { _tag: "none" };
+  }
+
+  toString(options?: ToStringOptions): string {
+    if (this.isSome()) {
+      const stringifiedValue =
+        options?.pretty === true
+          ? JSON.stringify(this.unwrap(), null, 2)
+          : JSON.stringify(this.unwrap());
+      return `Some(${stringifiedValue})`;
+    }
+    return "None";
   }
 
   static getTag(): {
