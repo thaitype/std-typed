@@ -10,3 +10,7 @@ export * from "./option";
  * Promise Module
  */
 export * from "./promise";
+/**
+ * Core Module
+ */
+export * from "./core";
