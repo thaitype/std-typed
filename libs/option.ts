@@ -1,4 +1,3 @@
-import toString from "true-myth/result";
 import type { ToStringOptions } from "./core";
 /**
  * Rust inspired Option type for TypeScript
@@ -19,7 +18,7 @@ export abstract class OptionBase<T> {
   }
 
   /**
-   * @deprecated Using `ts-pattern` instead
+   * Simple pattern matching for Result, for more complex matching use external libraries like `ts-pattern`
    * @param pattern
    * @returns
    */

@@ -21,14 +21,14 @@ export class ResultBase<T, E> {
   }
 
   /**
-   * @deprecated Using `ts-pattern` instead
+   * Simple pattern matching for Result, for more complex matching use external libraries like `ts-pattern`
    * @param pattern
    * @returns
    */
-  match<U>(pattern: { success: (value: T) => U; failure: (error: E) => U }): U {
+  match<U>(pattern: { ok: (value: T) => U; err: (error: E) => U }): U {
     return this.isOk()
-      ? pattern.success(this.value)
-      : pattern.failure(this.error);
+      ? pattern.ok(this.value)
+      : pattern.err(this.error);
   }
 
   /**
