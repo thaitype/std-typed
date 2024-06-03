@@ -1,0 +1,16 @@
+{
+  "name": "typed-std",
+  "description": "Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library.",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "effect": "^3.2.7",
+    "ts-pattern": "^5.1.2"
+  }
+}
