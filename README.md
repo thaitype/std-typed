@@ -12,3 +12,11 @@ Experimental Implementation of the standard library for the TypeScript, inspired
   - [true-myth](https://github.com/true-myth/true-myth)
 - Pattern Matching:
   - [ts-pattern](https://github.com/gvergnaud/ts-pattern)
+- Promise:
+  - [Promise Fun](https://github.com/sindresorhus/promise-fun)
+  
+## Using Rust for Some Feature of Standard Library
+- Using [napi](https://napi.rs/) for FFI (Foreign Function Interface) to Rust.
+  - may cause issue with the performance, but it's worth to try.
+  - may cause issue with Bundling, but it's worth to try.
+  - Good examples see [nodejs-polars](https://github.com/pola-rs/nodejs-polars)
