@@ -103,7 +103,7 @@ export class _Err<E> extends ResultBase<never, E> {
 export function ok<T>(value: T): _Ok<T> {
   return new _Ok(value);
 }
-export function err<E>(error: E): _Err<E> {
+export function err<const E>(error: E): _Err<E> {
   return new _Err(error);
 }
 export const Ok = _Ok.getTag();
