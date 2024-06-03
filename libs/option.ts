@@ -1,4 +1,3 @@
-
 // /**
 //  * Rust inspired Option type for TypeScript
 //  * @ref https://dev.to/alexanderop/robust-error-handling-in-typescript-a-journey-from-naive-to-rust-inspired-solutions-1mdh
@@ -16,14 +15,21 @@ export class OptionBase<T> {
   isNone(): this is None {
     return this._tag === "none";
   }
-  
-  match<U>(pattern: {
-    some: (value: T) => U;
-    none: () => U;
-  }): U {
+
+  /**
+   * @deprecated Using `ts-pattern` instead
+   * @param pattern 
+   * @returns 
+   */
+  match<U>(pattern: { some: (value: T) => U; none: () => U }): U {
     return this.isSome() ? pattern.some(this.unwrap()) : pattern.none();
   }
-    
+
+  toObject(): { _tag: "some"; value: T } | { _tag: "none" } {
+    return this.isSome()
+      ? { _tag: "some", value: this.unwrap() }
+      : { _tag: "none" };
+  }
 }
 
 export function some<T>(value: T): Some<T> {
@@ -46,4 +52,3 @@ export class None<T = never> extends OptionBase<T> {
 }
 
 export const none: None = new None();
-
