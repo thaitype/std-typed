@@ -2,11 +2,11 @@
 
 import { err, ok } from "../libs/result";
 import { match } from "ts-pattern";
-import { T } from "../libs";
+import { Std } from "../libs";
 
 type ProgramError = "FooError" | "BarError";
 
-function program(): T.Result<string, ProgramError> {
+function program(): Std.Result<string, ProgramError> {
   const n1 = Math.random();
   const n2 = Math.random();
 

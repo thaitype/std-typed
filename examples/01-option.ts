@@ -1,9 +1,9 @@
-import { T } from "../libs";
+import { Std } from "../libs";
 
-export function tryTakeSecond(value: number[]): T.Option<number> {
+export function tryTakeSecond(value: number[]): Std.Option<number> {
   if (value.length < 2) {
-    return T.none;
+    return Std.none;
   } else {
-    return T.some(value[1]);
+    return Std.some(value[1]);
   }
 }

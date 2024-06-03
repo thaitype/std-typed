@@ -1,8 +1,8 @@
-import { T } from "../libs";
+import { Std } from "../libs";
 
-export const divide = (a: number, b: number): T.Result<number, string> => {
+export const divide = (a: number, b: number): Std.Result<number, string> => {
   if (b === 0) {
-    return T.err("Cannot divide by zero");
+    return Std.err("Cannot divide by zero");
   }
-  return T.ok(a / b);
+  return Std.ok(a / b);
 };

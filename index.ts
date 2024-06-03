@@ -1,14 +1,14 @@
-import { T } from "./libs";
+import { Std } from "./libs";
 
-function tryTakeFifth(value: number[]): T.Option<number> {
+function tryTakeFifth(value: number[]): Std.Option<number> {
   if (value.length < 5) {
-    return T.none;
+    return Std.none;
   } else {
-    return T.some(value[4]);
+    return Std.some(value[4]);
   }
 }
 
-T.runExit(async () => {
+Std.runExit(async () => {
   for (const value of [
     [1, 2],
     [1, 2, 3, 4, 5],
