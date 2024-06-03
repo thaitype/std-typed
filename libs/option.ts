@@ -3,17 +3,17 @@ import type { ToStringOptions } from "./core";
  * Rust inspired Option type for TypeScript
  */
 
-export type Option<T> = _Some<T> | _None<T>;
+export type Option<T> = Some<T> | None<T>;
 export type _OptionTag = "some" | "none";
 
 export abstract class OptionBase<T> {
   protected readonly _tag: _OptionTag = "some";
 
-  isSome(): this is _Some<T> {
+  isSome(): this is Some<T> {
     return this._tag === "some";
   }
 
-  isNone(): this is _None {
+  isNone(): this is None {
     return this._tag === "none";
   }
 
@@ -54,7 +54,7 @@ export abstract class OptionBase<T> {
   }
 }
 
-export class _Some<T> extends OptionBase<T> {
+export class Some<T> extends OptionBase<T> {
   protected readonly _tag = "some";
   constructor(public value: T) {
     super();
@@ -69,7 +69,7 @@ export class _Some<T> extends OptionBase<T> {
   }
 }
 
-export class _None<T = never> extends OptionBase<T> {
+export class None<T = never> extends OptionBase<T> {
   protected readonly _tag = "none";
 
   static getTag(): { _tag: "none" } {
@@ -79,9 +79,9 @@ export class _None<T = never> extends OptionBase<T> {
 
 // ------------ Helper functions ------------
 
-export function some<T>(value: T): _Some<T> {
-  return new _Some(value);
+export function some<T>(value: T): Some<T> {
+  return new Some(value);
 }
-export const none: _None = new _None();
-export const Some = _Some.getTag();
-export const None = _None.getTag();
+export const none: None = new None();
+export const _Some = Some.getTag();
+export const _None = None.getTag();

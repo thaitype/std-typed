@@ -4,7 +4,7 @@ import type { ToStringOptions } from "./core";
  * Rust inspired Result type for TypeScript
  * @ref https://dev.to/alexanderop/robust-error-handling-in-typescript-a-journey-from-naive-to-rust-inspired-solutions-1mdh
  */
-export type Result<T, E> = _Ok<T> | _Err<E>;
+export type Result<T, E> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
 
 export class ResultBase<T, E> {
@@ -12,11 +12,11 @@ export class ResultBase<T, E> {
   public error!: E;
   protected readonly _tag: _ResultTag = "success";
 
-  isOk(): this is _Ok<T> {
+  isOk(): this is Ok<T> {
     return this._tag === "success";
   }
 
-  isErr(): this is _Err<E> {
+  isErr(): this is Err<E> {
     return this._tag === "failure";
   }
 
@@ -69,7 +69,7 @@ export class ResultBase<T, E> {
   }
 }
 
-export class _Ok<T> extends ResultBase<T, never> {
+export class Ok<T> extends ResultBase<T, never> {
   protected readonly _tag = "success";
   constructor(public value: T) {
     super();
@@ -84,7 +84,7 @@ export class _Ok<T> extends ResultBase<T, never> {
   }
 }
 
-export class _Err<E> extends ResultBase<never, E> {
+export class Err<E> extends ResultBase<never, E> {
   protected readonly _tag = "failure";
   constructor(public error: E) {
     super();
@@ -100,11 +100,11 @@ export class _Err<E> extends ResultBase<never, E> {
 }
 
 // -------- Helper functions --------
-export function ok<T>(value: T): _Ok<T> {
-  return new _Ok(value);
+export function ok<T>(value: T): Ok<T> {
+  return new Ok(value);
 }
-export function err<const E>(error: E): _Err<E> {
-  return new _Err(error);
+export function err<const E>(error: E): Err<E> {
+  return new Err(error);
 }
-export const Ok = _Ok.getTag();
-export const Err = _Err.getTag();
+export const _Ok = Ok.getTag();
+export const _Err = Err.getTag();

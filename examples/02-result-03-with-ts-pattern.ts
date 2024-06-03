@@ -8,8 +8,8 @@ for (const [a, b] of [
 ]) {
   const result = divide(a, b);
   match(result.toObject())
-    .with(T.Ok, ({ value }) => console.log(`Dividing ${a} by ${b} = ${value}`))
-    .with(T.Err, ({ error }) =>
+    .with(T._Ok, ({ value }) => console.log(`Dividing ${a} by ${b} = ${value}`))
+    .with(T._Err, ({ error }) =>
       console.log(`Dividing ${a} by ${b} failed: ${error}`)
     )
     .exhaustive();

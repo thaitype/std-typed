@@ -14,6 +14,8 @@ Experimental Implementation of the standard library for the TypeScript, inspired
   - [ts-pattern](https://github.com/gvergnaud/ts-pattern)
 - Promise:
   - [Promise Fun](https://github.com/sindresorhus/promise-fun)
+- FP (Functional Programming):
+  - [Effect](https://effect.website/)
   
 ## Using Rust for Some Feature of Standard Library
 - Using [napi](https://napi.rs/) for FFI (Foreign Function Interface) to Rust.
