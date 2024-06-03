@@ -9,5 +9,6 @@ Experimental Implementation of the standard library for the TypeScript, inspired
 - Result/Option Patterns:
   - [neverthrow](https://github.com/supermacro/neverthrow)
   - [ts-results](https://github.com/vultix/ts-results)
+  - [true-myth](https://github.com/true-myth/true-myth)
 - Pattern Matching:
   - [ts-pattern](https://github.com/gvergnaud/ts-pattern)
