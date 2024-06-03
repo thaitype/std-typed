@@ -8,6 +8,7 @@ test("Vec", () => {
   expect(v.get(2)).toStrictEqual(some(3));
   expect(v.pop()).toStrictEqual(some(5));
   expect(v.remove(2)).toStrictEqual(some(3));
+  expect(v.into()).toStrictEqual([1, 2, 4]);
   expect(v.toString()).toStrictEqual("Vec([1,2,4])");
 
   const v2 = vec([{ a: 1 }, { a: 2 }, { a: 3 }]);

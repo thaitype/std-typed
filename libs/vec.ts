@@ -6,7 +6,19 @@ import { none, some, type Option } from "./option";
  * TODO: Using LinkedList instead of Array for better performance
  */
 export class Vec<T> {
-  constructor(public value: T[]) {}
+  constructor(protected readonly value: T[]) {}
+
+  static from<T>(value: T[]): Vec<T> {
+    return new Vec(value);
+  }
+
+  into(): T[] {
+    return this.value;
+  }
+
+  toList(): T[] {
+    return this.value;
+  }
 
   /**
    * Appends an element to the back of a collection.
@@ -62,20 +74,10 @@ export class Vec<T> {
   }
 }
 
-// /**
-//  * Create a new Vec
-//  * @param value Using rest parameters
-//  */
-// export function vec<T>(...value: T[]): Vec<T>;
 /**
  * Create a new Vec
  * @param value Using an array
  */
-export function vec<T>(value: T[]): Vec<T>;
-
 export function vec<T>(value: T[]): Vec<T> {
-  // if (value.length === 1 && Array.isArray(value[0])) {
-  //   return new Vec(value);
-  // }
-  return new Vec(value);
+  return Vec.from(value);
 }
