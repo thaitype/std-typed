@@ -1,4 +1,4 @@
-import { tryTakeSecond } from "./01-option-01";
+import { tryTakeSecond } from "./01-option";
 
 for (const value of [[1], [1, 2, 3]]) {
   const result = tryTakeSecond(value);

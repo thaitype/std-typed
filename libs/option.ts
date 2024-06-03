@@ -12,6 +12,10 @@ export class OptionBase<T> {
   isSome(): this is Some<T> {
     return this._tag === "some";
   }
+
+  isNone(): this is None {
+    return this._tag === "none";
+  }
   
   match<U>(pattern: {
     some: (value: T) => U;
