@@ -1,4 +1,4 @@
-# typed-std
+# Standard Typed
 
 Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library.
 

@@ -1,6 +1,6 @@
 import { divide } from "./02-result";
 import { match } from "ts-pattern";
-import { Std } from "../libs";
+import { Std } from "../src";
 
 for (const [a, b] of [
   [1, 0],

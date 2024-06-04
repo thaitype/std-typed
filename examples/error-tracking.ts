@@ -1,8 +1,8 @@
 // Error Tracking in https://effect.website/docs/guides/error-management/expected-errors
 
-import { err, ok } from "../libs/result";
+import { err, ok } from "../src/result";
 import { match } from "ts-pattern";
-import { Std } from "../libs";
+import { Std } from "../src";
 
 type ProgramError = "FooError" | "BarError";
 

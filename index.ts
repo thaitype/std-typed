@@ -1,4 +1,4 @@
-import { Std, $Number } from "./libs";
+import { Std, $Number } from "./src";
 
 const parseNumberAndLogStr = (
   str: string

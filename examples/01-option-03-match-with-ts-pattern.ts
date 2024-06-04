@@ -1,4 +1,4 @@
-import { Std } from "../libs";
+import { Std } from "../src";
 import { tryTakeSecond } from "./01-option";
 import { match } from "ts-pattern";
 
