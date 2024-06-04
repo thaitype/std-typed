@@ -20,4 +20,4 @@ Std.runExit(async () => {
       none: () => console.log("None"),
     });
   }
-});
+})
