@@ -5,12 +5,12 @@ const parseNumberAndLogStr = (
 ): Std.Result<number, $Number.ParseIntError> =>
   Std.try(() => {
     const num = $Number.parseInt(str).get();
-    // console.log(`Parsed number successfully: Std{num}`);
+    console.log(`Parsed number successfully: ${num}`);
     return Std.ok(num);
   });
 
 Std.runExit(async () => {
-  const strVec = Std.vec(["", "333", "30", "23,00", "50"]);
+  const strVec = Std.vec(["", "0", "23,00", "40", "seven", "11111111111111111111111111"]);
   for (const item of strVec) {
     const num = parseNumberAndLogStr(item);
     console.log(`Result: ${num.toString()}`);
