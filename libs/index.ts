@@ -15,3 +15,8 @@ export * as Option from "./option";
  * Result module
  */
 export * as Result from "./result";
+
+/**
+ * Number module
+ */
+export * as Number from "./number";

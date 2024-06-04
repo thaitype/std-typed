@@ -2,10 +2,8 @@ import { err, ok, type Result } from "./result";
 
 /**
  * From Rust's `std::num::ParseIntError`
- *
- * Note: ParseInt is duplicated in JavaScript's `parseInt` function
  */
-export class ParseNumberError {
+export class ParseIntError {
   constructor(
     public readonly kind:
       | "Empty"
@@ -16,10 +14,28 @@ export class ParseNumberError {
   ) {}
 }
 
-export function parseNumber(str: string): Result<number, ParseNumberError> {
-  const num = parseInt(str);
-  if (isNaN(num)) {
-    return err(new ParseNumberError("InvalidDigit"));
+function parseInt_(str: string): Result<number, ParseIntError> {
+  const trimmed = str.trim();
+  if (trimmed === "") {
+    return err(new ParseIntError("Empty"));
   }
-  return ok(num);
+  const parsed = Number(str);
+  if (isNaN(parsed)) {
+    return err(new ParseIntError("InvalidDigit"));
+  }
+  /**
+   * @ref https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
+   */
+  if (parsed > Number.MAX_SAFE_INTEGER) {
+    return err(new ParseIntError("PosOverflow"));
+  }
+  /**
+   * @ref https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MIN_SAFE_INTEGER
+   */
+  if (parsed < Number.MIN_SAFE_INTEGER) {
+    return err(new ParseIntError("NegOverflow"));
+  }
+  return ok(parsed);
 }
+
+export { parseInt_ as parseInt };
