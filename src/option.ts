@@ -52,6 +52,21 @@ export abstract class OptionBase<T> {
   } {
     throw new Error("Method not implemented.");
   }
+
+  /**
+   * Unwraps the value from the Option, throwing an error if it's an Err
+   *
+   * Using with `Std.try`.
+   *
+   * @ref https://doc.rust-lang.org/std/option/#the-question-mark-operator-
+   * @throws {None} if the `Option` is None
+   */
+  get(): T {
+    if (this.isSome()) {
+      return this.unwrap();
+    }
+    throw none;
+  }
 }
 
 export class Some<T> extends OptionBase<T> {

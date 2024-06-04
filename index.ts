@@ -4,7 +4,7 @@ const parseNumberAndLogStr = (
   str: string
 ): Std.Result<number, $Number.ParseIntError> =>
   Std.try(() => {
-    const num = $Number.parseInt(str).eval();
+    const num = $Number.parseInt(str).get();
     // console.log(`Parsed number successfully: Std{num}`);
     return Std.ok(num);
   });

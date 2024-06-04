@@ -74,20 +74,21 @@ export class ResultBase<T, E> {
   }
 
   /**
-   * Unwraps a result, yielding the content of an `Ok`.
+   * Unwraps the value from the Result, throwing an error if it's an Err
    * 
    * Using with `Std.try`.
    * 
    * @ref https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
+   * @throws {Err} if the `Result` is Err
    */
-  eval(): T {
+  get(): T {
     if (this.isOk()) {
       return this.unwrap();
     }
-    if (this.isErr()) {
+    if(this.isErr()) {
       throw this.unwrap();
     }
-    throw new Error("Unknown Error");
+    throw new Error("Unknown Result type");
   }
 }
 
