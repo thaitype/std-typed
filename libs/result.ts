@@ -72,6 +72,23 @@ export class ResultBase<T, E> {
   } {
     throw new Error("Method not implemented.");
   }
+
+  /**
+   * Unwraps a result, yielding the content of an `Ok`.
+   * 
+   * Using with `Std.try`.
+   * 
+   * @ref https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
+   */
+  eval(): T {
+    if (this.isOk()) {
+      return this.unwrap();
+    }
+    if (this.isErr()) {
+      throw this.unwrap();
+    }
+    throw new Error("Unknown Error");
+  }
 }
 
 export class Ok<T> extends ResultBase<T, never> {
