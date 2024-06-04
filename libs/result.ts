@@ -1,4 +1,5 @@
 import type { ToStringOptions } from "./core";
+import { getClassName } from "./object";
 
 /**
  * Rust inspired Result type for TypeScript
@@ -40,7 +41,6 @@ export class ResultBase<T, E> {
   }
 
   toString(options?: ToStringOptions): string {
-    
     if (this.isOk()) {
       const stringifiedValue =
         options?.pretty === true
@@ -54,10 +54,15 @@ export class ResultBase<T, E> {
         options?.pretty === true
           ? JSON.stringify(value, null, 2)
           : JSON.stringify(value);
-      if(value instanceof Error) {
+      let className = "";
+      const result = getClassName(value);
+      if (result.isSome()) {
+        className = result.unwrap() + " ";
+      }
+      if (value instanceof Error) {
         stringifiedValue = `${value.stack}`;
       }
-      return `Err(${stringifiedValue})`;
+      return `Err(${className}${stringifiedValue})`;
     }
     return "Unknown";
   }

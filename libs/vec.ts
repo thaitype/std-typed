@@ -1,5 +1,6 @@
 import type { ToStringOptions } from "./core";
 import { none, some, type Option } from "./option";
+import { getClassName } from "./object";
 
 /**
  * Rust inspired Vector type for TypeScript
@@ -67,10 +68,12 @@ export class Vec<T> {
   }
 
   toString(options?: ToStringOptions): string {
-    if (options?.pretty === true) {
-      return `Vec(${JSON.stringify(this.value, null, 2)})`;
-    }
-    return `Vec(${JSON.stringify(this.value)})`;
+    const value = options?.pretty === true ? JSON.stringify(this.value, null, 2) : JSON.stringify(this.value);
+    return `Vec(${value})`;
+  }
+
+  [Symbol.iterator]() {
+    return this.value[Symbol.iterator]();
   }
 }
 

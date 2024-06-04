@@ -18,3 +18,11 @@ export * from "./core";
  * Vector Module
  */
 export * from "./vec";
+/**
+ * Number Module
+ */
+export * from "./number";
+/**
+ * Object Module
+ */
+export * from "./object";

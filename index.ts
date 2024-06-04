@@ -1,23 +1,17 @@
 import { Std } from "./libs";
+import { parseNumber, type ParseNumberError } from "./libs/number";
 
-function tryTakeFifth(value: number[]): Std.Option<number> {
-  if (value.length < 5) {
-    return Std.none;
-  } else {
-    return Std.some(value[4]);
-  }
+function parseNumberAndLogStr(
+  str: string
+): Std.Result<number, ParseNumberError> {
+  const num = parseNumber(str);
+  return num;
 }
 
 Std.runExit(async () => {
-  for (const value of [
-    [1, 2],
-    [1, 2, 3, 4, 5],
-  ]) {
-    const result = tryTakeFifth(value);
-
-    result.match({
-      some: (value) => console.log(`Some(${value})`),
-      none: () => console.log("None"),
-    });
+  const strVec = Std.vec(["nice", "20", "30", "40", "seven", "50"]);
+  for (const item of strVec) {
+    const num = parseNumberAndLogStr(item);
+    console.log(`Parsed number: ${num}`);
   }
-})
+});
