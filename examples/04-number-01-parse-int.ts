@@ -1,30 +1,22 @@
 import { Std, $Number } from "../src";
 
 // TypeScript 1) Before using `get` method (Like ? operator in Rust)
-const parseNumberAndLogStr = (
-  str: string
-): Std.Result<number, $Number.ParseIntError> =>
-{
-    const result = $Number.parseInt(str);
-    const num = result.match({
-      ok: (num) => {
-        return num;
-      },
-      err: (err) => {
-        return undefined;
-      }
-    });
-    if(num === undefined) {
-      return Std.err(result.error);
-    }
-    console.log(`Parsed number successfully: ${num}`);
-    return Std.ok(num);
+const parseNumberAndLogStr = (str: string): Std.Result<number, $Number.ParseIntError> => {
+  const result = $Number.parseInt(str);
+  const num = result.match({
+    ok: num => num,
+    err: (err) => undefined,
+  });
+  if (num === undefined) {
+    if (result.isErr()) return Std.err(result.unwrap());
+    return Std.err(new $Number.ParseIntError("Zero"));
   }
+  console.log(`Parsed number successfully: ${num}`);
+  return Std.ok(num);
+};
 
 // TypeScript 2) After using `get` method (Like ? operator in Rust)
-const parseNumberAndLogStr2 = (
-  str: string
-): Std.Result<number, $Number.ParseIntError> =>
+const parseNumberAndLogStr2 = (str: string): Std.Result<number, $Number.ParseIntError> =>
   Std.try(() => {
     const num = $Number.parseInt(str).get();
     console.log(`Parsed number successfully: ${num}`);
@@ -39,8 +31,7 @@ Std.runExit(async () => {
   }
 });
 
-
-//  ----- Rust Code below ------ 
+//  ----- Rust Code below ------
 // Note: Rust code is not executable, it's just for demonstration
 
 // use std::num::ParseIntError;
