@@ -1,18 +1,11 @@
-import { Std, Number } from "./libs";
-
-// function parseNumberAndLogStr(
-//   str: string
-// ): Std.Result<number, Number.ParseNumberError> {
-//   const num = parseNumber(str)
-//   return num;
-// }
+import { Std, $Number } from "./libs";
 
 const parseNumberAndLogStr = (
   str: string
-): Std.Result<number, Number.ParseIntError> =>
+): Std.Result<number, $Number.ParseIntError> =>
   Std.try(() => {
-    const num = Number.parseInt(str).eval();
-    // console.log(`Parsed number successfully: ${num}`);
+    const num = $Number.parseInt(str).eval();
+    // console.log(`Parsed number successfully: Std{num}`);
     return Std.ok(num);
   });
 

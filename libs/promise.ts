@@ -1,6 +1,6 @@
 import { err, ok, type Result } from "./result";
 
-export async function promiseFrom<T>(
+export async function from<T>(
   promise: Promise<T>
 ): Promise<Result<T, Error>> {
   try {
@@ -13,4 +13,5 @@ export async function promiseFrom<T>(
   }
 }
 
-export async function promiseAll<T>(promises: Promise<T>[]) {}
+export async function all<T>(promises: Promise<T>[]) {}
+

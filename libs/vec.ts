@@ -1,10 +1,7 @@
 import type { ToStringOptions } from "./core";
 import { none, some, type Option } from "./option";
-import { getClassName } from "./object";
-
 /**
  * Rust inspired Vector type for TypeScript
- * TODO: Using LinkedList instead of Array for better performance
  */
 export class Vec<T> {
   constructor(protected readonly value: T[]) {}
