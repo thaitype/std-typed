@@ -1,6 +1,8 @@
 import { err, ok, type Result } from "./result";
 
-async function from<T>(promise: Promise<T>): Promise<Result<T, Error>> {
+export async function promiseFrom<T>(
+  promise: Promise<T>
+): Promise<Result<T, Error>> {
   try {
     return ok(await promise);
   } catch (e) {
@@ -11,9 +13,4 @@ async function from<T>(promise: Promise<T>): Promise<Result<T, Error>> {
   }
 }
 
-async function all<T>(promises: Promise<T>[]) {}
-
-export const promise = {
-  from,
-  all,
-};
+export async function promiseAll<T>(promises: Promise<T>[]) {}
