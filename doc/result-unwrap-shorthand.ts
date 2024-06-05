@@ -1,4 +1,4 @@
-import { Std, _Number } from "../src";
+import { Std, _Number } from "std-typed";
 
 /**
  * To gain a better understanding, let's look at Points 1 and 3 of Rust. You'll see that Rust's code is reduced from 7 lines to 3.

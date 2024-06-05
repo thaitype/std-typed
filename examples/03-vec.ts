@@ -1,4 +1,4 @@
-import { Std } from "../src";
+import { Std } from "std-typed";
 
 function main() {
   const vec = Std.vec([1, 2, 3, 4, 5]);

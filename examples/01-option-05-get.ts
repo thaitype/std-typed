@@ -1,4 +1,4 @@
-import { Std } from "../src";
+import { Std } from "std-typed";
 import { tryTakeSecond } from "./01-option";
 import { Match } from "effect";
 

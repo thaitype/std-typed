@@ -1,6 +1,5 @@
 import { err, ok, type Result } from "./result";
 import { isPromise } from "./predicate";
-import { cons } from "effect/List";
 
 export type PromiseLike<T> = T | Promise<T>;
 

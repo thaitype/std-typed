@@ -1,4 +1,4 @@
-import { Std } from "../src";
+import { Std } from "std-typed";
 
 export const divide = (a: number, b: number): Std.Result<number, string> => {
   if (b === 0) {

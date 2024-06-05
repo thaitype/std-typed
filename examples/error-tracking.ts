@@ -1,8 +1,7 @@
 // Error Tracking in https://effect.website/docs/guides/error-management/expected-errors
 
-import { err, ok } from "../src/result";
 import { match } from "ts-pattern";
-import { Std } from "../src";
+import { Std } from "std-typed";
 
 type ProgramError = "FooError" | "BarError";
 
@@ -14,17 +13,17 @@ function program(): Std.Result<string, ProgramError> {
   if (n1 > 0.5) {
     foo = "yay!";
   } else {
-    return err("FooError");
+    return Std.err("FooError");
   }
 
   let bar = "";
   if (n2 > 0.5) {
     bar = "yay!";
   } else {
-    return err("BarError");
+    return Std.err("BarError");
   }
 
-  return ok(foo + bar);
+  return Std.ok(foo + bar);
 }
 
 function recover(error: ProgramError) {

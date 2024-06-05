@@ -1,4 +1,4 @@
-import { Std, _Number } from "../src";
+import { Std, _Number } from "std-typed";
 
 const parseNumberAndLogStr = (str: string): Std.Result<number, _Number.ParseIntError> =>
   Std.try(() => {
