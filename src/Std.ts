@@ -1,5 +1,5 @@
 import * as Result from "./Result.js";
-import { isPromise } from "./helpers/predicate.js";
+import { isPromise } from "./internal/predicate.js";
 import { type PromiseLike } from "./types.js";
 
 /**
