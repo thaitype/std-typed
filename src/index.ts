@@ -16,6 +16,11 @@ export * as Option from "./option";
  */
 export * as Result from "./result";
 
+/**
+ * Pipe module
+ */
+export * from "./pipe";
+
 // --- Prevent duplicate name with JavaScript's global objects ---
 
 /**
