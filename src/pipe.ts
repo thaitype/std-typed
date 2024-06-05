@@ -16,6 +16,19 @@ type PipeArgs<F extends AnyFunc[], Acc extends AnyFunc[] = []> = F extends [(...
 
 /**
  * Pipe a value through a sequence of functions
+ * 
+ * @deprecated Pipe function might not be an Objective of this project, there're many libs implement this function, such as Effect.
+ * 
+ * @example
+ * ```ts
+  * const valid = pipe(
+    "323",
+    (a: string) => Number(a),
+    (b: number) => b + 1,
+    (d: number) => `${d}`,
+    (e: string) => Number(e)
+  ); // 324
+  ```
  *
  * @ref https://dev.to/ecyrbe/how-to-use-advanced-typescript-to-define-a-pipe-function-381h
  */
