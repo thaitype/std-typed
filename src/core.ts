@@ -10,9 +10,7 @@ export interface ToStringOptions {
 /**
  * Run Sync/Async
  */
-export async function run<T>(
-  result: () => PromiseLike<T>
-): Promise<Result<T, Error>> {
+export async function run<T>(result: () => PromiseLike<T>): Promise<Result<T, Error>> {
   try {
     return ok(await runExit(result));
   } catch (e) {
@@ -61,7 +59,6 @@ export async function runExit<T>(fn: () => PromiseLike<T>): Promise<T> {
 //   return result;
 // }
 
-
 const try_ = <T>(fn: () => Result<T, any>): Result<T, any> => {
   try {
     return fn() as Result<T, any>;
@@ -78,3 +75,35 @@ export {
    */
   try_ as try,
 };
+
+// -------------- Pipe Function --------------
+
+type AnyFunc = (...arg: any) => any;
+
+type LastFnReturnType<F extends Array<AnyFunc>, Else = never> = F extends [...any[], (...arg: any) => infer R]
+  ? R
+  : Else;
+
+type PipeArgs<F extends AnyFunc[], Acc extends AnyFunc[] = []> = F extends [(...args: infer A) => infer B]
+  ? [...Acc, (...args: A) => B]
+  : F extends [(...args: infer A) => any, ...infer Tail]
+  ? Tail extends [(arg: infer B) => any, ...any[]]
+    ? PipeArgs<Tail, [...Acc, (...args: A) => B]>
+    : Acc
+  : Acc;
+
+/**
+ * Pipe a value through a sequence of functions
+ *
+ * @ref https://dev.to/ecyrbe/how-to-use-advanced-typescript-to-define-a-pipe-function-381h
+ */
+export function pipe<FirstFn extends AnyFunc, F extends AnyFunc[]>(
+  arg: Parameters<FirstFn>[0],
+  firstFn: FirstFn,
+  ...fns: PipeArgs<F> extends F ? F : PipeArgs<F>
+): LastFnReturnType<F, ReturnType<FirstFn>> {
+  return (fns as AnyFunc[]).reduce((acc, fn) => fn(acc), firstFn(arg));
+}
+
+
+// --------------------------------
