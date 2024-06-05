@@ -1,23 +1,18 @@
-import { err, ok, type Result } from "./result";
-import { isPromise } from "./predicate";
-
-export type PromiseLike<T> = T | Promise<T>;
-
-export interface ToStringOptions {
-  pretty?: boolean;
-}
+import * as Result from "./result";
+import { isPromise } from "./helpers/predicate";
+import { type PromiseLike } from "./types";
 
 /**
  * Run Sync/Async
  */
-export async function run<T>(result: () => PromiseLike<T>): Promise<Result<T, Error>> {
+export async function run<T>(result: () => PromiseLike<T>): Promise<Result.Result<T, Error>> {
   try {
-    return ok(await runExit(result));
+    return Result.ok(await runExit(result));
   } catch (e) {
     if (e instanceof Error) {
-      return err(e);
+      return Result.err(e);
     }
-    return err(new Error(String(e)));
+    return Result.err(new Error(String(e)));
   }
 }
 
@@ -59,11 +54,11 @@ export async function runExit<T>(fn: () => PromiseLike<T>): Promise<T> {
 //   return result;
 // }
 
-const try_ = <T>(fn: () => Result<T, any>): Result<T, any> => {
+const try_ = <T>(fn: () => Result.Result<T, any>): Result.Result<T, any> => {
   try {
-    return fn() as Result<T, any>;
+    return fn() as Result.Result<T, any>;
   } catch (e) {
-    return err(e);
+    return Result.err(e);
   }
 };
 
@@ -75,4 +70,3 @@ export {
    */
   try_ as try,
 };
-

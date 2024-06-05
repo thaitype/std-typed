@@ -4,6 +4,9 @@
   "description": "Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library.",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "effect": "^3.2.7",

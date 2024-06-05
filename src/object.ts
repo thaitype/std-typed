@@ -1,4 +1,4 @@
-import { none, some, type Option } from "./option";
+import * as Option from "./option";
 
 /**
  * Get the class name of an instance
@@ -6,9 +6,9 @@ import { none, some, type Option } from "./option";
  * @returns
  */
 
-export function getClassName(instance: unknown): Option<string> {
+export function getClassName(instance: unknown): Option.Option<string> {
   if (instance && instance.constructor && instance.constructor.name) {
-    if (typeof instance === "object") return some(instance.constructor.name);
+    if (typeof instance === "object") return Option.some(instance.constructor.name);
   }
-  return none;
+  return Option.none;
 }

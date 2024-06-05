@@ -1,17 +1,14 @@
-import { err, ok, type Result } from "./result";
+import * as Result from "./result";
 
-export async function from<T>(
-  promise: Promise<T>
-): Promise<Result<T, Error>> {
+export async function from<T>(promise: Promise<T>): Promise<Result.Result<T, Error>> {
   try {
-    return ok(await promise);
+    return Result.ok(await promise);
   } catch (e) {
     if (e instanceof Error) {
-      return err(e);
+      return Result.err(e);
     }
-    return err(new Error(String(e)));
+    return Result.err(new Error(String(e)));
   }
 }
 
 export async function all<T>(promises: Promise<T>[]) {}
-

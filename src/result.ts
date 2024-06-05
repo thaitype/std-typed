@@ -1,4 +1,4 @@
-import type { ToStringOptions } from "./core";
+import type { ToStringOptions } from "./types";
 import { getClassName } from "./object";
 
 /**

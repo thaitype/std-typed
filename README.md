@@ -34,6 +34,7 @@ Experimental Implementation of the standard library for the TypeScript, inspired
   - [Promise Fun](https://github.com/sindresorhus/promise-fun)
 - FP (Functional Programming):
   - [Effect](https://effect.website/)
+  - [Type-safe pipe function](https://dev.to/ecyrbe/how-to-use-advanced-typescript-to-define-a-pipe-function-381h) by ecyrbe
 - String: (unicode-aware)
   - https://www.npmjs.com/package/stringz
   - https://www.npmjs.com/package/utfstring

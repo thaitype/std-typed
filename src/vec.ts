@@ -1,5 +1,5 @@
-import type { ToStringOptions } from "./core";
-import { none, some, type Option } from "./option";
+import type { ToStringOptions } from "./types";
+import * as Option from "./option";
 /**
  * Rust inspired Vector type for TypeScript
  */
@@ -40,28 +40,28 @@ export class Vec<T> {
    * @param index
    * @returns Returns the element at the given index, or `None` if the index is out of bounds.
    */
-  get(index: number): Option<T> {
-    if (index < 0 || index >= this.value.length) return none;
-    return some(this.value[index]);
+  get(index: number): Option.Option<T> {
+    if (index < 0 || index >= this.value.length) return Option.none;
+    return Option.some(this.value[index]);
   }
 
   /**
    * Removes the last element from a vector and returns it, or None if it is empty.
    * @returns The last element of the vector, or None if it is empty.
    */
-  pop(): Option<T> {
-    if (this.value.length === 0) return none;
+  pop(): Option.Option<T> {
+    if (this.value.length === 0) return Option.none;
     const value = this.value.pop();
-    if (value === undefined) return none;
-    return some(value);
+    if (value === undefined) return Option.none;
+    return Option.some(value);
   }
   /**
    * Removes and returns the element at position index within the vector, shifting all elements after it to the left.
    */
-  remove(index: number): Option<T> {
-    if (index < 0 || index >= this.value.length) return none;
+  remove(index: number): Option.Option<T> {
+    if (index < 0 || index >= this.value.length) return Option.none;
     const value = this.value.splice(index, 1)[0];
-    return some(value);
+    return Option.some(value);
   }
 
   toString(options?: ToStringOptions): string {

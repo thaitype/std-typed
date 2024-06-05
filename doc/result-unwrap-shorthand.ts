@@ -1,4 +1,4 @@
-import { Std, Number } from "std-typed";
+import { Std, Number, Vec } from "std-typed";
 
 /**
  * To gain a better understanding, let's look at Points 1 and 3 of Rust. You'll see that Rust's code is reduced from 7 lines to 3.
@@ -39,7 +39,7 @@ const parseNumberAndLogStr2 = (str: string): Std.Result<number, Number.ParseIntE
 
 
 Std.runExit(async () => {
-  const strVec = Std.vec(["", "0", "23,00", "40", "seven", "11111111111111111111111111"]);
+  const strVec = Vec.vec(["", "0", "23,00", "40", "seven", "11111111111111111111111111"]);
   for (const item of strVec) {
     const num = parseNumberAndLogStr2(item);
     console.log(`Result: ${num.toString()}`);

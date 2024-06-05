@@ -1,6 +1,5 @@
 import { Std } from "std-typed";
 import { tryTakeSecond } from "./01-option";
-import { Match } from "effect";
 
 /**
  * Using match may more hard to read, use `get` instead,
