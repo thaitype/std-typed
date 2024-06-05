@@ -1,11 +1,11 @@
 // Error Tracking in https://effect.website/docs/guides/error-management/expected-errors
 
 import { match } from "ts-pattern";
-import { Std } from "std-typed";
+import { Result } from "std-typed";
 
 type ProgramError = "FooError" | "BarError";
 
-function program(): Std.Result<string, ProgramError> {
+function program(): Result.Result<string, ProgramError> {
   const n1 = Math.random();
   const n2 = Math.random();
 
@@ -13,17 +13,17 @@ function program(): Std.Result<string, ProgramError> {
   if (n1 > 0.5) {
     foo = "yay!";
   } else {
-    return Std.err("FooError");
+    return Result.err("FooError");
   }
 
   let bar = "";
   if (n2 > 0.5) {
     bar = "yay!";
   } else {
-    return Std.err("BarError");
+    return Result.err("BarError");
   }
 
-  return Std.ok(foo + bar);
+  return Result.ok(foo + bar);
 }
 
 function recover(error: ProgramError) {
@@ -34,6 +34,6 @@ function recover(error: ProgramError) {
 }
 
 program().match({
-  ok: (value) => console.log(`Program result: ${value}`),
-  err: (error) => recover(error),
+  ok: value => console.log(`Program result: ${value}`),
+  err: error => recover(error),
 });

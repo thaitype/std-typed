@@ -1,42 +1,41 @@
-import { Std, Number, Vec } from "std-typed";
+import { Std, Number, Vec, Result } from "std-typed";
 
 /**
  * To gain a better understanding, let's look at Points 1 and 3 of Rust. You'll see that Rust's code is reduced from 7 lines to 3.
- * 
+ *
  * If you look at Rust's code (Point 1), you'll see that Rust internally uses `match` to make the code significantly shorter.
- * 
+ *
  * So, I thought to myself, "Wow, the `?` operator is quite tricky. It does a lot of things for us behind the scenes."
- * 
+ *
  * Since we wanted to understand how the `?` operator works, we tried writing it in TypeScript. We started to get that
- * if we want to transform it into TypeScript and make the type guard correct, we need to force it to throw first (line 21) 
- * and then use try-catch to catch it (line 20) to prevent the error from escaping. This way, we also get the error object from the result. 
- * 
+ * if we want to transform it into TypeScript and make the type guard correct, we need to force it to throw first (line 21)
+ * and then use try-catch to catch it (line 20) to prevent the error from escaping. This way, we also get the error object from the result.
+ *
  * Refer explanation (Thai Version) in https://www.facebook.com/photo.php?fbid=961075926022069&set=a.486562490140084&type=3&notif_id=1717545799094703&notif_t=feedback_reaction_generic&ref=notif
  */
 
 // TypeScript 1) Before using `get` method (Like ? operator in Rust)
-const parseNumberAndLogStr = (str: string): Std.Result<number, Number.ParseIntError> => {
+const parseNumberAndLogStr = (str: string): Result.Result<number, Number.ParseIntError> => {
   const result = Number.parseInt(str);
   const num = result.match({
     ok: num => num,
-    err: (err) => undefined,
+    err: err => undefined,
   });
   if (num === undefined) {
-    if (result.isErr()) return Std.err(result.unwrap());
-    return Std.err(new Number.ParseIntError("Zero"));
+    if (result.isErr()) return Result.err(result.unwrap());
+    return Result.err(new Number.ParseIntError("Zero"));
   }
   console.log(`Parsed number successfully: ${num}`);
-  return Std.ok(num);
+  return Result.ok(num);
 };
 
 // TypeScript 2) After using `get` method (Like ? operator in Rust)
-const parseNumberAndLogStr2 = (str: string): Std.Result<number, Number.ParseIntError> =>
+const parseNumberAndLogStr2 = (str: string): Result.Result<number, Number.ParseIntError> =>
   Std.try(() => {
     const num = Number.parseInt(str).get();
     console.log(`Parsed number successfully: ${num}`);
-    return Std.ok(num);
+    return Result.ok(num);
   });
-
 
 Std.runExit(async () => {
   const strVec = Vec.vec(["", "0", "23,00", "40", "seven", "11111111111111111111111111"]);

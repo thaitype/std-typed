@@ -1,6 +1,6 @@
 import { divide } from "./02-result";
 import { match } from "ts-pattern";
-import { Std } from "std-typed";
+import { Result } from "std-typed";
 
 for (const [a, b] of [
   [1, 0],
@@ -8,8 +8,8 @@ for (const [a, b] of [
 ]) {
   const result = divide(a, b);
   match(result.toObject())
-    .with(Std._Ok, ({ value }) => console.log(`Dividing ${a} by ${b} = ${value}`))
-    .with(Std._Err, ({ error }) =>
+    .with(Result._Ok, ({ value }) => console.log(`Dividing ${a} by ${b} = ${value}`))
+    .with(Result._Err, ({ error }) =>
       console.log(`Dividing ${a} by ${b} failed: ${error}`)
     )
     .exhaustive();

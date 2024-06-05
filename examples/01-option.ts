@@ -1,9 +1,9 @@
-import { Std } from "std-typed";
+import { Option } from "std-typed";
 
-export function tryTakeSecond(value: number[]): Std.Option<number> {
+export function tryTakeSecond(value: number[]): Option.Option<number> {
   if (value.length < 2) {
-    return Std.none;
+    return Option.none;
   } else {
-    return Std.some(value[1]);
+    return Option.some(value[1]);
   }
 }

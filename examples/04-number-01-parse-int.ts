@@ -1,10 +1,10 @@
-import { Std, Number, Vec } from "std-typed";
+import { Std, Number, Vec, Result } from "std-typed";
 
-const parseNumberAndLogStr = (str: string): Std.Result<number, Number.ParseIntError> =>
+const parseNumberAndLogStr = (str: string): Result.Result<number, Number.ParseIntError> =>
   Std.try(() => {
     const num = Number.parseInt(str).get();
     console.log(`Parsed number successfully: ${num}`);
-    return Std.ok(num);
+    return Result.ok(num);
   });
 
 

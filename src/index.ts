@@ -1,10 +1,10 @@
 /**
- * Main entry point of the library
+ * Std Module
  * 
  * typed-std is a collection of TypeScript types and utilities for standard JavaScript objects and functions.
  * 
  */
-export * as Std from "./root";
+export * as Std from "./std";
 
 /**
  * Option module
@@ -21,12 +21,7 @@ export * as Result from "./result";
  */
 export * as Vec from "./vec";
 
-/**
- * Object Module
- */
-export * as Object from "./object";
-
-// --- Prevent duplicate name with JavaScript's global objects ---
+// --- Be Aware for duplicate name with JavaScript's global objects ---
 
 /**
  * Number module
@@ -36,3 +31,7 @@ export * as Number from "./number";
  * Promise module
  */
 export * as Promise from "./promise";
+/**
+ * Object Module
+ */
+export * as Object from "./object";
