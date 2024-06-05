@@ -1,4 +1,4 @@
-import * as Result from "./result.js";
+import * as Result from "./Result.js";
 import { isPromise } from "./helpers/predicate.js";
 import { type PromiseLike } from "./types.js";
 

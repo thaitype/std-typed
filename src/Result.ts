@@ -1,5 +1,5 @@
 import type { ToStringOptions } from "./types.js";
-import { getClassName } from "./object.js";
+import { getClassName } from "./Object.js";
 
 /**
  * Rust inspired Result type for TypeScript

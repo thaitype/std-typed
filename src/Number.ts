@@ -1,4 +1,4 @@
-import * as Result from "./result.js";
+import * as Result from "./Result.js";
 
 /**
  * From Rust's `std::num::ParseIntError`

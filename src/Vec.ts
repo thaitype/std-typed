@@ -1,5 +1,5 @@
 import type { ToStringOptions } from "./types.js";
-import * as Option from "./option.js";
+import * as Option from "./Option.js";
 /**
  * Rust inspired Vector type for TypeScript
  */
