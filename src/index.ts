@@ -35,3 +35,7 @@ export * as Promise from "./Promise.js";
  * Object Module
  */
 export * as Object from "./Object.js";
+/**
+ * String Module
+ */
+export * as String from "./String.js";

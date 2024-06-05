@@ -22,7 +22,7 @@
   "peerDependencies": {
     "typescript": "^5.4.5"
   },
-  "dependencies": {},
+  "dependencies": { "grapheme-splitter": "^1.0.4" },
   "repository": {
     "type": "git",
     "url": "https://github.com/thaitype/std-typed.git"
@@ -82,6 +82,11 @@
       "types": "./dist/dts/Vec.d.ts",
       "import": "./dist/esm/Vec.js",
       "default": "./dist/cjs/Vec.js"
+    },
+    "./String": {
+      "types": "./dist/dts/String.d.ts",
+      "import": "./dist/esm/String.js",
+      "default": "./dist/cjs/String.js"
     }
   },
   "typesVersions": {
@@ -106,6 +111,9 @@
       ],
       "Vec": [
         "./dist/dts/Vec.d.ts"
+      ],
+      "String": [
+        "./dist/dts/String.d.ts"
       ]
     }
   }
