@@ -17,17 +17,22 @@ export * as Option from "./option";
 export * as Result from "./result";
 
 /**
- * Pipe module
+ * Vector Module
  */
-export * from "./pipe";
+export * as Vec from "./vec";
+
+/**
+ * Object Module
+ */
+export * as Object from "./object";
 
 // --- Prevent duplicate name with JavaScript's global objects ---
 
 /**
  * Number module
  */
-export * as _Number from "./number";
+export * as Number from "./number";
 /**
  * Promise module
  */
-export * as _Promise from "./promise";
+export * as Promise from "./promise";

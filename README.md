@@ -34,7 +34,21 @@ Experimental Implementation of the standard library for the TypeScript, inspired
   - [Promise Fun](https://github.com/sindresorhus/promise-fun)
 - FP (Functional Programming):
   - [Effect](https://effect.website/)
+- String: (unicode-aware)
+  - https://www.npmjs.com/package/stringz
+  - https://www.npmjs.com/package/utfstring
+  - https://www.npmjs.com/package/grapheme-splitter
+  - https://www.npmjs.com/package/strip-bom
+- String Manipulation
+  - https://www.npmjs.com/package/string-width
+  - https://www.npmjs.com/package/voca
+  - https://www.npmjs.com/package/string-kit
+  - https://github.com/esamattis/underscore.string
+  - https://www.npmjs.com/package/emoji-regex
+  - https://www.npmjs.com/package/strip-bom
   
 ### Using Rust for Some Feature of Standard Library
 - Using [napi](https://napi.rs/) for FFI (Foreign Function Interface) to Rust.
   - Good examples see [nodejs-polars](https://github.com/pola-rs/nodejs-polars)
+
+

@@ -1,4 +1,4 @@
-import { Std, _Number } from "std-typed";
+import { Std, Number } from "std-typed";
 
 /**
  * To gain a better understanding, let's look at Points 1 and 3 of Rust. You'll see that Rust's code is reduced from 7 lines to 3.
@@ -15,24 +15,24 @@ import { Std, _Number } from "std-typed";
  */
 
 // TypeScript 1) Before using `get` method (Like ? operator in Rust)
-const parseNumberAndLogStr = (str: string): Std.Result<number, _Number.ParseIntError> => {
-  const result = _Number.parseInt(str);
+const parseNumberAndLogStr = (str: string): Std.Result<number, Number.ParseIntError> => {
+  const result = Number.parseInt(str);
   const num = result.match({
     ok: num => num,
     err: (err) => undefined,
   });
   if (num === undefined) {
     if (result.isErr()) return Std.err(result.unwrap());
-    return Std.err(new _Number.ParseIntError("Zero"));
+    return Std.err(new Number.ParseIntError("Zero"));
   }
   console.log(`Parsed number successfully: ${num}`);
   return Std.ok(num);
 };
 
 // TypeScript 2) After using `get` method (Like ? operator in Rust)
-const parseNumberAndLogStr2 = (str: string): Std.Result<number, _Number.ParseIntError> =>
+const parseNumberAndLogStr2 = (str: string): Std.Result<number, Number.ParseIntError> =>
   Std.try(() => {
-    const num = _Number.parseInt(str).get();
+    const num = Number.parseInt(str).get();
     console.log(`Parsed number successfully: ${num}`);
     return Std.ok(num);
   });
