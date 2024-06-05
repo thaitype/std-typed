@@ -4,6 +4,8 @@
     "outDir": "dist/esm",
     "declarationDir": "dist/dts",
     "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
   },
   "exclude": [
     "node_modules",

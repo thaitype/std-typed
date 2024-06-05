@@ -1,6 +1,6 @@
 {
   "name": "std-typed",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library.",
   "type": "module",
   "scripts": {
