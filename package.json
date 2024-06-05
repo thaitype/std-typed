@@ -1,6 +1,6 @@
 {
   "name": "std-typed",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library.",
   "type": "module",
   "scripts": {
@@ -29,8 +29,12 @@
   },
   "homepage": "https://github.com/thaitype/std-typed",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "dist"
   },
+  "files": [
+    "dist"
+  ],
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/dts/index.d.ts",
