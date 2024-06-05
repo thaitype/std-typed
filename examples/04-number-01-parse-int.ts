@@ -1,8 +1,8 @@
-import { Std, $Number } from "../src";
+import { Std, _Number } from "../src";
 
-const parseNumberAndLogStr = (str: string): Std.Result<number, $Number.ParseIntError> =>
+const parseNumberAndLogStr = (str: string): Std.Result<number, _Number.ParseIntError> =>
   Std.try(() => {
-    const num = $Number.parseInt(str).get();
+    const num = _Number.parseInt(str).get();
     console.log(`Parsed number successfully: ${num}`);
     return Std.ok(num);
   });

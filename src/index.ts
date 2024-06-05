@@ -21,8 +21,8 @@ export * as Result from "./result";
 /**
  * Number module
  */
-export * as $Number from "./number";
+export * as _Number from "./number";
 /**
  * Promise module
  */
-export * as $Promise from "./promise";
+export * as _Promise from "./promise";
