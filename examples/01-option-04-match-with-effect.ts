@@ -1,5 +1,5 @@
 import { Option } from "std-typed";
-import { tryTakeSecond } from "./01-option";
+import { tryTakeSecond } from "./01-option.js";
 import { Match } from "effect";
 
 for (const value of [[1], [1, 2, 3]]) {

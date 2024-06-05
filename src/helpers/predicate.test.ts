@@ -1,5 +1,5 @@
 import { test, expect } from 'bun:test';
-import { isPromise } from './predicate';
+import { isPromise } from './predicate.js';
 
 
 test('isPromise', () => {

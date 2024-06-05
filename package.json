@@ -1,30 +1,112 @@
 {
   "name": "std-typed",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "description": "Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library.",
-  "module": "index.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "bun build-esm && bun build-cjs && bun build-annotate",
+    "build-esm": "tsc -b tsconfig.build.json",
+    "build-cjs": "babel dist/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir dist/cjs --source-maps",
+    "build-annotate": "babel dist --plugins annotate-pure-calls --out-dir dist --source-maps"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "effect": "^3.2.7",
-    "ts-pattern": "^5.1.2"
+    "ts-pattern": "^5.1.2",
+    "@babel/cli": "^7.24.5",
+    "@babel/core": "^7.24.5",
+    "@babel/plugin-transform-export-namespace-from": "^7.24.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.24.1",
+    "babel-plugin-annotate-pure-calls": "^0.4.0"
   },
   "peerDependencies": {
     "typescript": "^5.4.5"
   },
   "dependencies": {},
-  "files": [
-    "src"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/thaitype/std-typed.git"
   },
   "homepage": "https://github.com/thaitype/std-typed",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "dist"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "src",
+    "package.json"
+  ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/dts/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/cjs/index.js"
+    },
+    "./Number": {
+      "types": "./dist/dts/Number.d.ts",
+      "import": "./dist/esm/Number.js",
+      "default": "./dist/cjs/Number.js"
+    },
+    "./Object": {
+      "types": "./dist/dts/Object.d.ts",
+      "import": "./dist/esm/Object.js",
+      "default": "./dist/cjs/Object.js"
+    },
+    "./Option": {
+      "types": "./dist/dts/Option.d.ts",
+      "import": "./dist/esm/Option.js",
+      "default": "./dist/cjs/Option.js"
+    },
+    "./Promise": {
+      "types": "./dist/dts/Promise.d.ts",
+      "import": "./dist/esm/Promise.js",
+      "default": "./dist/cjs/Promise.js"
+    },
+    "./Result": {
+      "types": "./dist/dts/Result.d.ts",
+      "import": "./dist/esm/Result.js",
+      "default": "./dist/cjs/Result.js"
+    },
+    "./Std": {
+      "types": "./dist/dts/Std.d.ts",
+      "import": "./dist/esm/Std.js",
+      "default": "./dist/cjs/Std.js"
+    },
+    "./Vec": {
+      "types": "./dist/dts/Vec.d.ts",
+      "import": "./dist/esm/Vec.js",
+      "default": "./dist/cjs/Vec.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "Number": [
+        "./dist/dts/Number.d.ts"
+      ],
+      "Object": [
+        "./dist/dts/Object.d.ts"
+      ],
+      "Option": [
+        "./dist/dts/Option.d.ts"
+      ],
+      "Promise": [
+        "./dist/dts/Promise.d.ts"
+      ],
+      "Result": [
+        "./dist/dts/Result.d.ts"
+      ],
+      "Std": [
+        "./dist/dts/Std.d.ts"
+      ],
+      "Vec": [
+        "./dist/dts/Vec.d.ts"
+      ]
+    }
   }
 }

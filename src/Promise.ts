@@ -1,4 +1,4 @@
-import * as Result from "./result";
+import * as Result from "./Result.js";
 
 export async function from<T>(promise: Promise<T>): Promise<Result.Result<T, Error>> {
   try {
