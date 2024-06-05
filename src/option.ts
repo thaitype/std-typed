@@ -1,4 +1,4 @@
-import type { ToStringOptions } from "./types";
+import type { ToStringOptions } from "./types.js";
 /**
  * Rust inspired Option type for TypeScript
  */

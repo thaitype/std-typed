@@ -1,4 +1,4 @@
-import { divide } from "./02-result";
+import { divide } from "./02-result.js";
 import { match } from "ts-pattern";
 import { Result } from "std-typed";
 

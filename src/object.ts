@@ -1,4 +1,4 @@
-import * as Option from "./option";
+import * as Option from "./option.js";
 
 /**
  * Get the class name of an instance

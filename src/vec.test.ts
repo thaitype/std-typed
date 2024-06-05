@@ -1,6 +1,6 @@
 import { test, expect } from "bun:test";
-import { vec } from "./vec";
-import { some } from "./option";
+import { vec } from "./vec.js";
+import { some } from "./option.js";
 
 test("Vec", () => {
   const v = vec([1, 2, 3, 4, 5]);

@@ -1,4 +1,4 @@
-import { tryTakeSecond } from "./01-option";
+import { tryTakeSecond } from "./01-option.js";
 
 for (const value of [[1], [1, 2, 3]]) {
   tryTakeSecond(value).match({

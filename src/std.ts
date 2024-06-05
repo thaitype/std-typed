@@ -1,6 +1,6 @@
-import * as Result from "./result";
-import { isPromise } from "./helpers/predicate";
-import { type PromiseLike } from "./types";
+import * as Result from "./result.js";
+import { isPromise } from "./helpers/predicate.js";
+import { type PromiseLike } from "./types.js";
 
 /**
  * Run Sync/Async

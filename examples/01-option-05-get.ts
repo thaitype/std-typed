@@ -1,5 +1,5 @@
 import { Std, Result } from "std-typed";
-import { tryTakeSecond } from "./01-option";
+import { tryTakeSecond } from "./01-option.js";
 
 /**
  * Using match may more hard to read, use `get` instead,

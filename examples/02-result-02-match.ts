@@ -1,4 +1,4 @@
-import { divide } from "./02-result";
+import { divide } from "./02-result.js";
 
 for (const [a, b] of [
   [1, 0],
