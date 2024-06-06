@@ -1,7 +1,7 @@
 import GraphemeSplitter from "grapheme-splitter";
 import { toGenerator } from "./Utils.js";
 import { AggregatedGenerator } from "./internal/generator.js";
-import * as Result from './Result.js';
+import * as Result from "./Result.js";
 
 /**
  * From Rust's `std::string::FromUtf8Error`
@@ -17,23 +17,24 @@ export function from(value: string): String {
   return new String(value);
 }
 
+/**
+ * Convert a slice of bytes to a `String`.
+ *
+ * @ref https://doc.rust-lang.org/stable/alloc/string/struct.String.html#method.from_utf8
+ */
+export function fromUtf8(bytes: number[]): Result.Result<String, FromUtf8Error> {
+  const buffer = Buffer.from(bytes);
+  if (!isValidUtf8(buffer)) {
+    return Result.err(new FromUtf8Error("InvalidUtf8"));
+  }
+  return Result.ok(new String(buffer.toString("utf8")));
+}
+
 export class String {
   constructor(private value: string) {}
 
   static from = from;
-
-  /**
-   * Convert a slice of bytes to a `String`.
-   * 
-   * @ref https://doc.rust-lang.org/stable/alloc/string/struct.String.html#method.from_utf8
-   */
-  static fromUtf8(bytes: number[]): Result.Result<String, FromUtf8Error> {
-    const buffer = Buffer.from(bytes);
-    if(!isValidUtf8(buffer)) {
-      return Result.err(new FromUtf8Error("InvalidUtf8"));
-    }
-    return Result.ok(new String(buffer.toString('utf8')));
-  }
+  static fromUtf8 = fromUtf8;
 
   /**
    * Return an generator over the string's characters
@@ -88,15 +89,15 @@ export function splitCharCode(code: number): number[] {
 
 /**
  * Check if a buffer is valid UTF-8
- * @param buffer 
- * @returns 
+ * @param buffer
+ * @returns
  */
 
 export function isValidUtf8(buffer: Buffer) {
   try {
     // Decode the buffer and re-encode it to see if it matches the original
-    const decodedString = buffer.toString('utf8');
-    const reencodedBuffer = Buffer.from(decodedString, 'utf8');
+    const decodedString = buffer.toString("utf8");
+    const reencodedBuffer = Buffer.from(decodedString, "utf8");
     return buffer.equals(reencodedBuffer);
   } catch (e) {
     return false;
