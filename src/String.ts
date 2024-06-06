@@ -1,6 +1,14 @@
 import GraphemeSplitter from "grapheme-splitter";
 import { toGenerator } from "./Utils.js";
 import { AggregatedGenerator } from "./internal/generator.js";
+import * as Result from './Result.js';
+
+/**
+ * From Rust's `std::string::FromUtf8Error`
+ */
+export class FromUtf8Error {
+  constructor(public readonly error: "InvalidUtf8") {}
+}
 
 /**
  * A UTF-8–encoded string, representing a sequence of Unicode scalar values
@@ -13,6 +21,19 @@ export class String {
   constructor(private value: string) {}
 
   static from = from;
+
+  /**
+   * Convert a slice of bytes to a `String`.
+   * 
+   * @ref https://doc.rust-lang.org/stable/alloc/string/struct.String.html#method.from_utf8
+   */
+  static fromUtf8(bytes: number[]): Result.Result<String, FromUtf8Error> {
+    const buffer = Buffer.from(bytes);
+    if(!isValidUtf8(buffer)) {
+      return Result.err(new FromUtf8Error("InvalidUtf8"));
+    }
+    return Result.ok(new String(buffer.toString('utf8')));
+  }
 
   /**
    * Return an generator over the string's characters
@@ -60,5 +81,22 @@ export function splitCharCode(code: number): number[] {
     return [0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f)];
   } else {
     return [0xf0 | (code >> 18), 0x80 | ((code >> 12) & 0x3f), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f)];
+  }
+}
+
+/**
+ * Check if a buffer is valid UTF-8
+ * @param buffer 
+ * @returns 
+ */
+
+export function isValidUtf8(buffer: Buffer) {
+  try {
+    // Decode the buffer and re-encode it to see if it matches the original
+    const decodedString = buffer.toString('utf8');
+    const reencodedBuffer = Buffer.from(decodedString, 'utf8');
+    return buffer.equals(reencodedBuffer);
+  } catch (e) {
+    return false;
   }
 }
