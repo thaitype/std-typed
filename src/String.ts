@@ -1,24 +1,6 @@
 import GraphemeSplitter from "grapheme-splitter";
 import { toGenerator } from "./Utils.js";
-import { cons } from "effect/List";
-
-/**
- * 1 single charcode should not be more than 1 bytes
- * convert the charcode when it is more than 1 bytes
- * @deprecated using TextEncoder instead
- * @param code
- */
-function splitCharCode(code: number): number[] {
-  if (code <= 0x7f) {
-    return [code];
-  } else if (code <= 0x7ff) {
-    return [0xc0 | (code >> 6), 0x80 | (code & 0x3f)];
-  } else if (code <= 0xffff) {
-    return [0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f)];
-  } else {
-    return [0xf0 | (code >> 18), 0x80 | ((code >> 12) & 0x3f), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f)];
-  }
-}
+import { AggregatedGenerator } from "./internal/generator.js";
 
 /**
  * A UTF-8–encoded string, representing a sequence of Unicode scalar values
@@ -30,6 +12,8 @@ export function from(value: string): String {
 export class String {
   constructor(private value: string) {}
 
+  static from = from;
+
   /**
    * Return an generator over the string's characters
    *
@@ -40,9 +24,9 @@ export class String {
     return toGenerator(new GraphemeSplitter().iterateGraphemes(this.value));
   }
 
-  bytes(): StdGenerator<number, void> {
+  bytes(): AggregatedGenerator<number, void> {
     const value = new GraphemeSplitter().iterateGraphemes(this.value);
-    return new StdGenerator(function* () {
+    return new AggregatedGenerator(function* () {
       const encoder = new TextEncoder();
       for (const char of value) {
         const encoded = encoder.encode(char);
@@ -61,36 +45,20 @@ export class String {
   }
 }
 
-class StdGenerator<T = unknown, TReturn = any> implements Generator<T, TReturn, unknown> {
-  private generator: Generator<T, TReturn, unknown>;
-
-  constructor(generatorFunction: () => Generator<T, TReturn, unknown>) {
-    this.generator = generatorFunction();
-  }
-
-  next(...args: [] | [unknown]): IteratorResult<T, TReturn> {
-    const result = this.generator.next(...args);
-    return result;
-  }
-
-  return(value?: any): IteratorResult<T, TReturn> {
-    return this.generator.return(value);
-  }
-
-  throw(e?: any): IteratorResult<T, TReturn> {
-    return this.generator.throw(e);
-  }
-
-  [Symbol.iterator](): Generator<T, TReturn, unknown> {
-    return this;
-  }
-
-  // Custom method to get the count of yielded values
-  count(): number {
-    let count = 0;
-    while (!this.next().done) {
-      count++;
-    }
-    return count;
+/**
+ * 1 single charcode should not be more than 1 bytes
+ * convert the charcode when it is more than 1 bytes
+ * @deprecated using TextEncoder instead
+ * @param code
+ */
+export function splitCharCode(code: number): number[] {
+  if (code <= 0x7f) {
+    return [code];
+  } else if (code <= 0x7ff) {
+    return [0xc0 | (code >> 6), 0x80 | (code & 0x3f)];
+  } else if (code <= 0xffff) {
+    return [0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f)];
+  } else {
+    return [0xf0 | (code >> 18), 0x80 | ((code >> 12) & 0x3f), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f)];
   }
 }
