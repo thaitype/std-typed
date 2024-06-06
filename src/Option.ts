@@ -1,4 +1,4 @@
-import type { ToStringOptions } from "./types.js";
+import type { Composable, Matchable, Tagged, ToStringOptions, Transformable, Unwrapable } from "./types.js";
 /**
  * Rust inspired Option type for TypeScript
  */
@@ -6,8 +6,8 @@ import type { ToStringOptions } from "./types.js";
 export type Option<T> = Some<T> | None<T>;
 export type _OptionTag = "some" | "none";
 
-export abstract class OptionBase<T> {
-  protected readonly _tag: _OptionTag = "some";
+export abstract class OptionBase<T> implements Tagged<_OptionTag>, Transformable, Composable<T>, Matchable {
+  public readonly _tag: _OptionTag = "some";
 
   isSome(): this is Some<T> {
     return this._tag === "some";
@@ -22,12 +22,12 @@ export abstract class OptionBase<T> {
    * @param pattern
    * @returns
    */
-  match<U>(pattern: {
+  match<U, V>(pattern: {
     /** When the Option is Some, it will call the `some` function with the value */
     some: (value: T) => U;
     /** When the Option is None, it will call the `none` function */
-    none: () => U;
-  }): U {
+    none: () => V;
+  }): U | V {
     return this.isSome() ? pattern.some(this.unwrap()) : pattern.none();
   }
 
@@ -72,8 +72,8 @@ export abstract class OptionBase<T> {
   }
 }
 
-export class Some<T> extends OptionBase<T> {
-  protected readonly _tag = "some";
+export class Some<T> extends OptionBase<T> implements Unwrapable<T> {
+  readonly _tag = "some";
   constructor(public value: T) {
     super();
   }
@@ -88,7 +88,7 @@ export class Some<T> extends OptionBase<T> {
 }
 
 export class None<T = never> extends OptionBase<T> {
-  protected readonly _tag = "none";
+  readonly _tag = "none";
 
   static getTag(): { _tag: "none" } {
     return { _tag: "none" };

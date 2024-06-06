@@ -1,4 +1,4 @@
-import type { ToStringOptions } from "./types.js";
+import type { Composable, Matchable, Tagged, ToStringOptions, Transformable, Unwrapable } from "./types.js";
 import { getClassName } from "./Object.js";
 
 /**
@@ -8,10 +8,10 @@ import { getClassName } from "./Object.js";
 export type Result<T, E> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
 
-export class ResultBase<T, E> {
+export class ResultBase<T, E> implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable {
   public value!: T;
   public error!: E;
-  protected readonly _tag: _ResultTag = "success";
+  readonly _tag: _ResultTag = "success";
 
   isOk(): this is Ok<T> {
     return this._tag === "success";
@@ -92,8 +92,8 @@ export class ResultBase<T, E> {
   }
 }
 
-export class Ok<T> extends ResultBase<T, never> {
-  protected readonly _tag = "success";
+export class Ok<T> extends ResultBase<T, never> implements Unwrapable<T> {
+  readonly _tag = "success";
   constructor(public value: T) {
     super();
   }
@@ -107,8 +107,8 @@ export class Ok<T> extends ResultBase<T, never> {
   }
 }
 
-export class Err<E> extends ResultBase<never, E> {
-  protected readonly _tag = "failure";
+export class Err<E> extends ResultBase<never, E> implements Unwrapable<E> {
+  readonly _tag = "failure";
   constructor(public error: E) {
     super();
   }
