@@ -19,9 +19,11 @@ export class String {
    *
    * @link https://doc.rust-lang.org/std/string/struct.String.html#method.chars
    */
-  chars(): Generator<string, void> {
-    // return new GraphemeSplitter().iterateGraphemes(this.value);
-    return toGenerator(new GraphemeSplitter().iterateGraphemes(this.value));
+  chars(): AggregatedGenerator<string, void> {
+    const graphemes = new GraphemeSplitter().iterateGraphemes(this.value);
+    return new AggregatedGenerator(function* () {
+      yield* graphemes;
+    });
   }
 
   bytes(): AggregatedGenerator<number, void> {
