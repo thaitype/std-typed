@@ -56,7 +56,7 @@ export abstract class OptionBase<T> {
   /**
    * Unwraps the value from the Option, throwing an error if it's an Err
    *
-   * Using with `Std.try`.
+   * Using with `Std.func`.
    *
    * @ref https://doc.rust-lang.org/std/option/#the-question-mark-operator-
    * @throws {None} if the `Option` is None

@@ -31,7 +31,7 @@ const parseNumberAndLogStr = (str: string): Result.Result<number, Number.ParseIn
 
 // TypeScript 2) After using `get` method (Like ? operator in Rust)
 const parseNumberAndLogStr2 = (str: string): Result.Result<number, Number.ParseIntError> =>
-  Std.try(() => {
+  Std.func(() => {
     const num = Number.parseInt(str).get();
     console.log(`Parsed number successfully: ${num}`);
     return Result.ok(num);

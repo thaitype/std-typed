@@ -54,19 +54,15 @@ export async function runExit<T>(fn: () => PromiseLike<T>): Promise<T> {
 //   return result;
 // }
 
-const try_ = <T, E>(fn: () => Result.Result<T, any>): Result.Result<T, E> => {
+/**
+ * The building block for creating a Result object from a function,
+ * it is used to catch errors and return a Result object.
+ */
+
+export const func = <T, E>(fn: () => Result.Result<T, any>): Result.Result<T, E> => {
   try {
     return fn() as Result.Result<T, any>;
   } catch (e) {
     return Result.err(e as E);
   }
-};
-
-export {
-  /**
-   * The operation might throw an error
-   *
-   * @ref Effect.try
-   */
-  try_ as try,
 };

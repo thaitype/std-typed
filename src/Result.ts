@@ -76,7 +76,7 @@ export class ResultBase<T, E> {
   /**
    * Unwraps the value from the Result, throwing an error if it's an Err
    * 
-   * Using with `Std.try`.
+   * Using with `Std.func`.
    * 
    * @ref https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
    * @throws {Err} if the `Result` is Err

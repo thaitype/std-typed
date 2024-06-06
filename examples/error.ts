@@ -3,7 +3,7 @@ import { Result, Std, String, Number } from "std-typed";
 const turnIntoStringAndParse = (
   bytes: number[]
 ): Result.Result<number, String.FromUtf8Error | Number.ParseIntError> =>
-  Std.try(() => {
+  Std.func(() => {
     const utf8String = String.fromUtf8(bytes).get();
     return Number.parseInt(utf8String.toString());
   });
