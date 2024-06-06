@@ -26,7 +26,12 @@ export class ResultBase<T, E> {
    * @param pattern
    * @returns
    */
-  match<U>(pattern: { ok: (value: T) => U; err: (error: E) => U }): U {
+  match<U, V>(pattern: {
+    /** When the Result is Ok, it will call the `ok` function with the value */
+    ok: (value: T) => U;
+    /** When the Result is Err, it will call the `err` function with the error */
+    err: (error: E) => V;
+  }): U | V {
     return this.isOk() ? pattern.ok(this.value) : pattern.err(this.error);
   }
 

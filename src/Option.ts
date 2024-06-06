@@ -22,7 +22,12 @@ export abstract class OptionBase<T> {
    * @param pattern
    * @returns
    */
-  match<U>(pattern: { some: (value: T) => U; none: () => U }): U {
+  match<U>(pattern: {
+    /** When the Option is Some, it will call the `some` function with the value */
+    some: (value: T) => U;
+    /** When the Option is None, it will call the `none` function */
+    none: () => U;
+  }): U {
     return this.isSome() ? pattern.some(this.unwrap()) : pattern.none();
   }
 
@@ -31,17 +36,13 @@ export abstract class OptionBase<T> {
    * @returns
    */
   toObject(): { _tag: "some"; value: T } | { _tag: "none" } {
-    return this.isSome()
-      ? { _tag: "some", value: this.unwrap() }
-      : { _tag: "none" };
+    return this.isSome() ? { _tag: "some", value: this.unwrap() } : { _tag: "none" };
   }
 
   toString(options?: ToStringOptions): string {
     if (this.isSome()) {
       const stringifiedValue =
-        options?.pretty === true
-          ? JSON.stringify(this.unwrap(), null, 2)
-          : JSON.stringify(this.unwrap());
+        options?.pretty === true ? JSON.stringify(this.unwrap(), null, 2) : JSON.stringify(this.unwrap());
       return `Some(${stringifiedValue})`;
     }
     return "None";
@@ -52,7 +53,6 @@ export abstract class OptionBase<T> {
   } {
     throw new Error("Method not implemented.");
   }
-
 
   /**
    * Unwraps the value from the Result, throwing an error if it's an Err
