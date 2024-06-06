@@ -4,8 +4,9 @@ const turnIntoStringAndParse = (
   bytes: number[]
 ): Result.Result<number, String.FromUtf8Error | Number.ParseIntError> =>
   Std.func(() => {
-    const utf8String = String.fromUtf8(bytes).get();
-    return Number.parseInt(utf8String.toString());
+    const utf8String = String.fromUtf8(bytes).$get;
+    const num = Number.parseInt(utf8String.toString()).$get;
+    return Result.ok(num);
   });
 
 Std.runExit(() => {

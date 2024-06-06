@@ -10,7 +10,7 @@ import { tryTakeSecond } from "./01-option.js";
 
 const tryTakeSecondAndLog = (value: number[]): Result.Result<number, any> =>
   Std.func(() => {
-    const result = tryTakeSecond(value).get();
+    const result = tryTakeSecond(value).$get;
     console.log(`The second element is ${result}`);
     return Result.ok(result);
   });

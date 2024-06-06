@@ -35,25 +35,18 @@ export class ResultBase<T, E> {
    * @returns
    */
   toObject(): { _tag: "success"; value: T } | { _tag: "failure"; error: E } {
-    return this.isOk()
-      ? { _tag: "success", value: this.value }
-      : { _tag: "failure", error: this.error };
+    return this.isOk() ? { _tag: "success", value: this.value } : { _tag: "failure", error: this.error };
   }
 
   toString(options?: ToStringOptions): string {
     if (this.isOk()) {
       const stringifiedValue =
-        options?.pretty === true
-          ? JSON.stringify(this.unwrap(), null, 2)
-          : JSON.stringify(this.unwrap());
+        options?.pretty === true ? JSON.stringify(this.unwrap(), null, 2) : JSON.stringify(this.unwrap());
       return `Ok(${stringifiedValue})`;
     }
     if (this.isErr()) {
       const value = this.unwrap();
-      let stringifiedValue =
-        options?.pretty === true
-          ? JSON.stringify(value, null, 2)
-          : JSON.stringify(value);
+      let stringifiedValue = options?.pretty === true ? JSON.stringify(value, null, 2) : JSON.stringify(value);
       let className = "";
       const result = getClassName(value);
       if (result.isSome()) {
@@ -75,17 +68,19 @@ export class ResultBase<T, E> {
 
   /**
    * Unwraps the value from the Result, throwing an error if it's an Err
-   * 
-   * Using with `Std.func`.
-   * 
+   *
+   * When using `$get` operator, this may cause throw error, for safety, requires to use with `Std.func`.
+   *
+   * Inspired by Rust's `?` operator
+   *
    * @ref https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
    * @throws {Err} if the `Result` is Err
    */
-  get(): T {
+  get $get(): T {
     if (this.isOk()) {
       return this.unwrap();
     }
-    if(this.isErr()) {
+    if (this.isErr()) {
       throw this.unwrap();
     }
     throw new Error("Unknown Result type");
