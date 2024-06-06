@@ -54,11 +54,11 @@ export async function runExit<T>(fn: () => PromiseLike<T>): Promise<T> {
 //   return result;
 // }
 
-const try_ = <T>(fn: () => Result.Result<T, any>): Result.Result<T, any> => {
+const try_ = <T, E>(fn: () => Result.Result<T, any>): Result.Result<T, E> => {
   try {
     return fn() as Result.Result<T, any>;
   } catch (e) {
-    return Result.err(e);
+    return Result.err(e as E);
   }
 };
 

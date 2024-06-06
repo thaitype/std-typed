@@ -1,6 +1,8 @@
 import { Result, Std, String, Number } from "std-typed";
 
-const turnIntoStringAndParse = (bytes: number[]): Result.Result<number, String.FromUtf8Error> =>
+const turnIntoStringAndParse = (
+  bytes: number[]
+): Result.Result<number, String.FromUtf8Error | Number.ParseIntError> =>
   Std.try(() => {
     const utf8String = String.String.fromUtf8(bytes).get();
     return Number.parseInt(utf8String.toString());
@@ -21,7 +23,6 @@ Std.runExit(() => {
 });
 
 // ------ Rust Code ------
-
 
 // fn turn_into_string_and_parse(bytes: Vec<u8>) -> Result<i32, Box<dyn Error>> {
 //   let num = String::from_utf8(bytes)?.parse::<i32>()?;
