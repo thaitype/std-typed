@@ -4,6 +4,7 @@
   "description": "Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library.",
   "type": "module",
   "scripts": {
+    "check": "tsc -b tsconfig.json",
     "build": "bun build-esm && bun build-cjs && bun build-annotate",
     "build-esm": "tsc -b tsconfig.build.json",
     "build-cjs": "babel dist/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir dist/cjs --source-maps",
