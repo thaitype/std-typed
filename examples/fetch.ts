@@ -1,4 +1,3 @@
-import type { Err } from "src/Result.js";
 import { Result, Std } from "std-typed";
 import { match } from "ts-pattern";
 
@@ -10,29 +9,9 @@ import { match } from "ts-pattern";
  * TODO: Unhandled throw Error, is missing
  */
 
-// export class FetchError {
-//   constructor(
-//     public readonly kind: "FetchError" | "InvalidJsonError" | "RequestFailError"
-//   ) {}
-// }
-class FetchError extends Error {
-  constructor(
-    public readonly kind:
-      | "FetchError"
-      | "InvalidJsonError"
-      | "RequestFailError",
-    error?: unknown
-  ) {
-    const message =
-      error instanceof Error ? error.message : String(error ?? "");
-    super(message);
-    if (error instanceof Error) {
-      this.stack = error.stack;
-      this.cause = error.cause;
-      this.name = error.name;
-    }
-  }
-}
+class FetchError extends Std.TypedError<
+  "FetchError" | "InvalidJsonError" | "RequestFailError"
+> {}
 
 const getTodo = (id: number) =>
   Result.funcAsync<unknown, FetchError>(async c => {
@@ -56,15 +35,17 @@ const getTodo = (id: number) =>
 Std.runExit(async () => {
   for (const id of [-1, 1]) {
     const result = await getTodo(id);
+
+
     match(result.into())
       .with({ _tag: "success" }, value =>
         console.log(
           `Fetch Result (id="${id}"): => ${JSON.stringify(value.value)}`
         )
       )
-      .with({ _tag: "failure"}, error =>
-        console.error(`Fetch Error (id="${id}"): => ${error.error} ${error.error.kind}`)
-      )
+      .with({ _tag: "failure", error: { kind: 'FetchError'} } , error => console.error(`Fetch Error (id="${id}"): => Failed to fetch ${error.error}`))
+      .with({ _tag: "failure", error: { kind: 'InvalidJsonError'} } , error => console.error(`Fetch Error (id="${id}"): => Invalid JSON ${error.error}`))
+      .with({ _tag: "failure", error: { kind: 'RequestFailError'} } , error => console.error(`Fetch Error (id="${id}"): => Request failed ${error.error}`))
       .exhaustive();
   }
 });

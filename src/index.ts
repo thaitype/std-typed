@@ -21,6 +21,12 @@ export * as Result from "./Result.js";
  */
 export * as Vec from "./Vec.js";
 
+/**
+ * Utils Module
+ */
+export * as Utils from "./Utils.js";
+
+
 // --- Be Aware for duplicate name with JavaScript's global objects ---
 
 /**
@@ -39,8 +45,3 @@ export * as Object from "./Object.js";
  * String Module
  */
 export * as String from "./String.js";
-
-/**
- * Utils Module
- */
-export * as Utils from "./Utils.js";

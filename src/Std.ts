@@ -83,3 +83,41 @@ export function runSyncExit<T>(fn: () => T): T {
  * @returns Promise of void
  */
 export const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+/**
+ * Error Base Class for discriminated union for `kind` field
+ */
+export class TypedError<Kind = string> extends Error {
+  constructor(public readonly kind: Kind, error?: unknown) {
+    super(error instanceof Error ? error.message : String(error ?? "Something went wrong"));
+    if (error instanceof Error) {
+      this.stack = error.stack;
+      this.cause = error.cause;
+      this.name = error.name;
+    }
+  }
+
+  toString(): string {
+    return `TypedError(${this.kind}): ${this.name}: ${this.message}`;
+  }
+
+  toJSON() {
+    return {
+      kind: this.kind,
+      name: this.name,
+      message: this.message,
+      stack: this.stack,
+      cause: this.cause,
+    };
+  }
+
+  into() {
+    return this.toJSON();
+  }
+}
+
+export type ExtractErrorKind<E extends unknown | { kind: TErrorKind }, TErrorKind = string> = E extends {
+  kind: infer Kind;
+}
+  ? TypedError<Kind>
+  : E;

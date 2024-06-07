@@ -1,4 +1,5 @@
 import type { Composable, Matchable, Tagged, ToStringOptions, Transformable, Unwrapable } from "./types.js";
+import type { ExtractErrorKind } from "./Std.js";
 import { getClassName } from "./Object.js";
 
 /**
@@ -8,7 +9,9 @@ import { getClassName } from "./Object.js";
 export type Result<T, E> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
 
-export class ResultBase<T, E> implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable {
+export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind = string>
+  implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable
+{
   public value!: T;
   public error!: E;
   readonly _tag: _ResultTag = "success";
@@ -39,8 +42,10 @@ export class ResultBase<T, E> implements Tagged<_ResultTag>, Transformable, Comp
    * Converts the Result to an object for type-safe pattern matching
    * @returns
    */
-  into(): { _tag: "success"; value: T } | { _tag: "failure"; error: E } {
-    return this.isOk() ? { _tag: "success", value: this.value } : { _tag: "failure", error: this.error };
+  into(): { _tag: "success"; value: T } | { _tag: "failure"; error: ExtractErrorKind<E> } {
+    return this.isOk()
+      ? { _tag: "success", value: this.value }
+      : { _tag: "failure", error:  this.error  as ExtractErrorKind<E> };
   }
 
   toString(options?: ToStringOptions): string {
@@ -167,7 +172,7 @@ export const funcAsync = async <T, E>(
   fn: (context: ResultContext<T, E>) => Promise<Result<T, E>>
 ): Promise<Result<T, E>> => {
   try {
-    return (await fn({ ok, err }));
+    return await fn({ ok, err });
   } catch (e) {
     return err(e as E);
   }
