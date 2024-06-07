@@ -1,6 +1,7 @@
 import * as Result from "./Result.js";
 import { isPromise } from "./internal/predicate.js";
 import { type PromiseLike, type Transformable } from "./types.js";
+// import { TypedError } from "./Std.js";
 
 /**
  * Run Sync/Async without throwing an error
@@ -116,22 +117,28 @@ export class TypedError<Kind = string> extends Error implements Transformable {
   }
 }
 
-export type ExtractErrorKind<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKind<E extends unknown | { kind: string }> = E extends {
   kind: infer Kind;
 }
   ? TypedError<Kind>
   : E;
 
-export type ExtractErrorKindForMatching<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKindForMatching<E extends unknown | { kind: string }> = E extends {
   kind: infer Kind;
 }
   ? { kind: Kind }
   : E;
 
-export type ExtractErrorKindKeyForMatching<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKindKeyForMatching<E extends unknown | { kind: string }> = E extends {
   kind: infer Kind;
 }
   ? Kind
-  : TErrorKind;
+  : E;
 
-type test = ExtractErrorKindKeyForMatching<{ kind: 'erfwef' | 'aaa'}>
+type test = ExtractErrorKindKeyForMatching<'efef' | 'xxx'>;
+type test2 = ExtractErrorKindKeyForMatching<{ kind: 'efef' | 'xxx' }>;
+
+
+type test3 = ExtractErrorKindForMatching<{ kind: 'efef' | 'xxx' }>;
+
+type test4 = ExtractErrorKindForMatching<TypedError<'aaa' | 'bbb'>>;
