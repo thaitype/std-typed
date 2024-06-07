@@ -3,11 +3,27 @@ import { isPromise } from "./internal/predicate.js";
 import { type PromiseLike } from "./types.js";
 
 /**
- * Run Sync/Async
+ * Run Sync/Async without throwing an error
  */
 export async function run<T>(result: () => PromiseLike<T>): Promise<Result.Result<T, Error>> {
   try {
     return Result.ok(await runExit(result));
+  } catch (e) {
+    if (e instanceof Error) {
+      return Result.err(e);
+    }
+    return Result.err(new Error(String(e)));
+  }
+}
+
+/**
+ * Run Sync Function without throwing an error
+ * @param result 
+ * @returns 
+ */
+export function runSync<T>(result: () => T): Result.Result<T, Error> {
+  try {
+    return Result.ok(runSyncExit(result));
   } catch (e) {
     if (e instanceof Error) {
       return Result.err(e);
@@ -27,6 +43,14 @@ export async function runExit<T>(fn: () => PromiseLike<T>): Promise<T> {
     return result;
   }
 }
+
+/**
+ * Run Sync Function when throwing an error, exit the process
+ */
+export function runSyncExit<T>(fn: () => T): T {
+  return fn();
+}
+
 
 /**
  * Generate a Result object from a generator
@@ -55,10 +79,9 @@ export async function runExit<T>(fn: () => PromiseLike<T>): Promise<T> {
 // }
 
 /**
- * The building block for creating a Result object from a function,
+ * Sync Function - The building block for creating a Result object from a function,
  * it is used to catch errors and return a Result object.
  */
-
 export const func = <T, E>(fn: () => Result.Result<T, any>): Result.Result<T, E> => {
   try {
     return fn() as Result.Result<T, any>;
@@ -66,3 +89,29 @@ export const func = <T, E>(fn: () => Result.Result<T, any>): Result.Result<T, E>
     return Result.err(e as E);
   }
 };
+
+/**
+ * Async Function - The building block for creating a Result object from an async function,
+ * it is used to catch errors and return a Result object.
+ * 
+ * @param fn Expecting a function that returns a Promise
+ * @returns Promise of Result Object
+ */
+
+export const funcAsync = async <T, E>(
+  /** Excp */
+  fn: () => Promise<Result.Result<T, any>>
+): Promise<Result.Result<T, E>> => {
+  try {
+    return (await fn()) as Result.Result<T, any>;
+  } catch (e) {
+    return Result.err(e as E);
+  }
+};
+
+/**
+ * Delay for a specified amount of time
+ * @param ms value in milliseconds
+ * @returns Promise of void
+ */
+export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

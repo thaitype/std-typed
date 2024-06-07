@@ -39,3 +39,8 @@ export * as Object from "./Object.js";
  * String Module
  */
 export * as String from "./String.js";
+
+/**
+ * Utils Module
+ */
+export * as Utils from "./Utils.js";
