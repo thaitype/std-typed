@@ -34,18 +34,17 @@ const getTodo = (id: number) =>
 
 Std.runExit(async () => {
   for (const id of [-1, 1]) {
-    const result = await getTodo(id);
-
-
-    match(result.into())
-      .with({ _tag: "success" }, value =>
-        console.log(
-          `Fetch Result (id="${id}"): => ${JSON.stringify(value.value)}`
-        )
-      )
-      .with({ _tag: "failure", error: { kind: 'FetchError'} } , error => console.error(`Fetch Error (id="${id}"): => Failed to fetch ${error.error}`))
-      .with({ _tag: "failure", error: { kind: 'InvalidJsonError'} } , error => console.error(`Fetch Error (id="${id}"): => Invalid JSON ${error.error}`))
-      .with({ _tag: "failure", error: { kind: 'RequestFailError'} } , error => console.error(`Fetch Error (id="${id}"): => Request failed ${error.error}`))
-      .exhaustive();
+    const { result, ok, err } = (await getTodo(id)).extract();
+    // result.incorrectInferType('ef')
+    // match(result.into())
+    //   .with(result.ok(), value =>
+    //     console.log(
+    //       `Fetch Result (id="${id}"): => ${JSON.stringify(value.value)}`
+    //     )
+    //   )
+    //   .with(result.errWith('') , error => console.error(`Failed to fetch (id="${id}"): => ${error.error}`))
+    //   .with({ _tag: "failure", error: { kind: 'InvalidJsonError'} } , error => console.error(`Invalid JSON (id="${id}"): => ${error.error}`))
+    //   .with({ _tag: "failure", error: { kind: 'RequestFailError'} } , error => console.error(`Request failed (id="${id}"): => ${error.error}`))
+    //   .exhaustive();
   }
 });

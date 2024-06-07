@@ -1,5 +1,5 @@
 import type { Composable, Matchable, Tagged, ToStringOptions, Transformable, Unwrapable } from "./types.js";
-import type { ExtractErrorKind } from "./Std.js";
+import type { ExtractErrorKind, ExtractErrorKindForMatching, ExtractErrorKindKeyForMatching } from "./Std.js";
 import { getClassName } from "./Object.js";
 
 /**
@@ -8,6 +8,21 @@ import { getClassName } from "./Object.js";
  */
 export type Result<T, E> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
+
+/**
+ * Ok Result for pattern matching
+ */
+export type ResultOk<T = undefined> = T extends undefined
+  ? {
+      _tag: "success";
+    }
+  : {
+      _tag: "success";
+      value: T;
+    };
+
+type TestType = ResultOk;
+// ^?
 
 export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind = string>
   implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable
@@ -45,7 +60,51 @@ export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind 
   into(): { _tag: "success"; value: T } | { _tag: "failure"; error: ExtractErrorKind<E> } {
     return this.isOk()
       ? { _tag: "success", value: this.value }
-      : { _tag: "failure", error:  this.error  as ExtractErrorKind<E> };
+      : { _tag: "failure", error: this.error as ExtractErrorKind<E> };
+  }
+
+  extract(): {
+    result: Result<T, E>;
+    ok: Ok<T>;
+    err: Err<ExtractErrorKindKeyForMatching<E>>;
+  } {
+    return {
+      result: this as unknown as Result<T, E>,
+      ok: this as unknown as Ok<T>,
+      err: this as unknown as Err<ExtractErrorKindKeyForMatching<E>>,
+    };
+  }
+
+  /**
+   * Ok Result for pattern matching
+   */
+  ok(): { _tag: "success" } {
+    return { _tag: "success" };
+  }
+  /**
+   * Ok Result for pattern matching
+   */
+  // okWithValue<TFilter extends T>(value?: TFilter): ResultOk<TFilter> {
+  //   if (value === undefined) {
+  //     return { _tag: "success" } as ResultOk<TFilter>;
+  //   }
+  //   return { _tag: "success", value: this.value } as unknown as ResultOk<TFilter>;
+  // }
+  err(): { _tag: "failure" } {
+    return { _tag: "failure" };
+  }
+
+  /**
+   * Note: When call this method from Err or Ok, the kind type will correctly infer,
+   * but when call from ResultBase, it will infer as never.
+   *
+   * @param kind
+   * @returns
+   */
+  errWith(
+    kind: ExtractErrorKindKeyForMatching<E>
+  ): { _tag: "success"; value: T } | { _tag: "failure"; error: ExtractErrorKind<E> } {
+    return { _tag: "failure", error: this.error as unknown as ExtractErrorKindForMatching<E> } as any;
   }
 
   toString(options?: ToStringOptions): string {
@@ -112,7 +171,10 @@ export class Ok<T> extends ResultBase<T, never> implements Unwrapable<T> {
   }
 }
 
-export class Err<E> extends ResultBase<never, E> implements Unwrapable<E> {
+export class Err<E extends unknown | { kind: TErrorKind }, TErrorKind = string>
+  extends ResultBase<never, E>
+  implements Unwrapable<E>
+{
   readonly _tag = "failure";
   constructor(public error: E) {
     super();
