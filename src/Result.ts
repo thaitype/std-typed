@@ -6,7 +6,7 @@ import { getClassName } from "./Object.js";
  * Rust inspired Result type for TypeScript
  * @ref https://dev.to/alexanderop/robust-error-handling-in-typescript-a-journey-from-naive-to-rust-inspired-solutions-1mdh
  */
-export type Result<T, E> = Ok<T> | Err<E>;
+export type Result<T, E extends { kind: string }> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
 
 /**
@@ -24,7 +24,7 @@ export type ResultOk<T = undefined> = T extends undefined
 type TestType = ResultOk;
 // ^?
 
-export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind = string>
+export class ResultBase<T, E extends { kind: string }>
   implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable
 {
   public value!: T;
@@ -63,17 +63,7 @@ export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind 
       : { _tag: "failure", error: this.error as ExtractErrorKind<E> };
   }
 
-  extract(): {
-    result: Result<T, E>;
-    ok: Ok<T>;
-    err: Err<ExtractErrorKindKeyForMatching<E>>;
-  } {
-    return {
-      result: this as unknown as Result<T, E>,
-      ok: this as unknown as Ok<T>,
-      err: this as unknown as Err<ExtractErrorKindKeyForMatching<E>>,
-    };
-  }
+
 
   /**
    * Ok Result for pattern matching
@@ -156,7 +146,7 @@ export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind 
   }
 }
 
-export class Ok<T> extends ResultBase<T, never> implements Unwrapable<T> {
+export class Ok<T> extends ResultBase<T, { kind: string }> implements Unwrapable<T> {
   readonly _tag = "success";
   constructor(public value: T) {
     super();
@@ -171,10 +161,7 @@ export class Ok<T> extends ResultBase<T, never> implements Unwrapable<T> {
   }
 }
 
-export class Err<E extends unknown | { kind: TErrorKind }, TErrorKind = string>
-  extends ResultBase<never, E>
-  implements Unwrapable<E>
-{
+export class Err<E extends { kind: string }> extends ResultBase<never, E> implements Unwrapable<E> {
   readonly _tag = "failure";
   constructor(public error: E) {
     super();
@@ -182,6 +169,18 @@ export class Err<E extends unknown | { kind: TErrorKind }, TErrorKind = string>
 
   unwrap(): E {
     return this.error;
+  }
+
+  extract(): {
+    result: Result<any, E>;
+    ok: Ok<any>;
+    err: Err<E>;
+  } {
+    return {
+      result: this as unknown as Result<any, E>,
+      ok: this as unknown as Ok<any>,
+      err: this as unknown as Err<E>,
+    };
   }
 
   static getTag(): { _tag: "failure" } {
@@ -193,7 +192,7 @@ export class Err<E extends unknown | { kind: TErrorKind }, TErrorKind = string>
 export function ok<T>(value: T): Ok<T> {
   return new Ok(value);
 }
-export function err<const E>(error: E): Err<E> {
+export function err<const E extends { kind: string }>(error: E): Err<E> {
   return new Err(error);
 }
 export const _Ok = Ok.getTag();
@@ -201,7 +200,7 @@ export const _Err = Err.getTag();
 
 // -------- Create Functions Helper --------
 
-export type ResultContext<T, E> = {
+export type ResultContext<T, E extends { kind: string }> = {
   ok: (value: T) => Ok<T>;
   err: (value: E) => Err<E>;
 };
@@ -210,7 +209,7 @@ export type ResultContext<T, E> = {
  * Sync Function - The building block for creating a Result object from a function,
  * it is used to catch errors and return a Result object.
  */
-export const func = <T, E>(
+export const func = <T, E extends { kind: string }>(
   /** Passing result context */
   fn: (context: ResultContext<T, E>) => Result<T, E>
 ): Result<T, E> => {
@@ -229,7 +228,7 @@ export const func = <T, E>(
  * @returns Promise of Result Object
  */
 
-export const funcAsync = async <T, E>(
+export const funcAsync = async <T, E extends { kind: string }>(
   /** Passing result context */
   fn: (context: ResultContext<T, E>) => Promise<Result<T, E>>
 ): Promise<Result<T, E>> => {

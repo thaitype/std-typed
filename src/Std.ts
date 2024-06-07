@@ -5,32 +5,32 @@ import { type PromiseLike, type Transformable } from "./types.js";
 /**
  * Run Sync/Async without throwing an error
  */
-export async function run<T>(result: () => PromiseLike<T>): Promise<Result.Result<T, Error>> {
-  try {
-    return Result.ok(await runExit(result));
-  } catch (e) {
-    if (e instanceof Error) {
-      return Result.err(e);
-    }
-    return Result.err(new Error(String(e)));
-  }
-}
+// export async function run<T>(result: () => PromiseLike<T>): Promise<Result.Result<T, Error>> {
+//   try {
+//     return Result.ok(await runExit(result));
+//   } catch (e) {
+//     if (e instanceof Error) {
+//       return Result.err(e);
+//     }
+//     return Result.err(new Error(String(e)));
+//   }
+// }
 
-/**
- * Run Sync Function without throwing an error
- * @param result
- * @returns
- */
-export function runSync<T>(result: () => T): Result.Result<T, Error> {
-  try {
-    return Result.ok(runSyncExit(result));
-  } catch (e) {
-    if (e instanceof Error) {
-      return Result.err(e);
-    }
-    return Result.err(new Error(String(e)));
-  }
-}
+// /**
+//  * Run Sync Function without throwing an error
+//  * @param result
+//  * @returns
+//  */
+// export function runSync<T>(result: () => T): Result.Result<T, Error> {
+//   try {
+//     return Result.ok(runSyncExit(result));
+//   } catch (e) {
+//     if (e instanceof Error) {
+//       return Result.err(e);
+//     }
+//     return Result.err(new Error(String(e)));
+//   }
+// }
 
 /**
  * Run Sync/Async when throwing an error, exit the process
@@ -116,22 +116,22 @@ export class TypedError<Kind = string> extends Error implements Transformable {
   }
 }
 
-export type ExtractErrorKind<E extends unknown | { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKind<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
   kind: infer Kind;
 }
   ? TypedError<Kind>
   : E;
 
-export type ExtractErrorKindForMatching<E extends unknown | { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKindForMatching<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
   kind: infer Kind;
 }
   ? { kind: Kind }
   : E;
 
-export type ExtractErrorKindKeyForMatching<E extends unknown | { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKindKeyForMatching<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
   kind: infer Kind;
 }
   ? Kind
   : TErrorKind;
 
-type test = ExtractErrorKindKeyForMatching<'nn'>
+type test = ExtractErrorKindKeyForMatching<{ kind: 'erfwef' | 'aaa'}>

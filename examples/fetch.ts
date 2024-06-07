@@ -34,7 +34,9 @@ const getTodo = (id: number) =>
 
 Std.runExit(async () => {
   for (const id of [-1, 1]) {
-    const { result, ok, err } = (await getTodo(id)).extract();
+    const result = (await getTodo(id));
+    
+    result.errWith('FetchError')
     // result.incorrectInferType('ef')
     // match(result.into())
     //   .with(result.ok(), value =>
