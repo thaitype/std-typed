@@ -26,7 +26,7 @@ function program(): Result.Result<string, ProgramError> {
   return Result.ok(foo + bar);
 }
 
-match(program().toObject())
+match(program().into())
   .with({ _tag: 'success' }, (value) => console.log(`Ok(${value.value})`))
   .with({ _tag: 'failure', error: 'FooError'}, (error) => console.log(`>> ${error.error}`)) 
   .with({ _tag: 'failure', error: 'BarError'}, (error) => console.log(`>> ${error.error}`))

@@ -11,7 +11,7 @@ export interface Tagged<T extends string> {
 }
 
 export interface Transformable {
-  toObject(): unknown;
+  into(): unknown;
   toString(options?: ToStringOptions): string;
 }
 

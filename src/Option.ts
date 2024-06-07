@@ -35,7 +35,7 @@ export abstract class OptionBase<T> implements Tagged<_OptionTag>, Transformable
    * Converts the Option to an object for type-safe pattern matching
    * @returns
    */
-  toObject(): { _tag: "some"; value: T } | { _tag: "none" } {
+  into(): { _tag: "some"; value: T } | { _tag: "none" } {
     return this.isSome() ? { _tag: "some", value: this.unwrap() } : { _tag: "none" };
   }
 

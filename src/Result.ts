@@ -39,7 +39,7 @@ export class ResultBase<T, E> implements Tagged<_ResultTag>, Transformable, Comp
    * Converts the Result to an object for type-safe pattern matching
    * @returns
    */
-  toObject(): { _tag: "success"; value: T } | { _tag: "failure"; error: E } {
+  into(): { _tag: "success"; value: T } | { _tag: "failure"; error: E } {
     return this.isOk() ? { _tag: "success", value: this.value } : { _tag: "failure", error: this.error };
   }
 
