@@ -115,23 +115,3 @@ export class TypedError<Kind = string> extends Error implements Transformable {
     return this.toJSON();
   }
 }
-
-export type ExtractErrorKind<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
-  kind: infer Kind;
-}
-  ? TypedError<Kind>
-  : E;
-
-export type ExtractErrorKindForMatching<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
-  kind: infer Kind;
-}
-  ? { kind: Kind }
-  : E;
-
-export type ExtractErrorKindKeyForMatching<E extends { kind: TErrorKind }, TErrorKind = string> = E extends {
-  kind: infer Kind;
-}
-  ? Kind
-  : TErrorKind;
-
-type test = ExtractErrorKindKeyForMatching<{ kind: 'erfwef' | 'aaa'}>

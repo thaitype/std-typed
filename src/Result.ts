@@ -1,12 +1,44 @@
 import type { Composable, Matchable, Tagged, ToStringOptions, Transformable, Unwrapable } from "./types.js";
-import type { ExtractErrorKind, ExtractErrorKindForMatching, ExtractErrorKindKeyForMatching } from "./Std.js";
+// import type { ExtractErrorKind, ExtractErrorKindForMatching, ExtractErrorKindKeyForMatching } from "./Std.js";
 import { getClassName } from "./Object.js";
+import type { TypedError } from "./Std.js";
+
+export type AcceptedError = { kind: string };
+
+export type ExtractErrorKind<E extends AcceptedError> = E extends {
+  kind: infer Kind;
+}
+  ? TypedError<Kind>
+  : E;
+
+export type ExtractErrorKindForMatching<E extends AcceptedError> = E extends {
+  kind: infer Kind;
+}
+  ? { kind: Kind }
+  : E;
+
+export type ExtractErrorKindKeyForMatching<E extends AcceptedError> = E extends {
+  kind: infer Kind;
+}
+  ? Kind
+  : E;
+
+  type test = ExtractErrorKindKeyForMatching<'efef' | 'xxx'>;
+       // ^?
+  type test2 = ExtractErrorKindKeyForMatching<{ kind: 'efef' | 'xxx' }>;
+       // ^?
+  
+  type test3 = ExtractErrorKindForMatching<{ kind: 'efef' | 'xxx' }>;
+      // ^?
+  type test4 = ExtractErrorKindForMatching<TypedError<'aaa' | 'bbb'>>;
+      // ^?
+
 
 /**
  * Rust inspired Result type for TypeScript
  * @ref https://dev.to/alexanderop/robust-error-handling-in-typescript-a-journey-from-naive-to-rust-inspired-solutions-1mdh
  */
-export type Result<T, E extends { kind: string }> = Ok<T> | Err<E>;
+export type Result<T, E extends AcceptedError> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
 
 /**
@@ -24,7 +56,7 @@ export type ResultOk<T = undefined> = T extends undefined
 type TestType = ResultOk;
 // ^?
 
-export class ResultBase<T, E extends { kind: string }>
+export class ResultBase<T, E extends AcceptedError>
   implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable
 {
   public value!: T;
@@ -146,7 +178,7 @@ export class ResultBase<T, E extends { kind: string }>
   }
 }
 
-export class Ok<T> extends ResultBase<T, { kind: string }> implements Unwrapable<T> {
+export class Ok<T> extends ResultBase<T, AcceptedError> implements Unwrapable<T> {
   readonly _tag = "success";
   constructor(public value: T) {
     super();
@@ -161,7 +193,7 @@ export class Ok<T> extends ResultBase<T, { kind: string }> implements Unwrapable
   }
 }
 
-export class Err<E extends { kind: string }> extends ResultBase<never, E> implements Unwrapable<E> {
+export class Err<E extends AcceptedError> extends ResultBase<never, E> implements Unwrapable<E> {
   readonly _tag = "failure";
   constructor(public error: E) {
     super();
@@ -192,7 +224,7 @@ export class Err<E extends { kind: string }> extends ResultBase<never, E> implem
 export function ok<T>(value: T): Ok<T> {
   return new Ok(value);
 }
-export function err<const E extends { kind: string }>(error: E): Err<E> {
+export function err<const E extends AcceptedError>(error: E): Err<E> {
   return new Err(error);
 }
 export const _Ok = Ok.getTag();
@@ -200,7 +232,7 @@ export const _Err = Err.getTag();
 
 // -------- Create Functions Helper --------
 
-export type ResultContext<T, E extends { kind: string }> = {
+export type ResultContext<T, E extends AcceptedError> = {
   ok: (value: T) => Ok<T>;
   err: (value: E) => Err<E>;
 };
@@ -209,7 +241,7 @@ export type ResultContext<T, E extends { kind: string }> = {
  * Sync Function - The building block for creating a Result object from a function,
  * it is used to catch errors and return a Result object.
  */
-export const func = <T, E extends { kind: string }>(
+export const func = <T, E extends AcceptedError>(
   /** Passing result context */
   fn: (context: ResultContext<T, E>) => Result<T, E>
 ): Result<T, E> => {
@@ -228,7 +260,7 @@ export const func = <T, E extends { kind: string }>(
  * @returns Promise of Result Object
  */
 
-export const funcAsync = async <T, E extends { kind: string }>(
+export const funcAsync = async <T, E extends AcceptedError>(
   /** Passing result context */
   fn: (context: ResultContext<T, E>) => Promise<Result<T, E>>
 ): Promise<Result<T, E>> => {
