@@ -8,7 +8,7 @@ import { Result, Std } from "std-typed";
 type GetTodoError = "Failed to fetch todo";
 
 const getTodo = (id: number) =>
-  Std.funcAsync<number, GetTodoError>(async c => {
+  Result.funcAsync<number, GetTodoError>(async c => {
     const result = await fetch(
       `https://jsonplaceholder.typicode.com/todos/${id}`
     );

@@ -5,11 +5,11 @@ import { tryTakeSecond } from "./01-option.js";
  * Using match may more hard to read, use `get` instead,
  *
  * Trick: use `get` to unwrap the value from the Result, throwing an error if it's an Err
- * combine with `Std.func` to handle the error.
+ * combine with `Result.func` to handle the error.
  */
 
 const tryTakeSecondAndLog = (value: number[]): Result.Result<number, any> =>
-  Std.func(() => {
+  Result.func(() => {
     const result = tryTakeSecond(value).$get;
     console.log(`The second element is ${result}`);
     return Result.ok(result);

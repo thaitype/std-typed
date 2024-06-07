@@ -57,7 +57,7 @@ export abstract class OptionBase<T> implements Tagged<_OptionTag>, Transformable
   /**
    * Unwraps the value from the Result, throwing an error if it's an Err
    *
-   * When using `$get` operator, this may cause throw error, for safety, requires to use with `Std.func`.
+   * When using `$get` operator, this may cause throw error, for safety, requires to use with `Result.func`.
    *
    * Inspired by Rust's `?` operator
    *

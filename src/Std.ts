@@ -77,51 +77,6 @@ export function runSyncExit<T>(fn: () => T): T {
 //   return result;
 // }
 
-export type ResultContext<T, E> = {
-  ok: (value: T) => Result.Ok<T>;
-  err: (value: E) => Result.Err<E>;
-};
-
-/**
- * Sync Function - The building block for creating a Result object from a function,
- * it is used to catch errors and return a Result object.
- */
-export const func = <T, E>(
-  /** Passing result context */
-  fn: (context: ResultContext<T, E>) => Result.Result<T, E>
-): Result.Result<T, E> => {
-  try {
-    return fn({
-      ok: Result.ok,
-      err: Result.err,
-    });
-  } catch (e) {
-    return Result.err(e as E);
-  }
-};
-
-/**
- * Async Function - The building block for creating a Result object from an async function,
- * it is used to catch errors and return a Result object.
- *
- * @param fn Expecting a function that returns a Promise
- * @returns Promise of Result Object
- */
-
-export const funcAsync = async <T, E>(
-  /** Passing result context */
-  fn: (context: ResultContext<T, E>) => Promise<Result.Result<T, E>>
-): Promise<Result.Result<T, E>> => {
-  try {
-    return (await fn({
-      ok: Result.ok,
-      err: Result.err,
-    })) as Result.Result<T, any>;
-  } catch (e) {
-    return Result.err(e as E);
-  }
-};
-
 /**
  * Delay for a specified amount of time
  * @param ms value in milliseconds

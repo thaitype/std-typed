@@ -74,7 +74,7 @@ export class ResultBase<T, E> implements Tagged<_ResultTag>, Transformable, Comp
   /**
    * Unwraps the value from the Result, throwing an error if it's an Err
    *
-   * When using `$get` operator, this may cause throw error, for safety, requires to use with `Std.func`.
+   * When using `$get` operator, this may cause throw error, for safety, requires to use with `Result.func`.
    *
    * Inspired by Rust's `?` operator
    *
@@ -131,3 +131,44 @@ export function err<const E>(error: E): Err<E> {
 }
 export const _Ok = Ok.getTag();
 export const _Err = Err.getTag();
+
+// -------- Create Functions Helper --------
+
+export type ResultContext<T, E> = {
+  ok: (value: T) => Ok<T>;
+  err: (value: E) => Err<E>;
+};
+
+/**
+ * Sync Function - The building block for creating a Result object from a function,
+ * it is used to catch errors and return a Result object.
+ */
+export const func = <T, E>(
+  /** Passing result context */
+  fn: (context: ResultContext<T, E>) => Result<T, E>
+): Result<T, E> => {
+  try {
+    return fn({ ok, err });
+  } catch (e) {
+    return err(e as E);
+  }
+};
+
+/**
+ * Async Function - The building block for creating a Result object from an async function,
+ * it is used to catch errors and return a Result object.
+ *
+ * @param fn Expecting a function that returns a Promise
+ * @returns Promise of Result Object
+ */
+
+export const funcAsync = async <T, E>(
+  /** Passing result context */
+  fn: (context: ResultContext<T, E>) => Promise<Result<T, E>>
+): Promise<Result<T, E>> => {
+  try {
+    return (await fn({ ok, err }));
+  } catch (e) {
+    return err(e as E);
+  }
+};
