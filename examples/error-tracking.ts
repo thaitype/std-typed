@@ -10,14 +10,14 @@ function program(): Result.Result<string, ProgramError> {
   const n2 = Math.random();
 
   let foo = "";
-  if (n1 > 0.5) {
+  if (n1 > 0.2) {
     foo = "yay!";
   } else {
     return Result.err("FooError");
   }
 
   let bar = "";
-  if (n2 > 0.5) {
+  if (n2 > 0.2) {
     bar = "yay!";
   } else {
     return Result.err("BarError");
@@ -26,14 +26,11 @@ function program(): Result.Result<string, ProgramError> {
   return Result.ok(foo + bar);
 }
 
-function recover(error: ProgramError) {
-  match(error)
-    .with("FooError", () => console.log(">> FooError"))
-    .with("BarError", () => console.log(">> BarError"))
-    .exhaustive();
-}
+match(program().toObject())
+  .with({ _tag: 'success' }, (value) => console.log(`Ok(${value.value})`))
+  .with({ _tag: 'failure', error: 'FooError'}, (error) => console.log(`>> ${error.error}`)) 
+  .with({ _tag: 'failure', error: 'BarError'}, (error) => console.log(`>> ${error.error}`))
+  .exhaustive();
 
-program().match({
-  ok: value => console.log(`Program result: ${value}`),
-  err: error => recover(error),
-});
+
+
