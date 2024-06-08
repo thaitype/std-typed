@@ -83,7 +83,12 @@ export function runSyncExit<T>(fn: () => T): T {
  * @param ms value in milliseconds
  * @returns Promise of void
  */
-export const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+export const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+export const sleepWithLog = (ms: number) => {
+  console.log(`Sleeping for ${ms}ms`);
+  return sleep(ms);
+}
 
 /**
  * Error Base Class for discriminated union for `kind` field

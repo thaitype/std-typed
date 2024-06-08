@@ -3,6 +3,7 @@ import type {
   Composable,
   ExcludeNeverKey,
   Matchable,
+  PromiseLike,
   Tagged,
   ToStringOptions,
   Transformable,
@@ -239,7 +240,11 @@ export function err<const E>(error: E): Err<E> {
 export const _Ok = Ok.getTag();
 export const _Err = Err.getTag();
 
-// -------- Create Functions Helper --------
+// -----------------------------------------
+// |                                       |
+// |       Create Functions Helper         |
+// |                                       |
+// -----------------------------------------
 
 export type ResultContext<T, E> = {
   ok: (value: T) => Ok<T>;
@@ -279,3 +284,29 @@ export const funcAsync = async <T, E>(
     return err(e as E);
   }
 };
+
+/**
+ * @example
+ * 
+ * ```ts
+ * await Result.promise(() => delay(1000)).$get
+ * ```
+ * 
+ * Look like funcAsync, but it's a helper function to catch errors and return a Result object.
+ * 
+ * @param fn 
+ * @returns 
+ */
+
+export const promise = async <T, E>(
+  /** Passing result context */
+  fn: () => PromiseLike<T>
+): Promise<Result<T, E>> => {
+  try {
+    return ok(await fn()) as Result<T, E>;
+  } catch (e) {
+    return err(e as E);
+  }
+}
+
+

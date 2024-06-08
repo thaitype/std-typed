@@ -1,6 +1,4 @@
-import { Result, Std } from "std-typed";
-import { match } from "ts-pattern";
-import type { Equal, Expect } from "@type-challenges/utils";
+import { Std } from "std-typed";
 
 /**
  * https://www.npmjs.com/package/p-retry
@@ -10,36 +8,18 @@ import type { Equal, Expect } from "@type-challenges/utils";
  * TODO: Unhandled throw Error, is missing
  */
 
-class FetchError extends Std.TypedError<"FetchError" | "InvalidJsonError" | "RequestFailError"> {}
+/**
+ * Sleep for a specified amount of time and return a promise
+ */
+export const mockFetchConfig = async () => {
+  await Std.sleep(500);
+  return Promise.reject(new Error("Failed to fetch config"));
+  // return Promise.resolve({ stringCase: 'uppercase' });
+};
 
-const getTodo = (id: number) =>
-  Result.funcAsync<unknown, FetchError>(async c => {
-    try {
-      const result = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
-      if (!result.ok) return c.err(new FetchError("FetchError"));
+// const config = (await Result.promise(() => mockFetchConfig())).$get;
+// console.log(`Config: ${JSON.stringify(config)}`); // => `Config: {"stringCase":"uppercase"}
 
-      try {
-        const json = await result.json();
-        return c.ok(json);
-      } catch (e) {
-        return c.err(new FetchError("InvalidJsonError", e));
-      }
-    } catch (e) {
-      return c.err(new FetchError("RequestFailError", e));
-    }
-  });
-
-Std.runExit(async () => {
-  for (const id of [-1, 1]) {
-    const result = await getTodo(id);
-
-    result.errWith
-
-    match(result.into())
-      .with(result.ok(), value => console.log(`Fetch Result (id="${id}"): => ${JSON.stringify(value.value)}`))
-      .with(result.errWith.kind("FetchError"), error => console.error(`Failed to fetch (id="${id}"): => ${error.error}`))
-      .with(result.errWith.kind("InvalidJsonError"), error => console.error(`Invalid JSON (id="${id}"): => ${error.error}`))
-      .with(result.errWith.kind("RequestFailError"), error => console.error(`Request failed (id="${id}"): => ${error.error}`))
-      .exhaustive();
-  }
-});
+export const mockParseJson = async (res: Response, url: string) => {
+  return url.includes('invalidJson') ? Promise.reject(new Error("Invalid JSON")) : res.json();
+}
