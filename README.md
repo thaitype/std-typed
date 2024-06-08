@@ -1,18 +1,23 @@
 # Standard Typed
 
+[![npm version](https://img.shields.io/npm/v/std-typed)](https://www.npmjs.com/package/@thaitype/std-typed)
+
 Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library. 
 
 ## Introduction
-Every piece of code should be type-safe and error handling should be explicit. 
-`Result` and `Option` concept from Rust is a good way to handle error and data in a type-safe way.
-`Promise` is one of the most common way to handle async operation, however, it's not type-safe and error handling is not explicit.
-So, each function in `std-types` should return `Result` or `Option` type, instead of throwing an error, and support `Promise` as well.
+Every piece of code should be type-safe and error handling should be explicit. The `Result` and `Option` concepts from Rust provide a robust way to handle errors and data in a type-safe manner. While `Promise` is a common way to handle async operations, it lacks type safety and explicit error handling. Therefore, each function in `std-types` returns a `Result` or `Option` type instead of throwing errors, and also supports `Promise`.
+
+## Installation
+
+```bash
+npm install std-types
+```
 
 ## Getting Started
 
-The example below demonstrates how to deal with Promise and error handling from `fetch` function
+The example below demonstrates how to handle Promises and errors using the `fetch` function.
 
-Instead of throwing an error and nested try-catch block, and unable to handle error type.
+Instead of throwing errors and using nested try-catch blocks, which make error types hard to handle:
 
 ```ts
 async function unsafeFetch(url: string) {
@@ -35,6 +40,11 @@ async function unsafeFetch(url: string) {
 Using `std-types` to handle error and data in a type-safe way.
 
 ```ts
+import { Result, Std } from "std-typed";
+import { mockParseJson } from "./fetch.js"; // Mocking Response.json() for testing
+
+class FetchError extends Std.StdError<"FetchError" | "InvalidJsonError" | "RequestFailError"> {}
+
 const safeFetch = (url: string) =>
   Result.funcAsync<unknown, FetchError>(async c => {
 
@@ -52,10 +62,12 @@ const safeFetch = (url: string) =>
   });
 ```
 
-After that you can handle the error and data in a type-safe way using pattern maching approach. 
-The example below demonstrates how to handle various error type using `match` function from `ts-pattern`.
+You can then handle the error and data in a type-safe way using a pattern matching approach. The example below demonstrates how to handle various error types using the match function from [ts-pattern](https://github.com/gvergnaud/ts-pattern).
 
 ```ts
+import { Std } from "std-typed";
+import { match } from "ts-pattern";
+
 Std.runExit(async () => {
   const prefixUrl = "https://jsonplaceholder.typicode.com";
   console.log(`Fetching Prefix url: "${prefixUrl}"...\n`);
@@ -88,18 +100,17 @@ Failed to fetch (url="/todos/-2"): => StdError(FetchError): Error: Something wen
 Invalid JSON (url="/todos/1?variant=invalidJson"): => StdError(InvalidJsonError): Error: Invalid JSON
 ```
 
-Note: The `Std.runExit` is a helper function to run the async function and handle the error, you can you outside of the function as well.
+Note: The `Std.runExit` is a helper function to run the async function and handle errors. You can use it outside of the function as well.
 
-The getting started example demonstrates how to handle error and data in a type-safe way using `std-types` and `ts-pattern`.
-You can see the full example in the [examples/fetch-02-without-try-catch.ts](./examples/fetch-02-without-try-catch.ts) file.
+The getting started example demonstrates how to handle errors and data in a type-safe way using `std-types` and `ts-pattern`. You can see the full example in the [examples/fetch-02-without-try-catch.ts](examples/fetch-02-without-try-catch.ts) file.
 
 ## Examples
 
-For more practical examples, please see the [examples](./examples) folder.
+For more practical examples, please see the [examples](examples) folder.
 
 ## Project Philosophy
 
-- **Never Throw**: The standard library should never throw an error, using `Result` type for data and error handling, inspired by Rust.
+- **Never Throw**: The standard library should never throw an error, using the `Result` type for data and error handling, inspired by Rust.
 - **Standard Library**: The standard library should be a collection of useful data structures and functions that are commonly used in everyday programming.
 - **Type Safety**: The standard library should be type-safe.
 - **Performance**: The standard library should be performant.
@@ -109,16 +120,46 @@ For more practical examples, please see the [examples](./examples) folder.
 - No Functional Programming (FP) concepts, please use [Effect](https://effect.website/) for that.
 - Complex scenarios using consider using [Effect](https://effect.website/).
 
-## Installation
+## Q&A
 
-```bash
-npm install std-types
-```
+### There are already `Result` and `Option` in `fp-ts` or `Effect`, why do we need another one?
 
-## Considerations
-- Implementing custom function ported from Rust using `napi` for performance.
-  - However, this may cause issue with the performance, if's applied in the wrong way.
-  - However, this may cause issue with Bundling, so, this, library should provided mimimal version e.g. `@std-types/minimal` 
+[fp-ts](https://github.com/gcanti/fp-ts) and [Effect](https://github.com/Effect-TS/effect) are great libraries designed for functional programming. However, some functions do not provide better APIs for type-safe error handling like Rust's `Result` and `Option`. This project is heavily inspired by Rust's `Result` and `Option`, where every function should return a `Result` or `Option` type instead of throwing an error.
 
+The main role of `std-types` is to provide a standard library for TypeScript that is type-safe and handles errors explicitly, rather than providing a functional programming library or complex scenarios like Effect. However, I've designed this library to be compatible with `fp-ts` and `Effect` as well. Due to its Promise-based approach, it's easier to integrate with `fp-ts`, `Effect`, or even other libraries.
 
+The learning curve of `std-types` should be easier than `fp-ts` or `Effect`, and it should be more familiar to Rust developers who might not be familiar with functional programming or generator functions. This library provides a straightforward approach in an imperative programming style.
 
+## Roadmap
+
+Here are some planned features and improvements for `std-types`:
+
+- **Enhanced Documentation**: Provide more detailed guides, API documentation, and use cases.
+- **More Examples**: Add a variety of examples covering different scenarios and use cases.
+- **Performance Optimizations**: Continuously improve the performance of the library.
+- **Additional Utility Functions**: Introduce more utility functions and data structures that align with the project's philosophy.
+- **Community Contributions**: Encourage and integrate contributions from the community to enhance the library's functionality and usability.
+
+## Contributing
+
+We welcome contributions from the community. If you'd like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -am 'Add some feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Create a new Pull Request.
+
+Please make sure to write tests for any new features or bug fixes and adhere to the project's coding standards.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+## Acknowledgements
+
+This library is heavily inspired by Rust's standard library, particularly the `Result` and `Option` types. Special thanks to the contributors and maintainers of Rust and TypeScript for their exceptional work.
+
+## Contact
+
+For questions or feedback, please open an issue on GitHub or contact the maintainer directly at [thada.wth@gmail.com](mailto:thada.wth@gmail.com).

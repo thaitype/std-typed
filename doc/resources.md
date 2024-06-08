@@ -31,3 +31,8 @@
 ### Using Rust for Some Feature of Standard Library
 - Using [napi](https://napi.rs/) for FFI (Foreign Function Interface) to Rust.
   - Good examples see [nodejs-polars](https://github.com/pola-rs/nodejs-polars)
+
+## Considerations
+- Implementing custom function ported from Rust using `napi` for performance.
+  - However, this may cause issue with the performance, if's applied in the wrong way.
+  - However, this may cause issue with Bundling, so, this, library should provided mimimal version e.g. `@std-types/minimal` 
