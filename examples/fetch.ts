@@ -35,29 +35,17 @@ const getTodo = (id: number) =>
 
 Std.runExit(async () => {
   for (const id of [-1, 1]) {
-    const result = await getTodo(id);
-    // const { result: res, ok, err } = (await getTodo(id)).extract();
-    
-    match(result.ensure().into())
-      .with(result.ensure().ok(), value =>
+    const result = (await getTodo(id)).ensure();
+
+    match(result.into())
+      .with(result.ok(), value =>
         console.log(
           `Fetch Result (id="${id}"): => ${JSON.stringify(value.value)}`
         )
       )
-      .with(result.ensure().errWith('FetchError') , error => console.error(`Failed to fetch (id="${id}"): => ${error.error}`))
-      .with(result.ensure().errWith('InvalidJsonError') , error => console.error(`Invalid JSON (id="${id}"): => ${error.error}`))
-      .with(result.ensure().errWith('RequestFailError') , error => console.error(`Request failed (id="${id}"): => ${error.error}`))
+      .with(result.errWith('FetchError') , error => console.error(`Failed to fetch (id="${id}"): => ${error.error}`))
+      .with(result.errWith('InvalidJsonError') , error => console.error(`Invalid JSON (id="${id}"): => ${error.error}`))
+      .with(result.errWith('RequestFailError') , error => console.error(`Request failed (id="${id}"): => ${error.error}`))
       .exhaustive();
-      
-    // match(result.into())
-    //   .with(result.ok(), value =>
-    //     console.log(
-    //       `Fetch Result (id="${id}"): => ${JSON.stringify(value.value)}`
-    //     )
-    //   )
-    //   .with({ _tag: "failure", error: { kind: 'FetchError'} } , error => console.error(`Failed to fetch (id="${id}"): => ${error.error}`))
-    //   .with({ _tag: "failure", error: { kind: 'InvalidJsonError'} } , error => console.error(`Invalid JSON (id="${id}"): => ${error.error}`))
-    //   .with({ _tag: "failure", error: { kind: 'RequestFailError'} } , error => console.error(`Request failed (id="${id}"): => ${error.error}`))
-    //   .exhaustive();
   }
 });
