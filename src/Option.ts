@@ -57,14 +57,14 @@ export abstract class OptionBase<T> implements Tagged<_OptionTag>, Transformable
   /**
    * Unwraps the value from the Result, throwing an error if it's an Err
    *
-   * When using `$get` operator, this may cause throw error, for safety, requires to use with `Result.func`.
+   * When using `unwrapOrThrow()` operator, this may cause throw error, for safety, requires to use with `Result.func`.
    *
    * Inspired by Rust's `?` operator
    *
    * @ref https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
    * @throws {None} if the `Option` is None
    */
-  get $get(): T {
+  unwrapOrThrow(): T {
     if (this.isSome()) {
       return this.unwrap();
     }

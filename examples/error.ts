@@ -2,8 +2,8 @@ import { Result, Std, String, Number } from "std-typed";
 
 const turnIntoStringAndParse = (bytes: number[]) =>
   Result.func<number, String.FromUtf8Error | Number.ParseIntError>(() => {
-    const utf8String = String.fromUtf8(bytes).$get;
-    const num = Number.parseInt(utf8String.toString()).$get;
+    const utf8String = String.fromUtf8(bytes).unwrapOrThrow();
+    const num = Number.parseInt(utf8String.toString()).unwrapOrThrow();
     return Result.ok(num);
   });
 

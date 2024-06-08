@@ -17,7 +17,7 @@ export const mockFetchConfig = async () => {
   // return Promise.resolve({ stringCase: 'uppercase' });
 };
 
-// const config = (await Result.promise(() => mockFetchConfig())).$get;
+// const config = (await Result.promise(() => mockFetchConfig())).unwrapOrThrow();
 // console.log(`Config: ${JSON.stringify(config)}`); // => `Config: {"stringCase":"uppercase"}
 
 export const mockParseJson = async (res: Response, url: string): Promise<unknown> => {

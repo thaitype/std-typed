@@ -2,7 +2,7 @@ import { Std, Number, Vec, Result } from "std-typed";
 
 const parseNumberAndLogStr = (str: string) =>
   Result.func<number, Number.ParseIntError>(() => {
-    const num = Number.parseInt(str).$get;
+    const num = Number.parseInt(str).unwrapOrThrow();
     console.log(`Parsed number successfully: ${num}`);
     return Result.ok(num);
   });

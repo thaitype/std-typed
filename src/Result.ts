@@ -179,14 +179,14 @@ export class ResultBase<T, E extends AcceptableError>
   /**
    * Unwraps the value from the Result, throwing an error if it's an Err
    *
-   * When using `$get` operator, this may cause throw error, for safety, requires to use with `Result.func`.
+   * When using `unwrapOrThrow()` operator, this may cause throw error, for safety, requires to use with `Result.func`.
    *
    * Inspired by Rust's `?` operator
    *
    * @ref https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
    * @throws {Err} if the `Result` is Err
    */
-  get $get(): T {
+  unwrapOrThrow(): T {
     if (this.isOk()) {
       return this.unwrap();
     }
@@ -289,7 +289,7 @@ export const funcAsync = async <T, E>(
  * @example
  * 
  * ```ts
- * await Result.promise(() => delay(1000)).$get
+ * await Result.promise(() => delay(1000)).unwrapOrThrow()
  * ```
  * 
  * Look like funcAsync, but it's a helper function to catch errors and return a Result object.
