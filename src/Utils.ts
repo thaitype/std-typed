@@ -1,3 +1,6 @@
+export * from './internal/generator.js'
+export * from './internal/predicate.js'
+
 /**
  * Converts an iterable iterator to a generator.
  */

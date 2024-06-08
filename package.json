@@ -85,6 +85,11 @@
       "types": "./dist/dts/StdString.d.ts",
       "import": "./dist/esm/StdString.js",
       "default": "./dist/cjs/StdString.js"
+    },
+    "./Utils": {
+      "types": "./dist/dts/Utils.d.ts",
+      "import": "./dist/esm/Utils/index.js",
+      "default": "./dist/cjs/Utils/index.js"
     }
   },
   "typesVersions": {
@@ -109,6 +114,9 @@
       ],
       "StdString": [
         "./dist/dts/StdString.d.ts"
+      ],
+      "Utils": [
+        "./dist/dts/Utils.d.ts"
       ]
     }
   }
