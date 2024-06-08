@@ -26,11 +26,9 @@ function program(): Result.Result<string, ProgramError> {
   return Result.ok(foo + bar);
 }
 
-match(program().into())
-  .with({ _tag: 'success' }, (value) => console.log(`Ok(${value.value})`))
-  .with({ _tag: 'failure', error: 'FooError'}, (error) => console.log(`>> ${error.error}`)) 
-  .with({ _tag: 'failure', error: 'BarError'}, (error) => console.log(`>> ${error.error}`))
+const result = program();
+match(result.into())
+  .with(result.ok(), value => console.log(`Ok(${value.value})`))
+  .with({ ...result.err(), error: "FooError" }, error => console.log(`>> ${error.error}`))
+  .with({ ...result.err(), error: "BarError" }, error => console.log(`>> ${error.error}`))
   .exhaustive();
-
-
-
