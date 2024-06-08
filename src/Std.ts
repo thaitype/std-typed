@@ -117,19 +117,19 @@ export class TypedError<Kind = string> extends Error implements Transformable {
   }
 }
 
-export type ExtractErrorKind<E extends unknown | { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKind<E extends unknown | { kind: string }> = E extends {
   kind: infer Kind;
 }
   ? TypedError<Kind>
   : E;
 
-export type ExtractErrorKindForMatching<E extends unknown | { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKindForMatching<E extends unknown | { kind: string }> = E extends {
   kind: infer Kind;
 }
   ? { kind: Kind }
   : E;
 
-export type ExtractErrorKindKeyForMatching<E extends unknown | { kind: TErrorKind }, TErrorKind = string> = E extends {
+export type ExtractErrorKindKeyForMatching<E extends unknown | { kind: string }> = E extends {
   kind: infer Kind;
 }
   ? Kind

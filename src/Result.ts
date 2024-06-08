@@ -21,7 +21,7 @@ export type ResultOk<T = undefined> = T extends undefined
       value: T;
     };
 
-export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind = string>
+export class ResultBase<T, E extends unknown | { kind: string }>
   implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable
 {
   public value!: T;
