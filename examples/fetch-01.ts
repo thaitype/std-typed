@@ -4,6 +4,22 @@ import { mockParseJson } from "./fetch.js";
 
 class FetchError extends Std.StdError<"FetchError" | "InvalidJsonError" | "RequestFailError"> {}
 
+// async function unsafeFetch(url: string) {
+//   try {
+//     const result = await fetch(url);
+//     if (!result.ok) throw new Error("FetchError");
+
+//     try {
+//       const json = await result.json();
+//       return json;
+//     } catch (e) {
+//       throw new Error("InvalidJsonError");
+//     }
+//   } catch (e) {
+//     throw new Error("RequestFailError");
+//   }
+// }
+
 const safeFetch = (url: string) =>
   Result.funcAsync<unknown, FetchError>(async c => {
     try {
@@ -22,7 +38,7 @@ const safeFetch = (url: string) =>
   });
 
 Std.runExit(async () => {
-  const prefixUrl = 'https://jsonplaceholder.typicode.com';
+  const prefixUrl = "https://jsonplaceholder.typicode.com";
   console.log(`Fetching Prefix url: "${prefixUrl}"...\n`);
   for (const url of [
     `${prefixUrl}/todos/1`, // Fetch Result
@@ -31,7 +47,7 @@ Std.runExit(async () => {
     `${prefixUrl}/todos/1?variant=invalidJson`, // InvalidJsonError
   ]) {
     const result = await safeFetch(url);
-    const cleanedUrl = url.replace(prefixUrl, '')
+    const cleanedUrl = url.replace(prefixUrl, "");
     match(result.into())
       .with(result.ok(), value => console.log(`Fetch Result (url="${cleanedUrl}"): => ${JSON.stringify(value.value)}`))
       .with(result.errWith.kind("FetchError"), error => console.error(`Failed to fetch (url="${cleanedUrl}"): => ${error.error}`))

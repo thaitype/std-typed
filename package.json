@@ -6,6 +6,8 @@
   "scripts": {
     "check": "tsc -b tsconfig.json",
     "check:watch": "tsc  -b tsconfig.json -w",
+    "prepublishOnly": "bun run build",
+    "release": "release-it",
     "build": "bun build-esm && bun build-cjs && bun build-annotate",
     "build-esm": "tsc -b tsconfig.build.json",
     "build-cjs": "babel dist/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir dist/cjs --source-maps",
@@ -20,6 +22,7 @@
     "@types/bun": "latest",
     "babel-plugin-annotate-pure-calls": "^0.4.0",
     "effect": "^3.2.7",
+    "release-it": "^17.3.0",
     "ts-pattern": "^5.1.2"
   },
   "peerDependencies": {
