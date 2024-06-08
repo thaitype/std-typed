@@ -56,32 +56,19 @@ export type ResultOk<T = undefined> = T extends undefined
       value: T;
     };
 
-class EnsureResult<T, E> {
+class EnsureError<E> {
   public error!: E;
-  constructor(private result: Result<T, E>) {}
-
-  into(): { _tag: "success"; value: T } | { _tag: "failure"; error: ExtractErrorKind<E> } {
-    return this.result.into();
-  }
-
-  ok() {
-    return this.result.ok();
-  }
-
-  err() {
-    return this.result.err();
-  }
 
   /**
    * Err Result with kind for pattern matching
-   * 
+   *
    * Maintainer Note: When call this method from Err or Ok, the kind type will correctly infer,
    * but when call from ResultBase, it will infer as never.
    *
    * @param kind
    * @returns
    */
-  errWith<TKind extends ExcludeNeverKey<ExtractErrorKindKeyForMatching<E>, "error">>(
+  kind<TKind extends ExcludeNeverKey<ExtractErrorKindKeyForMatching<E>, "error">>(
     kind: TKind
   ): { _tag: "failure"; error: { kind: TKind } } {
     return { _tag: "failure", error: { kind } };
@@ -131,11 +118,8 @@ export class ResultBase<T, E extends AcceptableError>
    * Ensure the Result doesn't have an `never` type, this is useful for type inference
    * @returns
    */
-  // ensure(): ExcludeNeverKey<Result<T, E>, "error"> {
-  //   return this as unknown as ExcludeNeverKey<Result<T, E>, "error">;
-  // }
-  ensure(): ExcludeNeverKey<EnsureResult<T, E>, "error"> {
-    return new EnsureResult(this as unknown as Result<T, E>) as unknown as ExcludeNeverKey<EnsureResult<T, E>, "error">;
+  get errWith(): ExcludeNeverKey<EnsureError<E>, "error"> {
+    return new EnsureError() as ExcludeNeverKey<EnsureError<E>, "error">;
   }
 
   extract(): {
