@@ -1,5 +1,14 @@
-import type { Composable, Matchable, Tagged, ToStringOptions, Transformable, Unwrapable } from "./types.js";
-import type { ExtractErrorKind } from "./Std.js";
+import type { Equal, Expect } from "@type-challenges/utils";
+import type {
+  Composable,
+  ExcludeNeverKey,
+  Matchable,
+  Tagged,
+  ToStringOptions,
+  Transformable,
+  Unwrapable,
+} from "./types.js";
+import type { TypedError } from "./Std.js";
 import { getClassName } from "./Object.js";
 
 /**
@@ -8,8 +17,65 @@ import { getClassName } from "./Object.js";
  */
 export type Result<T, E> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
+export type AcceptableError = unknown | { kind: string };
 
-export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind = string>
+export type ExtractErrorKind<E extends AcceptableError> = E extends {
+  kind: infer Kind;
+}
+  ? TypedError<Kind>
+  : E;
+
+export type ExtractErrorKindForMatching<E extends AcceptableError> = E extends {
+  kind: infer Kind;
+}
+  ? { kind: Kind }
+  : E;
+
+export type ExtractErrorKindKeyForMatching<E extends AcceptableError> = E extends {
+  kind: infer Kind;
+}
+  ? Kind
+  : E;
+
+type cases = [
+  Expect<Equal<ExtractErrorKindKeyForMatching<"efef" | "xxx">, "efef" | "xxx">>,
+  Expect<Equal<ExtractErrorKindKeyForMatching<{ kind: "efef" | "xxx" }>, "efef" | "xxx">>,
+  Expect<Equal<ExtractErrorKindForMatching<{ kind: "efef" | "xxx" }>, { kind: "efef" | "xxx" }>>,
+  Expect<Equal<ExtractErrorKindForMatching<TypedError<"aaa" | "bbb">>, { kind: "aaa" | "bbb" }>>
+];
+
+/**
+ * Ok Result for pattern matching
+ */
+export type ResultOk<T = undefined> = T extends undefined
+  ? {
+      _tag: "success";
+    }
+  : {
+      _tag: "success";
+      value: T;
+    };
+
+class EnsureError<E> {
+  public error!: E;
+
+  /**
+   * Err Result with kind for pattern matching
+   *
+   * Maintainer Note: When call this method from Err or Ok, the kind type will correctly infer,
+   * but when call from ResultBase, it will infer as never.
+   *
+   * @param kind
+   * @returns
+   */
+  kind<TKind extends ExcludeNeverKey<ExtractErrorKindKeyForMatching<E>, "error">>(
+    kind: TKind
+  ): { _tag: "failure"; error: { kind: TKind } } {
+    return { _tag: "failure", error: { kind } };
+  }
+}
+
+export class ResultBase<T, E extends AcceptableError>
   implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable
 {
   public value!: T;
@@ -45,7 +111,40 @@ export class ResultBase<T, E extends unknown | { kind: TErrorKind }, TErrorKind 
   into(): { _tag: "success"; value: T } | { _tag: "failure"; error: ExtractErrorKind<E> } {
     return this.isOk()
       ? { _tag: "success", value: this.value }
-      : { _tag: "failure", error:  this.error  as ExtractErrorKind<E> };
+      : { _tag: "failure", error: this.error as ExtractErrorKind<E> };
+  }
+
+  /**
+   * Ensure the Result doesn't have an `never` type, this is useful for type inference
+   * @returns
+   */
+  get errWith(): ExcludeNeverKey<EnsureError<E>, "error"> {
+    return new EnsureError() as ExcludeNeverKey<EnsureError<E>, "error">;
+  }
+
+  extract(): {
+    result: Result<T, E>;
+    ok: ExcludeNeverKey<Ok<T>, "value">;
+    err: ExcludeNeverKey<Err<ExtractErrorKindKeyForMatching<E>>, "error">;
+  } {
+    return {
+      result: this as unknown as Result<T, E>,
+      ok: this as unknown as ExcludeNeverKey<Ok<T>, "value">,
+      err: this as unknown as ExcludeNeverKey<Err<ExtractErrorKindKeyForMatching<E>>, "error">,
+    };
+  }
+
+  /**
+   * Ok Result for pattern matching
+   */
+  ok(): { _tag: "success" } {
+    return { _tag: "success" };
+  }
+  /**
+   * Err Result for pattern matching
+   */
+  err(): { _tag: "failure" } {
+    return { _tag: "failure" };
   }
 
   toString(options?: ToStringOptions): string {
@@ -112,7 +211,10 @@ export class Ok<T> extends ResultBase<T, never> implements Unwrapable<T> {
   }
 }
 
-export class Err<E> extends ResultBase<never, E> implements Unwrapable<E> {
+export class Err<E extends unknown | { kind: TErrorKind }, TErrorKind = string>
+  extends ResultBase<never, E>
+  implements Unwrapable<E>
+{
   readonly _tag = "failure";
   constructor(public error: E) {
     super();

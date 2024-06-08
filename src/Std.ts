@@ -1,6 +1,7 @@
 import * as Result from "./Result.js";
 import { isPromise } from "./internal/predicate.js";
-import { type PromiseLike } from "./types.js";
+import { type PromiseLike, type Transformable } from "./types.js";
+
 
 /**
  * Run Sync/Async without throwing an error
@@ -87,7 +88,7 @@ export const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 /**
  * Error Base Class for discriminated union for `kind` field
  */
-export class TypedError<Kind = string> extends Error {
+export class TypedError<Kind = string> extends Error implements Transformable {
   constructor(public readonly kind: Kind, error?: unknown) {
     super(error instanceof Error ? error.message : String(error ?? "Something went wrong"));
     if (error instanceof Error) {
@@ -115,9 +116,3 @@ export class TypedError<Kind = string> extends Error {
     return this.toJSON();
   }
 }
-
-export type ExtractErrorKind<E extends unknown | { kind: TErrorKind }, TErrorKind = string> = E extends {
-  kind: infer Kind;
-}
-  ? TypedError<Kind>
-  : E;
