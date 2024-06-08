@@ -1,5 +1,6 @@
 import { Result, Std } from "std-typed";
 import { match } from "ts-pattern";
+import type { Equal, Expect } from '@type-challenges/utils'
 
 /**
  * https://www.npmjs.com/package/p-retry
@@ -35,19 +36,28 @@ const getTodo = (id: number) =>
 Std.runExit(async () => {
   for (const id of [-1, 1]) {
     const result = await getTodo(id);
-
-    // @ts-expect-error
-    result.errWith('FetchError')
+    // const { result: res, ok, err } = (await getTodo(id)).extract();
     
-    match(result.into())
-      .with(result.ok(), value =>
+    match(result.ensure().into())
+      .with(result.ensure().ok(), value =>
         console.log(
           `Fetch Result (id="${id}"): => ${JSON.stringify(value.value)}`
         )
       )
-      .with({ _tag: "failure", error: { kind: 'FetchError'} } , error => console.error(`Failed to fetch (id="${id}"): => ${error.error}`))
-      .with({ _tag: "failure", error: { kind: 'InvalidJsonError'} } , error => console.error(`Invalid JSON (id="${id}"): => ${error.error}`))
-      .with({ _tag: "failure", error: { kind: 'RequestFailError'} } , error => console.error(`Request failed (id="${id}"): => ${error.error}`))
+      .with(result.ensure().errWith('FetchError') , error => console.error(`Failed to fetch (id="${id}"): => ${error.error}`))
+      .with(result.ensure().errWith('InvalidJsonError') , error => console.error(`Invalid JSON (id="${id}"): => ${error.error}`))
+      .with(result.ensure().errWith('RequestFailError') , error => console.error(`Request failed (id="${id}"): => ${error.error}`))
       .exhaustive();
+      
+    // match(result.into())
+    //   .with(result.ok(), value =>
+    //     console.log(
+    //       `Fetch Result (id="${id}"): => ${JSON.stringify(value.value)}`
+    //     )
+    //   )
+    //   .with({ _tag: "failure", error: { kind: 'FetchError'} } , error => console.error(`Failed to fetch (id="${id}"): => ${error.error}`))
+    //   .with({ _tag: "failure", error: { kind: 'InvalidJsonError'} } , error => console.error(`Invalid JSON (id="${id}"): => ${error.error}`))
+    //   .with({ _tag: "failure", error: { kind: 'RequestFailError'} } , error => console.error(`Request failed (id="${id}"): => ${error.error}`))
+    //   .exhaustive();
   }
 });

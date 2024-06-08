@@ -1,5 +1,13 @@
-import type { Equal, Expect } from '@type-challenges/utils'
-import type { Composable, Matchable, Tagged, ToStringOptions, Transformable, Unwrapable } from "./types.js";
+import type { Equal, Expect } from "@type-challenges/utils";
+import type {
+  Composable,
+  ExcludeNeverKey,
+  Matchable,
+  Tagged,
+  ToStringOptions,
+  Transformable,
+  Unwrapable,
+} from "./types.js";
 import type { TypedError } from "./Std.js";
 import { getClassName } from "./Object.js";
 
@@ -87,15 +95,19 @@ export class ResultBase<T, E extends AcceptableError>
       : { _tag: "failure", error: this.error as ExtractErrorKind<E> };
   }
 
+  ensure(): ExcludeNeverKey<Result<T, E>, "error"> {
+    return this as unknown as ExcludeNeverKey<Result<T, E>, "error">;
+  }
+
   extract(): {
     result: Result<T, E>;
-    ok: Ok<T>;
-    err: Err<ExtractErrorKindKeyForMatching<E>>;
+    ok: ExcludeNeverKey<Ok<T>, "value">;
+    err: ExcludeNeverKey<Err<ExtractErrorKindKeyForMatching<E>>, "error">;
   } {
     return {
       result: this as unknown as Result<T, E>,
-      ok: this as unknown as Ok<T>,
-      err: this as unknown as Err<ExtractErrorKindKeyForMatching<E>>,
+      ok: this as unknown as ExcludeNeverKey<Ok<T>, "value">,
+      err: this as unknown as ExcludeNeverKey<Err<ExtractErrorKindKeyForMatching<E>>, "error">,
     };
   }
 
@@ -125,10 +137,10 @@ export class ResultBase<T, E extends AcceptableError>
    * @param kind
    * @returns
    */
-  errWith(
-    kind: ExtractErrorKindKeyForMatching<E>
-  ): { _tag: "success"; value: T } | { _tag: "failure"; error: ExtractErrorKind<E> } {
-    return { _tag: "failure", error: this.error as unknown as ExtractErrorKindForMatching<E> } as any;
+  errWith<TKind extends ExcludeNeverKey<ExtractErrorKindKeyForMatching<E>, "error">>(
+    kind: TKind
+  ): { _tag: "failure"; error: { kind: TKind } } {
+    return { _tag: "failure", error: { kind } };
   }
 
   toString(options?: ToStringOptions): string {
