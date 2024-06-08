@@ -10,7 +10,7 @@ import type {
   Unwrapable,
 } from "./types.js";
 import type { StdError } from "./Std.js";
-import { getClassName } from "./Object.js";
+import { getClassName } from "./StdObject.js";
 
 /**
  * Rust inspired Result type for TypeScript

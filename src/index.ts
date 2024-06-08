@@ -26,13 +26,13 @@ export * as Utils from "./Utils.js";
 // --- Using `Std` prefix to avoid duplicate name with JavaScript's global objects ---
 
 /**
- * Number module
+ * StdNumber module
  */
 export * as StdNumber from "./StdNumber.js";
 /**
  * Object Module
  */
-export * as Object from "./Object.js";
+export * as StdObject from "./StdObject.js";
 /**
  * StdString Module
  */

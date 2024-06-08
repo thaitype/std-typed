@@ -56,10 +56,10 @@
       "import": "./dist/esm/StdNumber.js",
       "default": "./dist/cjs/StdNumber.js"
     },
-    "./Object": {
-      "types": "./dist/dts/Object.d.ts",
-      "import": "./dist/esm/Object.js",
-      "default": "./dist/cjs/Object.js"
+    "./StdObject": {
+      "types": "./dist/dts/StdObject.d.ts",
+      "import": "./dist/esm/StdObject.js",
+      "default": "./dist/cjs/StdObject.js"
     },
     "./Option": {
       "types": "./dist/dts/Option.d.ts",
@@ -92,8 +92,8 @@
       "StdNumber": [
         "./dist/dts/StdNumber.d.ts"
       ],
-      "Object": [
-        "./dist/dts/Object.d.ts"
+      "StdObject": [
+        "./dist/dts/StdObject.d.ts"
       ],
       "Option": [
         "./dist/dts/Option.d.ts"
