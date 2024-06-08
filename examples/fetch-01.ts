@@ -2,7 +2,7 @@ import { Result, Std } from "std-typed";
 import { match } from "ts-pattern";
 import { mockParseJson } from "./fetch.js";
 
-class FetchError extends Std.TypedError<"FetchError" | "InvalidJsonError" | "RequestFailError"> {}
+class FetchError extends Std.StdError<"FetchError" | "InvalidJsonError" | "RequestFailError"> {}
 
 const safeFetch = (url: string) =>
   Result.funcAsync<unknown, FetchError>(async c => {

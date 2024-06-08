@@ -93,7 +93,7 @@ export const sleepWithLog = (ms: number) => {
 /**
  * Error Base Class for discriminated union for `kind` field
  */
-export class TypedError<Kind = string> extends Error implements Transformable {
+export class StdError<Kind = string> extends Error implements Transformable {
   constructor(public readonly kind: Kind, error?: unknown) {
     super(error instanceof Error ? error.message : String(error ?? "Something went wrong"));
     if (error instanceof Error) {
@@ -104,7 +104,7 @@ export class TypedError<Kind = string> extends Error implements Transformable {
   }
 
   toString(): string {
-    return `TypedError(${this.kind}): ${this.name}: ${this.message}`;
+    return `StdError(${this.kind}): ${this.name}: ${this.message}`;
   }
 
   toJSON() {

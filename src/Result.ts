@@ -9,9 +9,8 @@ import type {
   Transformable,
   Unwrapable,
 } from "./types.js";
-import type { TypedError } from "./Std.js";
+import type { StdError } from "./Std.js";
 import { getClassName } from "./Object.js";
-import { is } from "effect/Match";
 
 /**
  * Rust inspired Result type for TypeScript
@@ -24,7 +23,7 @@ export type AcceptableError = unknown | { kind: string };
 export type ExtractErrorKind<E extends AcceptableError> = E extends {
   kind: infer Kind;
 }
-  ? TypedError<Kind>
+  ? StdError<Kind>
   : E;
 
 export type ExtractErrorKindForMatching<E extends AcceptableError> = E extends {
@@ -43,7 +42,7 @@ type cases = [
   Expect<Equal<ExtractErrorKindKeyForMatching<"efef" | "xxx">, "efef" | "xxx">>,
   Expect<Equal<ExtractErrorKindKeyForMatching<{ kind: "efef" | "xxx" }>, "efef" | "xxx">>,
   Expect<Equal<ExtractErrorKindForMatching<{ kind: "efef" | "xxx" }>, { kind: "efef" | "xxx" }>>,
-  Expect<Equal<ExtractErrorKindForMatching<TypedError<"aaa" | "bbb">>, { kind: "aaa" | "bbb" }>>
+  Expect<Equal<ExtractErrorKindForMatching<StdError<"aaa" | "bbb">>, { kind: "aaa" | "bbb" }>>
 ];
 
 /**
