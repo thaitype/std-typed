@@ -1,6 +1,6 @@
 # Standard Typed
 
-[![npm version](https://img.shields.io/npm/v/std-typed)](https://www.npmjs.com/package/@thaitype/std-typed)
+[![npm version](https://img.shields.io/npm/v/std-typed)](https://www.npmjs.com/package/std-typed)
 
 Experimental Implementation of the standard library for the TypeScript, inspired by Rust's standard library. 
 
