@@ -4,8 +4,8 @@ import * as Option from "./Option.js";
  * Create a new Array from a value
  * @param value Using an array
  */
-export function from<T>(value: T[]): Array<T> {
-  return new Array(value);
+export function from<T>(value: T[]): StdArray<T> {
+  return new StdArray(value);
 }
 
 /**
@@ -13,7 +13,7 @@ export function from<T>(value: T[]): Array<T> {
  * 
  * Rust inspired Vector type for TypeScript
  */
-export class Array<T> {
+export class StdArray<T> {
   constructor(protected readonly value: T[]) {}
 
   static from = from;
@@ -30,7 +30,7 @@ export class Array<T> {
    * Appends an element to the back of a collection.
    * @param value The value to be pushed.
    */
-  push(value: T): Array<T> {
+  push(value: T): StdArray<T> {
     this.value.push(value);
     return this;
   }
@@ -74,7 +74,7 @@ export class Array<T> {
 
   toString(options?: ToStringOptions): string {
     const value = options?.pretty === true ? JSON.stringify(this.value, null, 2) : JSON.stringify(this.value);
-    return `Vec(${value})`;
+    return `${StdArray.name}(${value})`;
   }
 
   [Symbol.iterator]() {

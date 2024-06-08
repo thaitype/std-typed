@@ -76,10 +76,10 @@
       "import": "./dist/esm/Std.js",
       "default": "./dist/cjs/Std.js"
     },
-    "./Vec": {
-      "types": "./dist/dts/Vec.d.ts",
-      "import": "./dist/esm/Vec.js",
-      "default": "./dist/cjs/Vec.js"
+    "./StdArray": {
+      "types": "./dist/dts/StdArray.d.ts",
+      "import": "./dist/esm/StdArray.js",
+      "default": "./dist/cjs/StdArray.js"
     },
     "./String": {
       "types": "./dist/dts/String.d.ts",
@@ -104,8 +104,8 @@
       "Std": [
         "./dist/dts/Std.d.ts"
       ],
-      "Vec": [
-        "./dist/dts/Vec.d.ts"
+      "StdArray": [
+        "./dist/dts/StdArray.d.ts"
       ],
       "String": [
         "./dist/dts/String.d.ts"

@@ -1,4 +1,4 @@
-import { Std, Number, Array, Result } from "std-typed";
+import { Std, Number, StdArray, Result } from "std-typed";
 
 const parseNumberAndLogStr = (str: string) =>
   Result.func<number, Number.ParseIntError>(() => {
@@ -8,7 +8,7 @@ const parseNumberAndLogStr = (str: string) =>
   });
 
 Std.runExit(async () => {
-  const strVec = Array.from([
+  const strArray = StdArray.from([
     "",
     "0",
     "23,00",
@@ -16,7 +16,7 @@ Std.runExit(async () => {
     "seven",
     "11111111111111111111111111",
   ]);
-  for (const item of strVec) {
+  for (const item of strArray) {
     const num = parseNumberAndLogStr(item);
     console.log(`Result: ${num.toString()}`);
   }

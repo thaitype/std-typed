@@ -17,9 +17,9 @@ export * as Option from "./Option.js";
 export * as Result from "./Result.js";
 
 /**
- * Vector Module
+ * StdArray Module
  */
-export * as Array from "./Array.js";
+export * as StdArray from "./StdArray.js";
 
 /**
  * Utils Module
