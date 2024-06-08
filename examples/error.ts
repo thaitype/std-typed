@@ -1,9 +1,9 @@
-import { Result, Std, StdString, Number } from "std-typed";
+import { Result, Std, StdString, StdNumber } from "std-typed";
 
 const turnIntoStringAndParse = (bytes: number[]) =>
-  Result.func<number, StdString.FromUtf8Error | Number.ParseIntError>(() => {
+  Result.func<number, StdString.FromUtf8Error | StdNumber.ParseIntError>(() => {
     const utf8String = StdString.fromUtf8(bytes).unwrapOrThrow();
-    const num = Number.parseInt(utf8String.toString()).unwrapOrThrow();
+    const num = StdNumber.parseInt(utf8String.toString()).unwrapOrThrow();
     return Result.ok(num);
   });
 

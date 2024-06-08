@@ -1,8 +1,8 @@
-import { Std, Number, StdArray, Result } from "std-typed";
+import { Std, StdNumber, StdArray, Result } from "std-typed";
 
 const parseNumberAndLogStr = (str: string) =>
-  Result.func<number, Number.ParseIntError>(() => {
-    const num = Number.parseInt(str).unwrapOrThrow();
+  Result.func<number, StdNumber.ParseIntError>(() => {
+    const num = StdNumber.parseInt(str).unwrapOrThrow();
     console.log(`Parsed number successfully: ${num}`);
     return Result.ok(num);
   });

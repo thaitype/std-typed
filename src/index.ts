@@ -16,10 +16,6 @@ export * as Option from "./Option.js";
  */
 export * as Result from "./Result.js";
 
-/**
- * StdArray Module
- */
-export * as StdArray from "./StdArray.js";
 
 /**
  * Utils Module
@@ -27,12 +23,12 @@ export * as StdArray from "./StdArray.js";
 export * as Utils from "./Utils.js";
 
 
-// --- Be Aware for duplicate name with JavaScript's global objects ---
+// --- Using `Std` prefix to avoid duplicate name with JavaScript's global objects ---
 
 /**
  * Number module
  */
-export * as Number from "./Number.js";
+export * as StdNumber from "./StdNumber.js";
 /**
  * Object Module
  */
@@ -41,3 +37,7 @@ export * as Object from "./Object.js";
  * StdString Module
  */
 export * as StdString from "./StdString.js";
+/**
+ * StdArray Module
+ */
+export * as StdArray from "./StdArray.js";
