@@ -7,7 +7,7 @@
     "check": "tsc -b tsconfig.json",
     "check:watch": "tsc  -b tsconfig.json -w",
     "prepublishOnly": "bun run build",
-    "release": "release-it",
+    "release": "bun run build && release-it",
     "build": "bun build-esm && bun build-cjs && bun build-annotate",
     "build-esm": "tsc -b tsconfig.build.json",
     "build-cjs": "babel dist/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir dist/cjs --source-maps",
