@@ -1,13 +1,13 @@
 import { test, expect } from "bun:test";
-import { String } from "./String.js";
+import { StdString } from "./StdString.js";
 
 test("String.from", () => {
-  expect(String.from("Hello, ธาดา 😎").toString()).toBe("Hello, ธาดา 😎");
+  expect(StdString.from("Hello, ธาดา 😎").toString()).toBe("Hello, ธาดา 😎");
 });
 
 test("String.chars", () => {
   const chars = [];
-  for (const char of String.from("Hello, ธาดา 😎").chars()) {
+  for (const char of StdString.from("Hello, ธาดา 😎").chars()) {
     chars.push(char);
   }
   expect(chars).toEqual(["H", "e", "l", "l", "o", ",", " ", "ธ", "า", "ด", "า", " ", "😎"]);
@@ -15,7 +15,7 @@ test("String.chars", () => {
 
 test("String.bytes", () => {
   const chars = [];
-  for (const char of String.from("Hello, ธาดา 😎").bytes()) {
+  for (const char of StdString.from("Hello, ธาดา 😎").bytes()) {
     chars.push(char);
   }
   expect(chars).toEqual([

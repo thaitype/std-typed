@@ -81,10 +81,10 @@
       "import": "./dist/esm/StdArray.js",
       "default": "./dist/cjs/StdArray.js"
     },
-    "./String": {
-      "types": "./dist/dts/String.d.ts",
-      "import": "./dist/esm/String.js",
-      "default": "./dist/cjs/String.js"
+    "./StdString": {
+      "types": "./dist/dts/StdString.d.ts",
+      "import": "./dist/esm/StdString.js",
+      "default": "./dist/cjs/StdString.js"
     }
   },
   "typesVersions": {
@@ -107,8 +107,8 @@
       "StdArray": [
         "./dist/dts/StdArray.d.ts"
       ],
-      "String": [
-        "./dist/dts/String.d.ts"
+      "StdString": [
+        "./dist/dts/StdString.d.ts"
       ]
     }
   }

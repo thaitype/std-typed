@@ -38,6 +38,6 @@ export * as Number from "./Number.js";
  */
 export * as Object from "./Object.js";
 /**
- * String Module
+ * StdString Module
  */
-export * as String from "./String.js";
+export * as StdString from "./StdString.js";

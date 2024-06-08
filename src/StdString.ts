@@ -1,5 +1,4 @@
 import GraphemeSplitter from "grapheme-splitter";
-import { toGenerator } from "./Utils.js";
 import { AggregatedGenerator } from "./internal/generator.js";
 import * as Result from "./Result.js";
 
@@ -13,8 +12,8 @@ export class FromUtf8Error {
 /**
  * A UTF-8–encoded string, representing a sequence of Unicode scalar values
  */
-export function from(value: string): String {
-  return new String(value);
+export function from(value: string): StdString {
+  return new StdString(value);
 }
 
 /**
@@ -22,15 +21,15 @@ export function from(value: string): String {
  *
  * @ref https://doc.rust-lang.org/stable/alloc/string/struct.String.html#method.from_utf8
  */
-export function fromUtf8(bytes: number[]): Result.Result<String, FromUtf8Error> {
+export function fromUtf8(bytes: number[]): Result.Result<StdString, FromUtf8Error> {
   const buffer = Buffer.from(bytes);
   if (!isValidUtf8(buffer)) {
     return Result.err(new FromUtf8Error("InvalidUtf8"));
   }
-  return Result.ok(new String(buffer.toString("utf8")));
+  return Result.ok(new StdString(buffer.toString("utf8")));
 }
 
-export class String {
+export class StdString {
   constructor(private value: string) {}
 
   static from = from;
