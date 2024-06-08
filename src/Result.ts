@@ -237,8 +237,8 @@ export function ok<T>(value: T): Ok<T> {
 export function err<const E>(error: E): Err<E> {
   return new Err(error);
 }
-export const _Ok = Ok.getTag();
-export const _Err = Err.getTag();
+// export const _Ok = Ok.getTag();
+// export const _Err = Err.getTag();
 
 // -----------------------------------------
 // |                                       |

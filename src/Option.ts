@@ -48,6 +48,20 @@ export abstract class OptionBase<T> implements Tagged<_OptionTag>, Transformable
     return "None";
   }
 
+  /**
+   * Ok Result for pattern matching
+   */
+  some(): { _tag: "some" } {
+    return { _tag: "some" };
+  }
+  /**
+   * Err Result for pattern matching
+   */
+  none(): { _tag: "none" } {
+    return { _tag: "none" };
+  }
+
+
   static getTag(): {
     _tag: _OptionTag;
   } {
@@ -101,5 +115,5 @@ export function some<T>(value: T): Some<T> {
   return new Some(value);
 }
 export const none: None = new None();
-export const _Some = Some.getTag();
-export const _None = None.getTag();
+// export const _Some = Some.getTag();
+// export const _None = None.getTag();
