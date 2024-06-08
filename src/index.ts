@@ -34,10 +34,6 @@ export * as Utils from "./Utils.js";
  */
 export * as Number from "./Number.js";
 /**
- * Promise module
- */
-export * as Promise from "./Promise.js";
-/**
  * Object Module
  */
 export * as Object from "./Object.js";

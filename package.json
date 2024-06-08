@@ -66,11 +66,6 @@
       "import": "./dist/esm/Option.js",
       "default": "./dist/cjs/Option.js"
     },
-    "./Promise": {
-      "types": "./dist/dts/Promise.d.ts",
-      "import": "./dist/esm/Promise.js",
-      "default": "./dist/cjs/Promise.js"
-    },
     "./Result": {
       "types": "./dist/dts/Result.d.ts",
       "import": "./dist/esm/Result.js",
@@ -102,9 +97,6 @@
       ],
       "Option": [
         "./dist/dts/Option.d.ts"
-      ],
-      "Promise": [
-        "./dist/dts/Promise.d.ts"
       ],
       "Result": [
         "./dist/dts/Result.d.ts"
