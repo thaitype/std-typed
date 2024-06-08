@@ -120,6 +120,9 @@ For more practical examples, please see the [examples](examples) folder.
 - No Functional Programming (FP) concepts, please use [Effect](https://effect.website/) for that.
 - Complex scenarios using consider using [Effect](https://effect.website/).
 
+## Alternatives
+[neverthrow](https://github.com/supermacro/neverthrow), [ts-results](https://github.com/vultix/ts-results), [Effect](https://github.com/Effect-TS/effect) and [fp-ts](https://github.com/gcanti/fp-ts) are implemented Rust's Option/Result concept.
+
 ## Q&A
 
 ### There are already `Result` and `Option` in `fp-ts` or `Effect`, why do we need another one?
