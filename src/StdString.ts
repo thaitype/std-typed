@@ -1,13 +1,12 @@
 import GraphemeSplitter from "grapheme-splitter";
 import { AggregatedGenerator } from "./internal/generator.js";
 import * as Result from "./Result.js";
+import { StdError } from "./Std.js";
 
 /**
  * From Rust's `std::string::FromUtf8Error`
  */
-export class FromUtf8Error {
-  constructor(public readonly error: "InvalidUtf8") {}
-}
+export class FromUtf8Error extends StdError<"InvalidUtf8"> {}
 
 /**
  * A UTF-8–encoded string, representing a sequence of Unicode scalar values

@@ -1,11 +1,10 @@
 import * as Result from "./Result.js";
+import { StdError } from "./Std.js";
 
 /**
  * From Rust's `std::num::ParseIntError`
  */
-export class ParseIntError {
-  constructor(public readonly kind: "Empty" | "InvalidDigit" | "PosOverflow" | "NegOverflow" | "Zero") {}
-}
+export class ParseIntError extends StdError<"Empty" | "InvalidDigit" | "PosOverflow" | "NegOverflow" | "Zero"> {}
 
 function parseInt_(str: string): Result.Result<number, ParseIntError> {
   const trimmed = str.trim();
