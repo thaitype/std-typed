@@ -36,6 +36,9 @@ Std.runExit(async () => {
   for (const id of [-1, 1]) {
     const result = await getTodo(id);
 
+    // @ts-expect-error
+    result.errWith('FetchError')
+    
     match(result.into())
       .with(result.ok(), value =>
         console.log(

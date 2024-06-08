@@ -1,7 +1,7 @@
 import * as Result from "./Result.js";
 import { isPromise } from "./internal/predicate.js";
 import { type PromiseLike, type Transformable } from "./types.js";
-import type { Equal, Expect } from '@type-challenges/utils'
+
 
 /**
  * Run Sync/Async without throwing an error
@@ -116,28 +116,3 @@ export class TypedError<Kind = string> extends Error implements Transformable {
     return this.toJSON();
   }
 }
-
-export type ExtractErrorKind<E extends unknown | { kind: string }> = E extends {
-  kind: infer Kind;
-}
-  ? TypedError<Kind>
-  : E;
-
-export type ExtractErrorKindForMatching<E extends unknown | { kind: string }> = E extends {
-  kind: infer Kind;
-}
-  ? { kind: Kind }
-  : E;
-
-export type ExtractErrorKindKeyForMatching<E extends unknown | { kind: string }> = E extends {
-  kind: infer Kind;
-}
-  ? Kind
-  : E;
-
-type cases = [
-  Expect<Equal<ExtractErrorKindKeyForMatching<"efef" | "xxx">, "efef" | "xxx">>,
-  Expect<Equal<ExtractErrorKindKeyForMatching<{ kind: "efef" | "xxx" }>, "efef" | "xxx">>,
-  Expect<Equal<ExtractErrorKindForMatching<{ kind: "efef" | "xxx" }>, { kind: "efef" | "xxx" }>>,
-  Expect<Equal<ExtractErrorKindForMatching<TypedError<"aaa" | "bbb">>, { kind: "aaa" | "bbb" }>>
-];

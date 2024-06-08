@@ -1,5 +1,6 @@
+import type { Equal, Expect } from '@type-challenges/utils'
 import type { Composable, Matchable, Tagged, ToStringOptions, Transformable, Unwrapable } from "./types.js";
-import type { ExtractErrorKind, ExtractErrorKindForMatching, ExtractErrorKindKeyForMatching } from "./Std.js";
+import type { TypedError } from "./Std.js";
 import { getClassName } from "./Object.js";
 
 /**
@@ -8,6 +9,32 @@ import { getClassName } from "./Object.js";
  */
 export type Result<T, E> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
+export type AcceptableError = unknown | { kind: string };
+
+export type ExtractErrorKind<E extends AcceptableError> = E extends {
+  kind: infer Kind;
+}
+  ? TypedError<Kind>
+  : E;
+
+export type ExtractErrorKindForMatching<E extends AcceptableError> = E extends {
+  kind: infer Kind;
+}
+  ? { kind: Kind }
+  : E;
+
+export type ExtractErrorKindKeyForMatching<E extends AcceptableError> = E extends {
+  kind: infer Kind;
+}
+  ? Kind
+  : E;
+
+type cases = [
+  Expect<Equal<ExtractErrorKindKeyForMatching<"efef" | "xxx">, "efef" | "xxx">>,
+  Expect<Equal<ExtractErrorKindKeyForMatching<{ kind: "efef" | "xxx" }>, "efef" | "xxx">>,
+  Expect<Equal<ExtractErrorKindForMatching<{ kind: "efef" | "xxx" }>, { kind: "efef" | "xxx" }>>,
+  Expect<Equal<ExtractErrorKindForMatching<TypedError<"aaa" | "bbb">>, { kind: "aaa" | "bbb" }>>
+];
 
 /**
  * Ok Result for pattern matching
@@ -21,7 +48,7 @@ export type ResultOk<T = undefined> = T extends undefined
       value: T;
     };
 
-export class ResultBase<T, E extends unknown | { kind: string }>
+export class ResultBase<T, E extends AcceptableError>
   implements Tagged<_ResultTag>, Transformable, Composable<T>, Matchable
 {
   public value!: T;
