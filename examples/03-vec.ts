@@ -1,15 +1,15 @@
-import { Vec } from "std-typed";
+import { Array } from "std-typed";
 
 function main() {
-  const vec = Vec.vec([1, 2, 3, 4, 5]);
-  console.log(`Len = ${vec.len()}`);
+  const vec = Array.from([1, 2, 3, 4, 5]);
+  console.log(`Len = ${vec.length}`);
   console.log(`Get(2) = ${vec.get(2)}`);
   console.log(`Pop() = ${vec.pop()}`);
   console.log(`Remove(2) = ${vec.remove(2)}`);
   console.log(`Debug = ${vec}`);
 
-  const vec2 = Vec.vec([{ a: 1 }, { a: 2 }, { a: 3 }]);
-  console.log(`Len = ${vec2.len()}`);
+  const vec2 = Array.from([{ a: 1 }, { a: 2 }, { a: 3 }]);
+  console.log(`Len = ${vec2.length}`);
   console.log(`Debug = ${vec2.toString({ pretty: true })}`);
 }
 

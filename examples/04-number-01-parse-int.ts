@@ -1,4 +1,4 @@
-import { Std, Number, Vec, Result } from "std-typed";
+import { Std, Number, Array, Result } from "std-typed";
 
 const parseNumberAndLogStr = (str: string) =>
   Result.func<number, Number.ParseIntError>(() => {
@@ -8,7 +8,7 @@ const parseNumberAndLogStr = (str: string) =>
   });
 
 Std.runExit(async () => {
-  const strVec = Vec.vec([
+  const strVec = Array.from([
     "",
     "0",
     "23,00",

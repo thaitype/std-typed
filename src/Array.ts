@@ -1,15 +1,23 @@
 import type { ToStringOptions } from "./types.js";
 import * as Option from "./Option.js";
 /**
+ * Create a new Array from a value
+ * @param value Using an array
+ */
+export function from<T>(value: T[]): Array<T> {
+  return new Array(value);
+}
+
+/**
+ * Array Type Wrapping with Result
+ * 
  * Rust inspired Vector type for TypeScript
  */
-export class Vec<T> {
+export class Array<T> {
   constructor(protected readonly value: T[]) {}
 
-  static from<T>(value: T[]): Vec<T> {
-    return new Vec(value);
-  }
-
+  static from = from;
+  
   into(): T[] {
     return this.value;
   }
@@ -22,7 +30,7 @@ export class Vec<T> {
    * Appends an element to the back of a collection.
    * @param value The value to be pushed.
    */
-  push(value: T): Vec<T> {
+  push(value: T): Array<T> {
     this.value.push(value);
     return this;
   }
@@ -31,7 +39,7 @@ export class Vec<T> {
    * Returns the number of elements in the vector, also referred to as its ‘length’.
    * @returns The number of elements in the vector.
    */
-  len(): number {
+  get length(): number {
     return this.value.length;
   }
 
@@ -74,10 +82,3 @@ export class Vec<T> {
   }
 }
 
-/**
- * Create a new Vec
- * @param value Using an array
- */
-export function vec<T>(value: T[]): Vec<T> {
-  return Vec.from(value);
-}

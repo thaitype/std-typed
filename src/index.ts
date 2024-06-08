@@ -19,7 +19,7 @@ export * as Result from "./Result.js";
 /**
  * Vector Module
  */
-export * as Vec from "./Vec.js";
+export * as Array from "./Array.js";
 
 /**
  * Utils Module
