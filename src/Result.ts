@@ -276,11 +276,10 @@ export const func = <T, E>(
  */
 
 export const funcAsync = async <T, E>(
-  /** Passing result context */
-  fn: (context: ResultContext<T, E>) => Promise<Result<T, E>>
+  fn: () => Promise<Result<T, E>>
 ): Promise<Result<T, E>> => {
   try {
-    return await fn({ ok, err });
+    return await fn();
   } catch (e) {
     return err(e as E);
   }

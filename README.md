@@ -46,18 +46,18 @@ import { mockParseJson } from "./fetch.js"; // Mocking Response.json() for testi
 class FetchError extends Std.StdError<"FetchError" | "InvalidJsonError" | "RequestFailError"> {}
 
 const safeFetch = (url: string) =>
-  Result.funcAsync<unknown, FetchError>(async c => {
+  Result.funcAsync(async () => {
 
     const result = await Result.promise(fetch(url))
-    if(result.isErr()) return c.err(new FetchError("RequestFailError", result.unwrap()));
+    if(result.isErr()) return Result.err(new FetchError("RequestFailError", result.unwrap()));
     
     const response = result.unwrap();
-    if(!response.ok) return c.err(new FetchError("FetchError"));
+    if(!response.ok) return Result.err(new FetchError("FetchError"));
 
     const json = await Result.promise(mockParseJson(response, url));
-    if(json.isErr()) return c.err(new FetchError("InvalidJsonError", json.unwrap()));
+    if(json.isErr()) return Result.err(new FetchError("InvalidJsonError", json.unwrap()));
 
-    return c.ok(json.unwrap());
+    return Result.ok(json.unwrap());
 
   });
 ```
