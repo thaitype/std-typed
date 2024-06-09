@@ -19,31 +19,31 @@ import { isPromise } from "./Utils.js";
  */
 export type Result<T, E> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
-export type AcceptableError = unknown | { kind: string };
+export type AcceptableError = unknown | { _tag: string };
 
 export type ExtractErrorKind<E extends AcceptableError> = E extends {
-  kind: infer Kind;
+  _tag: infer Kind;
 }
   ? StdError<Kind>
   : E;
 
 export type ExtractErrorKindForMatching<E extends AcceptableError> = E extends {
-  kind: infer Kind;
+  _tag: infer Kind;
 }
-  ? { kind: Kind }
+  ? { _tag: Kind }
   : E;
 
 export type ExtractErrorKindKeyForMatching<E extends AcceptableError> = E extends {
-  kind: infer Kind;
+  _tag: infer Kind;
 }
   ? Kind
   : E;
 
 type cases = [
   Expect<Equal<ExtractErrorKindKeyForMatching<"efef" | "xxx">, "efef" | "xxx">>,
-  Expect<Equal<ExtractErrorKindKeyForMatching<{ kind: "efef" | "xxx" }>, "efef" | "xxx">>,
-  Expect<Equal<ExtractErrorKindForMatching<{ kind: "efef" | "xxx" }>, { kind: "efef" | "xxx" }>>,
-  Expect<Equal<ExtractErrorKindForMatching<StdError<"aaa" | "bbb">>, { kind: "aaa" | "bbb" }>>
+  Expect<Equal<ExtractErrorKindKeyForMatching<{ _tag: "efef" | "xxx" }>, "efef" | "xxx">>,
+  Expect<Equal<ExtractErrorKindForMatching<{ _tag: "efef" | "xxx" }>, { _tag: "efef" | "xxx" }>>,
+  Expect<Equal<ExtractErrorKindForMatching<StdError<"aaa" | "bbb">>, { _tag: "aaa" | "bbb" }>>
 ];
 
 /**
@@ -62,18 +62,18 @@ class EnsureError<E> {
   public error!: E;
 
   /**
-   * Err Result with kind for pattern matching
+   * Err Result with _tag for pattern matching
    *
-   * Maintainer Note: When call this method from Err or Ok, the kind type will correctly infer,
+   * Maintainer Note: When call this method from Err or Ok, the _tag type will correctly infer,
    * but when call from ResultBase, it will infer as never.
    *
-   * @param kind
+   * @param _tag
    * @returns
    */
-  kind<TKind extends ExcludeNeverKey<ExtractErrorKindKeyForMatching<E>, "error">>(
-    kind: TKind
-  ): { _tag: "failure"; error: { kind: TKind } } {
-    return { _tag: "failure", error: { kind } };
+  tag<TKind extends ExcludeNeverKey<ExtractErrorKindKeyForMatching<E>, "error">>(
+    _tag: TKind
+  ): { _tag: "failure"; error: { _tag: TKind } } {
+    return { _tag: "failure", error: { _tag } };
   }
 }
 
@@ -213,7 +213,7 @@ export class Ok<T> extends ResultBase<T, never> implements Unwrapable<T> {
   }
 }
 
-export class Err<E extends unknown | { kind: TErrorKind }, TErrorKind = string>
+export class Err<E extends unknown | { _tag: TErrorKind }, TErrorKind = string>
   extends ResultBase<never, E>
   implements Unwrapable<E>
 {

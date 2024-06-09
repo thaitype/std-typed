@@ -33,9 +33,10 @@ Std.runExit(async () => {
     const cleanedUrl = url.replace(prefixUrl, '')
     match(result.into())
       .with(result.ok(), value => console.log(`Fetch Result (url="${cleanedUrl}"): => ${JSON.stringify(value.value)}`))
-      .with(result.errWith.kind("FetchError"), error => console.error(`Failed to fetch (url="${cleanedUrl}"): => ${error.error}`))
-      .with(result.errWith.kind("InvalidJsonError"), error => console.error(`Invalid JSON (url="${cleanedUrl}"): => ${error.error}`))
-      .with(result.errWith.kind("RequestFailError"), error => console.error(`Request failed (url="${cleanedUrl}"): => ${error.error}`))
+      .with(result.errWith.tag("FetchError"), error => console.error(`Failed to fetch (url="${cleanedUrl}"): => ${error.error}`))
+      .with(result.errWith.tag("InvalidJsonError"), error => console.error(`Invalid JSON (url="${cleanedUrl}"): => ${error.error}`))
+      .with(result.errWith.tag("RequestFailError"), error => console.error(`Request failed (url="${cleanedUrl}"): => ${error.error}`))
       .exhaustive();
   }
 });
+
