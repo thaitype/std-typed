@@ -11,6 +11,7 @@ import type {
 } from "./types.js";
 import type { StdError } from "./Std.js";
 import { getClassName } from "./StdObject.js";
+import { isPromise } from "./Utils.js";
 
 /**
  * Rust inspired Result type for TypeScript
@@ -289,6 +290,8 @@ export const funcAsync = async <T, E>(
  * Promise Wrapper for Result Object, the building block for creating a Result object from a promise,
  * Support try block and try-catch block.
  * 
+ * Look like `Result.funcAsync`, but accept promise object or function that returns a Promise.
+ *
  * @example
  *
  * ```ts
@@ -297,8 +300,6 @@ export const funcAsync = async <T, E>(
  *   catch: (error) => `Custom Error: ${error}`,
  * })
  * ```
- *
- * Look like funcAsync, but it's a helper function to catch errors and return a Result object.
  *
  * @param tryOrTryCatch An object with try and catch function
  * @returns
@@ -313,13 +314,13 @@ export async function promise<T, E>(tryOrTryCatch: {
  * Promise Wrapper for Result Object, the building block for creating a Result object from a promise,
  * Support try block and try-catch block.
  * 
+ * Look like `Result.funcAsync`, but accept promise object or function that returns a Promise.
+ *
  * @example
  *
  * ```ts
  * await Result.promise(() => Std.delay(1000))
  * ```
- *
- * Look like funcAsync, but it's a helper function to catch errors and return a Result object.
  *
  * @param tryOrTryCatch The function that returns a Promise
  * @returns
@@ -327,6 +328,23 @@ export async function promise<T, E>(tryOrTryCatch: {
 
 export async function promise<T, E>(tryOrTryCatch: () => PromiseLike<T>): Promise<Result<T, E>>;
 
+/**
+ * Promise Wrapper for Result Object, the building block for creating a Result object from a promise,
+ * Support try block and try-catch block.
+ * 
+ * Look like `Result.funcAsync`, but accept promise object or function that returns a Promise.
+ *
+ * @example
+ *
+ * ```ts
+ * await Result.promise(Std.delay(1000))
+ * ```
+ *
+ * @param tryOrTryCatch a Promise object
+ * @returns
+ */
+
+export async function promise<T, E>(tryOrTryCatch: PromiseLike<T>): Promise<Result<T, E>>;
 
 export async function promise<T, E>(tryOrTryCatch: unknown): Promise<Result<T, E>> {
   let isTryCatch = false;
@@ -334,6 +352,8 @@ export async function promise<T, E>(tryOrTryCatch: unknown): Promise<Result<T, E
   let catchFn: (error: unknown) => E = () => ({} as E);
   if (typeof tryOrTryCatch === "function") {
     tryFn = tryOrTryCatch as () => PromiseLike<T>;
+  } else if (isPromise(tryOrTryCatch)) {
+    tryFn = () => tryOrTryCatch as PromiseLike<T>;
   } else {
     isTryCatch = true;
     tryFn = (tryOrTryCatch as { try: () => PromiseLike<T> }).try;

@@ -7,13 +7,13 @@ class FetchError extends Std.StdError<"FetchError" | "InvalidJsonError" | "Reque
 const safeFetch = (url: string) =>
   Result.funcAsync<unknown, FetchError>(async c => {
 
-    const result = await Result.promise(() => fetch(url))
+    const result = await Result.promise(fetch(url))
     if(result.isErr()) return c.err(new FetchError("RequestFailError", result.unwrap()));
     
     const response = result.unwrap();
     if(!response.ok) return c.err(new FetchError("FetchError"));
 
-    const json = await Result.promise(() => mockParseJson(response, url));
+    const json = await Result.promise(mockParseJson(response, url));
     if(json.isErr()) return c.err(new FetchError("InvalidJsonError", json.unwrap()));
 
     return c.ok(json.unwrap());

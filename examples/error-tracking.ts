@@ -32,3 +32,4 @@ match(result.into())
   .with({ ...result.err(), error: "FooError" }, error => console.log(`>> ${error.error}`))
   .with({ ...result.err(), error: "BarError" }, error => console.log(`>> ${error.error}`))
   .exhaustive();
+
