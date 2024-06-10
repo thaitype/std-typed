@@ -17,6 +17,10 @@ import { isPromise } from "./Utils.js";
  * Rust inspired Result type for TypeScript
  * @ref https://dev.to/alexanderop/robust-error-handling-in-typescript-a-journey-from-naive-to-rust-inspired-solutions-1mdh
  */
+type ExtractOk<T> = T extends Ok<infer U> ? U : never;
+type ExtractErr<T> = T extends Err<infer U> ? U : never;
+// type MergeResultUnion<T> = Result<ExtractOk<T>, ExtractErr<T>> ไม่ต้องทำผ่าน Type แต่ทำที่ Return Type แทน
+
 export type Result<T, E> = Ok<T> | Err<E>;
 export type _ResultTag = "success" | "failure";
 export type AcceptableError = unknown | { _tag: string };
@@ -275,13 +279,14 @@ export const func = <T, E>(
  * @returns Promise of Result Object
  */
 
-export const funcAsync = async <T, E>(
-  fn: () => Promise<Result<T, E>>
-): Promise<Result<T, E>> => {
+
+export const funcAsync = async <T, E, A extends Result<T,E>>(
+  fn: () => Promise<A>
+): Promise<Result<ExtractOk<A>,ExtractErr<A>>> => {
   try {
-    return await fn();
+    return await fn() as Result<ExtractOk<A>,ExtractErr<A>>;
   } catch (e) {
-    return err(e as E);
+    return err(e as E) as Result<ExtractOk<A>,ExtractErr<A>>;
   }
 };
 
