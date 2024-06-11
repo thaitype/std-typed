@@ -41,14 +41,14 @@ export class StdString {
    */
   chars(): AggregatedGenerator<string, void> {
     const graphemes = new GraphemeSplitter().iterateGraphemes(this.value);
-    return new AggregatedGenerator(function* () {
+    return new AggregatedGenerator(function*() {
       yield* graphemes;
     });
   }
 
   bytes(): AggregatedGenerator<number, void> {
     const value = new GraphemeSplitter().iterateGraphemes(this.value);
-    return new AggregatedGenerator(function* () {
+    return new AggregatedGenerator(function*() {
       const encoder = new TextEncoder();
       for (const char of value) {
         const encoded = encoder.encode(char);

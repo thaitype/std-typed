@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test";
-import * as StdArray from "./StdArray.js";
+import { expect, test } from "bun:test";
 import { some } from "./Option.js";
+import * as StdArray from "./StdArray.js";
 
 test("StdArray", () => {
   const array = StdArray.from([1, 2, 3, 4, 5]);
@@ -14,6 +14,6 @@ test("StdArray", () => {
   const array2 = StdArray.from([{ a: 1 }, { a: 2 }, { a: 3 }]);
   expect(array2.length).toStrictEqual(3);
   expect(array2.toString({ pretty: true })).toStrictEqual(
-    'StdArray([\n  {\n    "a": 1\n  },\n  {\n    "a": 2\n  },\n  {\n    "a": 3\n  }\n])'
+    "StdArray([\n  {\n    \"a\": 1\n  },\n  {\n    \"a\": 2\n  },\n  {\n    \"a\": 3\n  }\n])"
   );
 });

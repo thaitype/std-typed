@@ -1,4 +1,4 @@
-import { Result, Std, StdString, StdNumber } from "std-typed";
+import { Result, Std, StdNumber, StdString } from "std-typed";
 
 const turnIntoStringAndParse = (bytes: number[]) =>
   Result.func<number, StdString.FromUtf8Error | StdNumber.ParseIntError>(() => {
@@ -13,7 +13,7 @@ Std.runExit(() => {
     [191],
     [240, 159, 146, 150], // Heart blinking emoji in UTF-8
     [48, 49, 50],
-    [48, 49, 50, 51, 52],
+    [48, 49, 50, 51, 52]
   ];
   for (const bytes of bytesVec) {
     const parsed = turnIntoStringAndParse(bytes);

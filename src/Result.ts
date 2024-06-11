@@ -1,4 +1,6 @@
 import type { Equal, Expect } from "@type-challenges/utils";
+import type { StdError } from "./Std.js";
+import { getClassName } from "./StdObject.js";
 import type {
   Composable,
   ExcludeNeverKey,
@@ -7,10 +9,8 @@ import type {
   Tagged,
   ToStringOptions,
   Transformable,
-  Unwrapable,
+  Unwrapable
 } from "./types.js";
-import type { StdError } from "./Std.js";
-import { getClassName } from "./StdObject.js";
 import { isPromise } from "./Utils.js";
 
 /**
@@ -27,20 +27,17 @@ export type AcceptableError = unknown | { _tag: string };
 
 export type ExtractErrorKind<E extends AcceptableError> = E extends {
   _tag: infer Kind;
-}
-  ? StdError<Kind>
+} ? StdError<Kind>
   : E;
 
 export type ExtractErrorKindForMatching<E extends AcceptableError> = E extends {
   _tag: infer Kind;
-}
-  ? { _tag: Kind }
+} ? { _tag: Kind }
   : E;
 
 export type ExtractErrorKindKeyForMatching<E extends AcceptableError> = E extends {
   _tag: infer Kind;
-}
-  ? Kind
+} ? Kind
   : E;
 
 type cases = [
@@ -53,14 +50,13 @@ type cases = [
 /**
  * Ok Result for pattern matching
  */
-export type ResultOk<T = undefined> = T extends undefined
-  ? {
-      _tag: "success";
-    }
+export type ResultOk<T = undefined> = T extends undefined ? {
+    _tag: "success";
+  }
   : {
-      _tag: "success";
-      value: T;
-    };
+    _tag: "success";
+    value: T;
+  };
 
 class EnsureError<E> {
   public error!: E;
@@ -136,7 +132,7 @@ export class ResultBase<T, E extends AcceptableError>
     return {
       result: this as unknown as Result<T, E>,
       ok: this as unknown as ExcludeNeverKey<Ok<T>, "value">,
-      err: this as unknown as ExcludeNeverKey<Err<ExtractErrorKindKeyForMatching<E>>, "error">,
+      err: this as unknown as ExcludeNeverKey<Err<ExtractErrorKindKeyForMatching<E>>, "error">
     };
   }
 
@@ -155,8 +151,9 @@ export class ResultBase<T, E extends AcceptableError>
 
   toString(options?: ToStringOptions): string {
     if (this.isOk()) {
-      const stringifiedValue =
-        options?.pretty === true ? JSON.stringify(this.unwrap(), null, 2) : JSON.stringify(this.unwrap());
+      const stringifiedValue = options?.pretty === true
+        ? JSON.stringify(this.unwrap(), null, 2)
+        : JSON.stringify(this.unwrap());
       return `Ok(${stringifiedValue})`;
     }
     if (this.isErr()) {
@@ -217,8 +214,7 @@ export class Ok<T> extends ResultBase<T, never> implements Unwrapable<T> {
   }
 }
 
-export class Err<E extends unknown | { _tag: TErrorKind }, TErrorKind = string>
-  extends ResultBase<never, E>
+export class Err<E extends unknown | { _tag: TErrorKind }, TErrorKind = string> extends ResultBase<never, E>
   implements Unwrapable<E>
 {
   readonly _tag = "failure";
@@ -279,21 +275,20 @@ export const func = <T, E>(
  * @returns Promise of Result Object
  */
 
-
-export const funcAsync = async <T, E, A extends Result<T,E>>(
+export const funcAsync = async <T, E, A extends Result<T, E>>(
   fn: () => Promise<A>
-): Promise<Result<ExtractOk<A>,ExtractErr<A>>> => {
+): Promise<Result<ExtractOk<A>, ExtractErr<A>>> => {
   try {
-    return await fn() as Result<ExtractOk<A>,ExtractErr<A>>;
+    return await fn() as Result<ExtractOk<A>, ExtractErr<A>>;
   } catch (e) {
-    return err(e as E) as Result<ExtractOk<A>,ExtractErr<A>>;
+    return err(e as E) as Result<ExtractOk<A>, ExtractErr<A>>;
   }
 };
 
 /**
  * Promise Wrapper for Result Object, the building block for creating a Result object from a promise,
  * Support try block and try-catch block.
- * 
+ *
  * Look like `Result.funcAsync`, but accept promise object or function that returns a Promise.
  *
  * @example
@@ -317,7 +312,7 @@ export async function promise<T, E>(tryOrTryCatch: {
 /**
  * Promise Wrapper for Result Object, the building block for creating a Result object from a promise,
  * Support try block and try-catch block.
- * 
+ *
  * Look like `Result.funcAsync`, but accept promise object or function that returns a Promise.
  *
  * @example
@@ -335,7 +330,7 @@ export async function promise<T, E>(tryOrTryCatch: () => PromiseLike<T>): Promis
 /**
  * Promise Wrapper for Result Object, the building block for creating a Result object from a promise,
  * Support try block and try-catch block.
- * 
+ *
  * Look like `Result.funcAsync`, but accept promise object or function that returns a Promise.
  *
  * @example

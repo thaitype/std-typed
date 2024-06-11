@@ -1,8 +1,7 @@
 /**
  * Std Module
- * 
+ *
  * typed-std is a collection of TypeScript types and utilities for standard JavaScript objects and functions.
- * 
  */
 export * as Std from "./Std.js";
 
@@ -16,12 +15,10 @@ export * as Option from "./Option.js";
  */
 export * as Result from "./Result.js";
 
-
 /**
  * Utils Module
  */
 export * as Utils from "./Utils.js";
-
 
 // --- Using `Std` prefix to avoid duplicate name with JavaScript's global objects ---
 

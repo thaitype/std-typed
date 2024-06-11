@@ -1,7 +1,6 @@
-import * as Result from "./Result.js";
 import { isPromise } from "./internal/predicate.js";
+import * as Result from "./Result.js";
 import { type PromiseLike, type Transformable } from "./types.js";
-
 
 /**
  * Run Sync/Async without throwing an error
@@ -83,12 +82,12 @@ export function runSyncExit<T>(fn: () => T): T {
  * @param ms value in milliseconds
  * @returns Promise of void
  */
-export const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
+export const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export const sleepWithLog = (ms: number) => {
   console.log(`Sleeping for ${ms}ms`);
   return sleep(ms);
-}
+};
 
 /**
  * Error Base Class for discriminated union for `kind` field
@@ -113,7 +112,7 @@ export class StdError<Kind = string> extends Error implements Transformable {
       name: this.name,
       message: this.message,
       stack: this.stack,
-      cause: this.cause,
+      cause: this.cause
     };
   }
 

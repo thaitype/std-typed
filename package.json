@@ -6,6 +6,7 @@
   "scripts": {
     "check": "tsc -b tsconfig.json",
     "check:watch": "tsc  -b tsconfig.json -w",
+    "format": "dprint fmt",
     "prepublishOnly": "bun run build",
     "release": "bun run build && release-it",
     "build": "bun build-esm && bun build-cjs && bun build-annotate",
@@ -21,6 +22,7 @@
     "@type-challenges/utils": "^0.1.1",
     "@types/bun": "latest",
     "babel-plugin-annotate-pure-calls": "^0.4.0",
+    "dprint": "^0.46.2",
     "effect": "^3.2.7",
     "release-it": "^17.3.0",
     "ts-pattern": "^5.1.2"

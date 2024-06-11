@@ -1,8 +1,7 @@
-import { test, expect } from 'bun:test';
-import { isPromise } from './predicate.js';
+import { expect, test } from "bun:test";
+import { isPromise } from "./predicate.js";
 
-
-test('isPromise', () => {
+test("isPromise", () => {
   expect(isPromise(Promise.resolve(1))).toStrictEqual(true);
   expect(isPromise(1)).toStrictEqual(false);
   expect(isPromise({ then: () => {}, catch: () => {} })).toStrictEqual(true);

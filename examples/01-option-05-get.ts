@@ -1,4 +1,4 @@
-import { Std, Result } from "std-typed";
+import { Result, Std } from "std-typed";
 import { tryTakeSecond } from "./01-option.js";
 
 /**
@@ -18,8 +18,8 @@ const tryTakeSecondAndLog = (value: number[]): Result.Result<number, any> =>
 Std.runExit(() => {
   for (const value of [[1], [1, 2, 3]]) {
     const result = tryTakeSecondAndLog(value).match({
-      ok: value => `${value}`,
-      err: error => `${error}`,
+      ok: (value) => `${value}`,
+      err: (error) => `${error}`
     });
     console.log(result);
   }

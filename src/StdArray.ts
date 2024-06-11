@@ -1,5 +1,5 @@
-import type { ToStringOptions } from "./types.js";
 import * as Option from "./Option.js";
+import type { ToStringOptions } from "./types.js";
 /**
  * Create a new Array from a value
  * @param value Using an array
@@ -10,14 +10,14 @@ export function from<T>(value: T[]): StdArray<T> {
 
 /**
  * Array Type Wrapping with Result
- * 
+ *
  * Rust inspired Vector type for TypeScript
  */
 export class StdArray<T> {
   constructor(protected readonly value: T[]) {}
 
   static from = from;
-  
+
   into(): T[] {
     return this.value;
   }
@@ -81,4 +81,3 @@ export class StdArray<T> {
     return this.value[Symbol.iterator]();
   }
 }
-

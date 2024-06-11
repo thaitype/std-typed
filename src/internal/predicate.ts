@@ -1,8 +1,8 @@
 /**
  * Check if the value is a promise
- * 
- * @param value 
- * @returns 
+ *
+ * @param value
+ * @returns
  */
 
 export const isPromise = (value: unknown): value is Promise<unknown> => {

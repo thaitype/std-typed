@@ -26,7 +26,7 @@
     // Absolute paths
     "baseUrl": ".",
     "paths": {
-      "std-typed": ["src/index.ts"],
-    },
+      "std-typed": ["src/index.ts"]
+    }
   }
 }

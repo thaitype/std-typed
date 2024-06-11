@@ -1,6 +1,6 @@
 import { divide } from "./02-result.js";
 
-for(const [a, b] of [[1, 0], [1, 2]]) {
+for (const [a, b] of [[1, 0], [1, 2]]) {
   const result = divide(a, b);
   if (result.isOk()) {
     console.log(`Dividing ${a} by ${b} = ${result.value}`);

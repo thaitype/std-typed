@@ -1,4 +1,4 @@
-import { Std, StdNumber, StdArray, Result } from "std-typed";
+import { Result, Std, StdArray, StdNumber } from "std-typed";
 
 /**
  * To gain a better understanding, let's look at Points 1 and 3 of Rust. You'll see that Rust's code is reduced from 7 lines to 3.
@@ -18,8 +18,8 @@ import { Std, StdNumber, StdArray, Result } from "std-typed";
 const parseNumberAndLogStr = (str: string): Result.Result<number, StdNumber.ParseIntError> => {
   const result = StdNumber.parseInt(str);
   const num = result.match({
-    ok: num => num,
-    err: err => undefined,
+    ok: (num) => num,
+    err: (err) => undefined
   });
   if (num === undefined) {
     if (result.isErr()) return Result.err(result.unwrap());

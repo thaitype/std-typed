@@ -1,7 +1,7 @@
 // Error Tracking in https://effect.website/docs/guides/error-management/expected-errors
 
-import { match } from "ts-pattern";
 import { Result } from "std-typed";
+import { match } from "ts-pattern";
 
 type ProgramError = "FooError" | "BarError";
 
@@ -28,8 +28,7 @@ function program(): Result.Result<string, ProgramError> {
 
 const result = program();
 match(result.into())
-  .with(result.ok(), value => console.log(`Ok(${value.value})`))
-  .with({ ...result.err(), error: "FooError" }, error => console.log(`>> ${error.error}`))
-  .with({ ...result.err(), error: "BarError" }, error => console.log(`>> ${error.error}`))
+  .with(result.ok(), (value) => console.log(`Ok(${value.value})`))
+  .with({ ...result.err(), error: "FooError" }, (error) => console.log(`>> ${error.error}`))
+  .with({ ...result.err(), error: "BarError" }, (error) => console.log(`>> ${error.error}`))
   .exhaustive();
-

@@ -1,8 +1,8 @@
-import { test, expect } from "bun:test";
+import { expect, test } from "bun:test";
 import { AggregatedGenerator, BaseGenerator } from "./generator.js";
 
 test("BaseGenerator can initiate and act like Generator", () => {
-  const generator = new BaseGenerator(function* () {
+  const generator = new BaseGenerator(function*() {
     yield 1;
     yield 2;
     yield 3;
@@ -15,13 +15,13 @@ test("BaseGenerator can initiate and act like Generator", () => {
 });
 
 test("AggregatedGenerator can count", () => {
-  const generator = new BaseGenerator(function* () {
+  const generator = new BaseGenerator(function*() {
     yield 1;
     yield 2;
     yield 3;
   });
 
-  const aggregatedGenerator = new AggregatedGenerator(function* () {
+  const aggregatedGenerator = new AggregatedGenerator(function*() {
     yield* generator;
   });
 
@@ -29,13 +29,13 @@ test("AggregatedGenerator can count", () => {
 });
 
 test("AggregatedGenerator can convert to array", () => {
-  const generator = new BaseGenerator(function* () {
+  const generator = new BaseGenerator(function*() {
     yield 1;
     yield 2;
     yield 3;
   });
 
-  const aggregatedGenerator = new AggregatedGenerator(function* () {
+  const aggregatedGenerator = new AggregatedGenerator(function*() {
     yield* generator;
   });
 

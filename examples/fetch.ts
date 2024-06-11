@@ -21,5 +21,5 @@ export const mockFetchConfig = async () => {
 // console.log(`Config: ${JSON.stringify(config)}`); // => `Config: {"stringCase":"uppercase"}
 
 export const mockParseJson = async (res: Response, url: string): Promise<unknown> => {
-  return url.includes('invalidJson') ? Promise.reject(new Error("Invalid JSON")) : res.json();
-}
+  return url.includes("invalidJson") ? Promise.reject(new Error("Invalid JSON")) : res.json();
+};

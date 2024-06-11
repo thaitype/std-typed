@@ -21,19 +21,33 @@ const safeFetch = (url: string) =>
 Std.runExit(async () => {
   const prefixUrl = "https://jsonplaceholder.typicode.com";
   console.log(`Fetching Prefix url: "${prefixUrl}"...\n`);
-  for (const url of [
-    `${prefixUrl}/todos/1`, // Fetch Result
-    `${prefixUrl}xx/todos/1`, // RequestFailError
-    `${prefixUrl}/todos/-2`, // FetchError
-    `${prefixUrl}/todos/1?variant=invalidJson`, // InvalidJsonError
-  ]) {
+  for (
+    const url of [
+      `${prefixUrl}/todos/1`, // Fetch Result
+      `${prefixUrl}xx/todos/1`, // RequestFailError
+      `${prefixUrl}/todos/-2`, // FetchError
+      `${prefixUrl}/todos/1?variant=invalidJson` // InvalidJsonError
+    ]
+  ) {
     const result = await safeFetch(url);
     const cleanedUrl = url.replace(prefixUrl, "");
     match(result.into())
-      .with(result.ok(), value => console.log(`Fetch Result (url="${cleanedUrl}"): => ${JSON.stringify(value.value)}`))
-      .with(result.errWith.tag("FetchError"), error => console.error(`Failed to fetch (url="${cleanedUrl}"): => ${error.error}`))
-      .with(result.errWith.tag("InvalidJsonError"), error => console.error(`Invalid JSON (url="${cleanedUrl}"): => ${error.error}`))
-      .with(result.errWith.tag("RequestFailError"), error => console.error(`Request failed (url="${cleanedUrl}"): => ${error.error}`))
+      .with(
+        result.ok(),
+        (value) => console.log(`Fetch Result (url="${cleanedUrl}"): => ${JSON.stringify(value.value)}`)
+      )
+      .with(
+        result.errWith.tag("FetchError"),
+        (error) => console.error(`Failed to fetch (url="${cleanedUrl}"): => ${error.error}`)
+      )
+      .with(
+        result.errWith.tag("InvalidJsonError"),
+        (error) => console.error(`Invalid JSON (url="${cleanedUrl}"): => ${error.error}`)
+      )
+      .with(
+        result.errWith.tag("RequestFailError"),
+        (error) => console.error(`Request failed (url="${cleanedUrl}"): => ${error.error}`)
+      )
       .exhaustive();
   }
 });

@@ -41,8 +41,9 @@ export abstract class OptionBase<T> implements Tagged<_OptionTag>, Transformable
 
   toString(options?: ToStringOptions): string {
     if (this.isSome()) {
-      const stringifiedValue =
-        options?.pretty === true ? JSON.stringify(this.unwrap(), null, 2) : JSON.stringify(this.unwrap());
+      const stringifiedValue = options?.pretty === true
+        ? JSON.stringify(this.unwrap(), null, 2)
+        : JSON.stringify(this.unwrap());
       return `Some(${stringifiedValue})`;
     }
     return "None";
@@ -60,7 +61,6 @@ export abstract class OptionBase<T> implements Tagged<_OptionTag>, Transformable
   none(): { _tag: "none" } {
     return { _tag: "none" };
   }
-
 
   static getTag(): {
     _tag: _OptionTag;
